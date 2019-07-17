@@ -23,8 +23,9 @@ target_include_directories(${PROJECT_NAME} PUBLIC ${DEPS_DIR}/stb STATIC)
 target_sources(${PROJECT_NAME}
   PRIVATE
     lib/glad/glad.c
-    src/util/util.c
-    src/renderer/renderer.c
+    src/core/renderer/ogl.c
+    src/core/renderer/window.c
+    src/core/renderer/renderer.c
     src/main.c)
 
 target_link_libraries(${PROJECT_NAME}
