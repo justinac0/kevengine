@@ -7,14 +7,20 @@ void __framebuffer_size_callback(GLFWwindow* window, int width, int height) {
 GLFWwindow* window_create(unsigned int width, unsigned int height, const char* title) {
     if (!glfwInit()) {}
 
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+    glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
+
     GLFWwindow* window = glfwCreateWindow(width, height, title, 0, 0);
-    if (window == NULL) {}
+    if (window == NULL) {
+    }
 
     glfwSetFramebufferSizeCallback(window, __framebuffer_size_callback);
 
     glfwMakeContextCurrent(window);
 
-    glViewport(0, 0, width, height);
+    ogl_setup();
 
     return window;
 }
@@ -29,10 +35,6 @@ void window_update(GLFWwindow* window) {
     glfwPollEvents();
 }
 
-int window_get_request_close(GLFWwindow* window) {
-    return glfwWindowShouldClose(window);
-}
-
 vec2_t window_get_size(GLFWwindow* window) {
     unsigned int width, height;
 
@@ -42,4 +44,3 @@ vec2_t window_get_size(GLFWwindow* window) {
 
     return size;
 }
-
