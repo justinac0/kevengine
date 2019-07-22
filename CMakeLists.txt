@@ -27,6 +27,7 @@ target_sources(${PROJECT_NAME}
     src/core/renderer/ogl.c
     src/core/renderer/window.c
     src/core/renderer/renderer.c
+    src/core/renderer/camera.c
     src/core/renderer/entity.c
     src/main.c)
 
