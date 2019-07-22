@@ -28,7 +28,14 @@ int main(void) {
         ogl_quad_generate()
     );
 
-    entity_t e[2] = { entity0, entity1 };
+    entity_t entity2 = entity_create(
+        (vec3_t){ 10.0f, 0.0f, 0.0f },
+        (vec3_t){ 0.0f, 0.0f, 0.0f },
+        (vec3_t){ 1.0f, 1.0f, 1.0f },
+        ogl_quad_generate()
+    );
+
+    entity_t e[3] = { entity0, entity1, entity2 };
 
     GLuint shader = shader_load("bin/shaders/vertex.glsl", "bin/shaders/fragment.glsl");
 

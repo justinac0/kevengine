@@ -3,10 +3,11 @@
 void ogl_setup(void) {
     gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
     // glEnable(GL_DEPTH_TEST);
-    // glDepthFunc(GL_LESS);
 }
 
 void ogl_clear(float r, float g, float b, float a) {
+    glEnable(GL_DEPTH_TEST);
+    glDepthFunc(GL_LESS);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glClearColor(r, g, b, a);
 }
