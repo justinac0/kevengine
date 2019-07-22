@@ -54,17 +54,6 @@ typedef union {
     };
 } mat4_t;
 
-typedef struct {
-    vec3_t position;
-    vec3_t color;
-} vertex_t;
-
-typedef struct {
-    mat4_t model;
-    mat4_t view;
-    mat4_t proj;
-} ubo_t;
-
 static inline void vec3_print(vec3_t a) {
     printf("%f\t%f\t%f\n", a.x, a.y, a.z);
 }

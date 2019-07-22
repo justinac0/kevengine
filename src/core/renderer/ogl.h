@@ -14,7 +14,6 @@
 
 typedef struct mesh_t {
     GLuint          vaoID;
-    // GLuint          vboID;
     unsigned int    iCount;
     mat4_t          tMatrix;
 } mesh_t;
@@ -28,6 +27,7 @@ GLuint ogl_buffer_generate_uint(unsigned int dataSize, GLuint* data, GLenum targ
 void ogl_buffer_delete(unsigned int count, GLuint* buffer);
 
 mesh_t ogl_quad_generate(void);
+mesh_t ogl_cube_generate(void);
 
 GLuint shader_compile(const char* filePath, int type);
 GLuint shader_load(const char *vertexFilePath, const char *fragmentFilePath);

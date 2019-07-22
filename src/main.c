@@ -9,22 +9,22 @@ int main(void) {
     renderer_t renderer = renderer_create(WINDOW_WIDTH, WINDOW_HEIGHT);
 
     camera_t camera = camera_create(
-        (vec3_t){ 0, 0, 3 },
-        (vec3_t){ 0, 0,-1 },
-        (vec3_t){ 0, 1, 0 }
+        (vec3_t){ 0.0f, 0.0f, 3.0f },
+        (vec3_t){ 0.0f, 0.0f,-1.0f },
+        (vec3_t){ 0.0f, 1.0f, 0.0f }
     );
 
     entity_t entity0 = entity_create(
-        (vec3_t){ 0, 0, 0 },
-        (vec3_t){ 0, 0, 0 },
-        (vec3_t){ 1, 1, 1 },
-        ogl_quad_generate()
+        (vec3_t){ 0.0f, 0.0f, 0.0f },
+        (vec3_t){ 0.0f, 0.0f, 0.0f },
+        (vec3_t){ 1.0f, 1.0f, 1.0f },
+        ogl_cube_generate()
     );
 
     entity_t entity1 = entity_create(
-        (vec3_t){ 0, 0, 0 },
-        (vec3_t){ 0, 0, 0 },
-        (vec3_t){ 1, 1, 1 },
+        (vec3_t){ 0.0f, 0.0f, 0.0f },
+        (vec3_t){ 0.0f, 0.0f, 0.0f },
+        (vec3_t){ 1.0f, 1.0f, 1.0f },
         ogl_quad_generate()
     );
 
@@ -35,14 +35,13 @@ int main(void) {
     while (!glfwWindowShouldClose(renderer.window)) {
         window_update(renderer.window);
 
-        e[0].position.x = sin(glfwGetTime());
-        e[1].position.y = sin(glfwGetTime());
+        e[0].position.z = sin(glfwGetTime());
+        e[1].position.y = sin(glfwGetTime()) - 5;
 
         camera_update(&camera);
-        renderer_draw(e, shader);
+        renderer_draw(&camera, e, shader);
 
         glDisableVertexAttribArray(0);
-
     }
 
     renderer_destroy(&renderer);

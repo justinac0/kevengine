@@ -2,6 +2,8 @@
 
 void ogl_setup(void) {
     gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
+    // glEnable(GL_DEPTH_TEST);
+    // glDepthFunc(GL_LESS);
 }
 
 void ogl_clear(float r, float g, float b, float a) {
@@ -54,6 +56,67 @@ mesh_t ogl_quad_generate(void) {
     GLuint indices[] = {
         0, 1, 3,
         1, 2, 3
+    };
+
+    mesh_t mesh;
+
+    mesh.vaoID = ogl_vertex_buffer_generate();
+
+    GLuint vboID = ogl_buffer_generate_float(sizeof(vertices), vertices, GL_ARRAY_BUFFER, GL_STATIC_DRAW);
+    glVertexAttribPointer(0, 3, GL_FLOAT, 0, 0, 0);
+    glEnableVertexAttribArray(0);
+
+    GLuint iboID = ogl_buffer_generate_uint(sizeof(indices), indices, GL_ELEMENT_ARRAY_BUFFER, GL_STATIC_DRAW);
+
+    mesh.iCount = (sizeof(indices) / sizeof(GLuint));
+    mat4_identity(&mesh.tMatrix);
+
+    glBindVertexArray(0);
+
+    return mesh;
+}
+
+mesh_t ogl_cube_generate(void) {
+    GLfloat vertices[] = {
+        -1.0f,  1.0f, -1.0f,
+        -1.0f,  1.0f,  1.0f,
+         1.0f,  1.0f,  1.0f,
+         1.0f,  1.0f, -1.0f,
+        -1.0f,  1.0f,  1.0f,
+        -1.0f, -1.0f,  1.0f,
+        -1.0f, -1.0f, -1.0f,
+        -1.0f,  1.0f, -1.0f,
+         1.0f,  1.0f,  1.0f,
+         1.0f, -1.0f,  1.0f,
+         1.0f, -1.0f, -1.0f,
+         1.0f,  1.0f, -1.0f,
+         1.0f,  1.0f,  1.0f,
+         1.0f, -1.0f,  1.0f,
+        -1.0f, -1.0f,  1.0f,
+        -1.0f,  1.0f,  1.0f,
+         1.0f,  1.0f, -1.0f,
+         1.0f, -1.0f, -1.0f,
+        -1.0f, -1.0f, -1.0f,
+        -1.0f,  1.0f, -1.0f,
+        -1.0f, -1.0f, -1.0f,
+        -1.0f, -1.0f,  1.0f,
+         1.0f, -1.0f,  1.0f,
+         1.0f, -1.0f, -1.0f
+    };
+
+    GLuint indices[] = {
+        0, 1, 2,
+        0, 2, 3,
+        5, 4, 6,
+        6, 4, 7,
+        8, 9, 10,
+        8, 10, 11,
+        13, 12, 14,
+        15, 14, 12,
+        16, 17, 18,
+        16, 18, 19,
+        21, 20, 22,
+        22, 20, 23
     };
 
     mesh_t mesh;
