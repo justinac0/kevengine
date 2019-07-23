@@ -2,12 +2,12 @@
 
 void ogl_setup(void) {
     gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
-    // glEnable(GL_DEPTH_TEST);
+
+    glEnable(GL_DEPTH_TEST);
+    glDepthFunc(GL_LESS);
 }
 
 void ogl_clear(float r, float g, float b, float a) {
-    glEnable(GL_DEPTH_TEST);
-    glDepthFunc(GL_LESS);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glClearColor(r, g, b, a);
 }
@@ -17,7 +17,6 @@ GLuint ogl_vertex_buffer_generate(void) {
 
     glGenVertexArrays(1, &vaoID);
     glBindVertexArray(vaoID);
-    glGenBuffers(1, &vaoID);
 
     return vaoID;
 }
@@ -42,21 +41,28 @@ GLuint ogl_buffer_generate_uint(unsigned int dataSize, GLuint* data, GLenum targ
     return buffer;
 }
 
-void ogl_buffer_delete(unsigned int count, GLuint* buffer) {
-    glDeleteBuffers(count, buffer);
+void ogl_buffer_delete(GLuint* buffer) {
+    glDeleteBuffers(1, buffer);
 }
 
-mesh_t ogl_quad_generate(void) {
+mesh_t ogl_quad_generate(float size, vec3_t color) {
     GLfloat vertices[] = {
-         0.5f,  0.5f, 0.0f,
-         0.5f, -0.5f, 0.0f,
-        -0.5f, -0.5f, 0.0f,
-        -0.5f,  0.5f, 0.0f
+        -1, 0, -1,
+        -1, 0,  1,
+         1, 0, -1,
+         1, 0,  1
+    };
+
+    GLfloat colors[] = {
+        color.r, color.g, color.b,
+        color.r, color.g, color.b,
+        color.r, color.g, color.b,
+        color.r, color.g, color.b
     };
 
     GLuint indices[] = {
-        0, 1, 3,
-        1, 2, 3
+        0, 1, 2,
+        3, 2, 1
     };
 
     mesh_t mesh;
@@ -67,7 +73,101 @@ mesh_t ogl_quad_generate(void) {
     glVertexAttribPointer(0, 3, GL_FLOAT, 0, 0, 0);
     glEnableVertexAttribArray(0);
 
+    GLuint cboID = ogl_buffer_generate_float(sizeof(colors), colors, GL_ARRAY_BUFFER, GL_STATIC_DRAW);
+    glVertexAttribPointer(1, 3, GL_FLOAT, 0, 0, 0);
+    glEnableVertexAttribArray(1);
+
     GLuint iboID = ogl_buffer_generate_uint(sizeof(indices), indices, GL_ELEMENT_ARRAY_BUFFER, GL_STATIC_DRAW);
+
+    glBindVertexArray(0);
+
+    mesh.iCount = (sizeof(indices) / sizeof(GLuint));
+    mat4_identity(&mesh.tMatrix);
+
+    return mesh;
+}
+
+inline void generate_subdivisions(GLfloat* data, unsigned int widthSubdivisionCount, unsigned int heightSubdivisionCount) {
+    if (data == NULL) {
+        exit(0);
+    }
+
+    GLfloat vertices[] = {
+        -1, 0, -1,
+        -1, 0,  1,
+         1, 0, -1,
+         1, 0,  1
+    };
+
+    vec3_t vector0 = (vec3_t) {vertices[0], vertices[1], vertices[2]};
+    vec3_t vector1 = (vec3_t) {vertices[3], vertices[4], vertices[5]};
+    vec3_t vector2 = (vec3_t) {vertices[6], vertices[7], vertices[8]};
+    vec3_t vector3 = (vec3_t) {vertices[9], vertices[10], vertices[11]};
+
+    vec3_t vector0_1 = vec3_sub(vector1, vector0);
+    vec3_t vector0_2 = vec3_sub(vector2, vector0);
+
+    for (float vec1 = 0; vec1 < widthSubdivisionCount; vec1++) {
+        for (float vec2 = 0; vec2 < heightSubdivisionCount; vec2++) {
+            vec3_t p1 = vec3_add(vector0, vec3_mul_scalar(vector0_1, vec1));
+            vec3_t p2 = vec3_add(vector0, vec3_mul_scalar(vector0_1, vec2));
+            vec3_t p3 = vec3_add(vector0, vec3_mul_scalar(vector0_1, vec1+1));
+            vec3_t p4 = vec3_add(vector0, vec3_mul_scalar(vector0_1, vec2+1));
+        }
+    }
+
+    // [COPY]
+    // newVerts = data
+}
+
+inline void gen_verts(GLfloat* data, float size) {
+    GLfloat vertices[] = { 
+        -size, 0.0f, -size,
+        -size, 0.0f,  size,
+         size, 0.0f, -size,
+         size, 0.0f,  size
+    };
+
+    // unsigned int temp[] = {
+    //     0, 1, 2,
+    //     3, 2, 1
+    // };
+
+    
+}
+
+mesh_t ogl_triangle_generate(float size) {
+    GLfloat vertices[] = {
+        -size, -size, 0.0f,
+         size, -size, 0.0f,
+         0.0f,  size, 0.0f
+    };
+
+    GLfloat colors[] = {
+        1, 0, 0,
+        0, 1, 0,
+        0, 0, 1,
+    };
+
+    GLuint indices[] = {
+        0, 1, 2
+    };
+
+    mesh_t mesh;
+
+    mesh.vaoID = ogl_vertex_buffer_generate();
+
+    GLuint vboID = ogl_buffer_generate_float(sizeof(vertices), vertices, GL_ARRAY_BUFFER, GL_STATIC_DRAW);
+    glVertexAttribPointer(0, 3, GL_FLOAT, 0, 0, 0);
+    glEnableVertexAttribArray(0);
+
+    GLuint cboID = ogl_buffer_generate_float(sizeof(colors), colors, GL_ARRAY_BUFFER, GL_STATIC_DRAW);
+    glVertexAttribPointer(1, 3, GL_FLOAT, 0, 0, 0);
+    glEnableVertexAttribArray(1);
+
+    GLuint iboID = ogl_buffer_generate_uint(sizeof(indices), indices, GL_ELEMENT_ARRAY_BUFFER, GL_STATIC_DRAW);
+
+    printf("%d\n", mesh.vaoID);
 
     mesh.iCount = (sizeof(indices) / sizeof(GLuint));
     mat4_identity(&mesh.tMatrix);
@@ -77,32 +177,69 @@ mesh_t ogl_quad_generate(void) {
     return mesh;
 }
 
-mesh_t ogl_cube_generate(void) {
+mesh_t ogl_cube_generate(float size) {
     GLfloat vertices[] = {
         -1.0f,  1.0f, -1.0f,
         -1.0f,  1.0f,  1.0f,
          1.0f,  1.0f,  1.0f,
          1.0f,  1.0f, -1.0f,
+
         -1.0f,  1.0f,  1.0f,
         -1.0f, -1.0f,  1.0f,
         -1.0f, -1.0f, -1.0f,
         -1.0f,  1.0f, -1.0f,
+
          1.0f,  1.0f,  1.0f,
          1.0f, -1.0f,  1.0f,
          1.0f, -1.0f, -1.0f,
          1.0f,  1.0f, -1.0f,
+
          1.0f,  1.0f,  1.0f,
          1.0f, -1.0f,  1.0f,
         -1.0f, -1.0f,  1.0f,
         -1.0f,  1.0f,  1.0f,
+
          1.0f,  1.0f, -1.0f,
          1.0f, -1.0f, -1.0f,
         -1.0f, -1.0f, -1.0f,
         -1.0f,  1.0f, -1.0f,
+
         -1.0f, -1.0f, -1.0f,
         -1.0f, -1.0f,  1.0f,
          1.0f, -1.0f,  1.0f,
          1.0f, -1.0f, -1.0f
+    };
+
+    GLfloat colors[] = {
+        1, 0, 1,
+        1, 0, 1,
+        1, 0, 1,
+        1, 0, 1,
+
+        1, 0, 0,
+        1, 0, 0,
+        1, 0, 0,
+        1, 0, 0,
+
+        0, 1, 0,
+        0, 1, 0,
+        0, 1, 0,
+        0, 1, 0,
+
+        0, 0, 1,
+        0, 0, 1,
+        0, 0, 1,
+        0, 0, 1,
+
+        1, 1, 1,
+        1, 1, 1,
+        1, 1, 1,
+        1, 1, 1,
+
+        0, 1, 1,
+        0, 1, 1,
+        0, 1, 1,
+        0, 1, 1,
     };
 
     GLuint indices[] = {
@@ -128,7 +265,13 @@ mesh_t ogl_cube_generate(void) {
     glVertexAttribPointer(0, 3, GL_FLOAT, 0, 0, 0);
     glEnableVertexAttribArray(0);
 
+    GLuint cboID = ogl_buffer_generate_float(sizeof(colors), colors, GL_ARRAY_BUFFER, GL_STATIC_DRAW);
+    glVertexAttribPointer(1, 3, GL_FLOAT, 0, 0, 0);
+    glEnableVertexAttribArray(1);
+
     GLuint iboID = ogl_buffer_generate_uint(sizeof(indices), indices, GL_ELEMENT_ARRAY_BUFFER, GL_STATIC_DRAW);
+
+    printf("%d\n", mesh.vaoID);
 
     mesh.iCount = (sizeof(indices) / sizeof(GLuint));
     mat4_identity(&mesh.tMatrix);
@@ -204,5 +347,3 @@ GLuint shader_load(const char *vertexFilePath, const char *fragmentFilePath) {
 
     return programID;
 }
-
-// 475 -250

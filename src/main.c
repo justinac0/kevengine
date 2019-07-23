@@ -14,41 +14,44 @@ int main(void) {
         (vec3_t){ 0.0f, 1.0f, 0.0f }
     );
 
-    entity_t entity0 = entity_create(
-        (vec3_t){ 0.0f, 0.0f, 0.0f },
-        (vec3_t){ 0.0f, 0.0f, 0.0f },
-        (vec3_t){ 1.0f, 1.0f, 1.0f },
-        ogl_cube_generate()
-    );
+    mesh_t m1 = ogl_quad_generate(1.0f, (vec3_t){ 0, 1, 1 });
+    mesh_t m2 = ogl_triangle_generate(1.0f);
+    mesh_t m3 = ogl_cube_generate(1.0f);
 
-    entity_t entity1 = entity_create(
-        (vec3_t){ 0.0f, 0.0f, 0.0f },
-        (vec3_t){ 0.0f, 0.0f, 0.0f },
-        (vec3_t){ 1.0f, 1.0f, 1.0f },
-        ogl_quad_generate()
-    );
+    mat4_translate(&m2.tMatrix, (vec3_t){ 2.5f, 0, 0 });
+    mat4_translate(&m3.tMatrix, (vec3_t){ 2.5f, 2.5f, 0 });
 
-    entity_t entity2 = entity_create(
-        (vec3_t){ 10.0f, 0.0f, 0.0f },
-        (vec3_t){ 0.0f, 0.0f, 0.0f },
-        (vec3_t){ 1.0f, 1.0f, 1.0f },
-        ogl_quad_generate()
-    );
-
-    entity_t e[3] = { entity0, entity1, entity2 };
+    mesh_t mm[3] = {m1, m2, m3};
 
     GLuint shader = shader_load("bin/shaders/vertex.glsl", "bin/shaders/fragment.glsl");
 
-    while (!glfwWindowShouldClose(renderer.window)) {
-        window_update(renderer.window);
+    mat4_t perspective;
+    mat4_t mvp;
 
-        e[0].position.z = sin(glfwGetTime());
-        e[1].position.y = sin(glfwGetTime()) - 5;
+    mat4_projection(&perspective, 90, 4/3, -1, 1000);
+
+    mat4_t a;
+    mat4_identity(&a);
+    while (!glfwWindowShouldClose(renderer.window)) {
+        ogl_clear(0.1f, 0.1f, 0.1f, 1.0f);
+
+        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
         camera_update(&camera);
-        renderer_draw(&camera, e, shader);
 
-        glDisableVertexAttribArray(0);
+        glUseProgram(shader);
+        for (int i = 0; i < 3; i++) {
+            glUniformMatrix4fv(glGetUniformLocation(shader, "mvp"), 1, GL_FALSE, &mvp.m00);
+
+            mat4_mul(&mvp, perspective, camera.vMatrix);
+            mat4_mul(&mvp, mvp, mm[i].tMatrix);
+
+            glBindVertexArray(mm[i].vaoID);
+
+            renderer_draw(mm[i].vaoID, mm[i].iCount);
+        }
+
+        window_update(renderer.window);
     }
 
     renderer_destroy(&renderer);

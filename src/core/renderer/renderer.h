@@ -7,12 +7,12 @@
 #include "camera.h"
 
 typedef struct renderer_t {
-    GLFWwindow* window; // glfw specific window.
+    GLFWwindow* window;
 } renderer_t;
 
 renderer_t renderer_create(unsigned int width, unsigned int height);
 void renderer_destroy(renderer_t* renderer);
 
-void renderer_draw(camera_t* camera, entity_t* e, GLuint shaderProgramID);
+void renderer_draw(GLuint vaoID, GLuint indexCount);
 
 #endif // RENDERER_H

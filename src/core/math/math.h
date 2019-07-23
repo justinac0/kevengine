@@ -167,7 +167,7 @@ static inline void mat4_orthographic(mat4_t *dest, float left, float right, floa
 static inline vec3_t vec3_normalize(vec3_t a) {
     float len = sqrt((a.x * a.x) + (a.y * a.y) + (a.z * a.z));
 
-    vec3_t temp = {};
+    vec3_t temp;
     temp.x = (a.x / len);
     temp.y = (a.y / len);
     temp.z = (a.z / len);
@@ -176,7 +176,7 @@ static inline vec3_t vec3_normalize(vec3_t a) {
 }
 
 static inline vec3_t vec3_cross(vec3_t a, vec3_t b) {
-    vec3_t temp = {};
+    vec3_t temp;
     temp.x = a.y * b.z - a.z * b.y;
     temp.y = a.z * b.x - a.x * b.z;
     temp.z = a.x * b.y - a.y * b.x;
@@ -185,7 +185,7 @@ static inline vec3_t vec3_cross(vec3_t a, vec3_t b) {
 }
 
 static inline vec3_t vec3_sub(vec3_t a, vec3_t b) {
-    vec3_t temp = {};
+    vec3_t temp;
     temp.x = a.x - b.x;
     temp.y = a.y - b.y;
     temp.z = a.z - b.z;
@@ -194,7 +194,7 @@ static inline vec3_t vec3_sub(vec3_t a, vec3_t b) {
 }
 
 static inline vec3_t vec3_add(vec3_t a, vec3_t b) {
-    vec3_t temp = {};
+    vec3_t temp;
     temp.x = a.x + b.x;
     temp.y = a.y + b.y;
     temp.z = a.z + b.z;
@@ -203,7 +203,7 @@ static inline vec3_t vec3_add(vec3_t a, vec3_t b) {
 }
 
 static inline vec3_t vec3_mul_scalar(vec3_t a, float b) {
-    vec3_t temp = {};
+    vec3_t temp;
     temp.x = a.x * b;
     temp.y = a.y * b;
     temp.z = a.z * b;

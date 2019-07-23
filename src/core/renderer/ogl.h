@@ -24,10 +24,11 @@ void ogl_clear(float r, float g, float b, float a);
 GLuint ogl_vertex_buffer_generate(void);
 GLuint ogl_buffer_generate_float(unsigned int dataSize, GLfloat* data, GLenum target, GLenum usage);
 GLuint ogl_buffer_generate_uint(unsigned int dataSize, GLuint* data, GLenum target, GLenum usage);
-void ogl_buffer_delete(unsigned int count, GLuint* buffer);
+void ogl_buffer_delete(GLuint* buffer);
 
-mesh_t ogl_quad_generate(void);
-mesh_t ogl_cube_generate(void);
+mesh_t ogl_quad_generate(float size, vec3_t color);
+mesh_t ogl_triangle_generate(float size);
+mesh_t ogl_cube_generate(float size);
 
 GLuint shader_compile(const char* filePath, int type);
 GLuint shader_load(const char *vertexFilePath, const char *fragmentFilePath);
