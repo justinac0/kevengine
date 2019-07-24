@@ -1,3 +1,4 @@
+#include "core/util/list.h"
 #include "core/renderer/renderer.h"
 #include "core/renderer/camera.h"
 #include "core/renderer/entity.h"
@@ -7,6 +8,8 @@
 
 int main(void) {
     renderer_t renderer = renderer_create(WINDOW_WIDTH, WINDOW_HEIGHT);
+    list_fixed_t integers = list_fixed_create(sizeof(int), 10);
+    list_fixed_free(&integers);
 
     camera_t camera = camera_create(
         (vec3_t){ 0.0f, 0.0f, 3.0f },
@@ -35,7 +38,7 @@ int main(void) {
     while (!glfwWindowShouldClose(renderer.window)) {
         ogl_clear(0.1f, 0.1f, 0.1f, 1.0f);
 
-        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+        // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
         camera_update(&camera);
 
