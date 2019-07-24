@@ -7,9 +7,19 @@
 #define WINDOW_HEIGHT 600
 
 int main(void) {
-    renderer_t renderer = renderer_create(WINDOW_WIDTH, WINDOW_HEIGHT);
-    list_fixed_t integers = list_fixed_create(sizeof(int), 10);
+    list_fixed_t integers;
+    list_fixed_create(&integers, sizeof(int*), 10);
+    for (int i = 0; i < integers.length; i++) {
+        list_fixed_set(&integers, i, i);
+    }
+    
+    for (int i = 0; i < integers.length; i++) {
+        printf("%d\n", integers.data[i]);
+    }
+ 
     list_fixed_free(&integers);
+
+    renderer_t renderer = renderer_create(WINDOW_WIDTH, WINDOW_HEIGHT);
 
     camera_t camera = camera_create(
         (vec3_t){ 0.0f, 0.0f, 3.0f },
