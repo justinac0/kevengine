@@ -14,5 +14,6 @@ void renderer_destroy(renderer_t* renderer) {
 }
 
 void renderer_draw(GLuint vaoID, GLuint indexCount) {
+    glBindVertexArray(vaoID);
     glDrawElements(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, 0);
 }

@@ -20,6 +20,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "../bin")
 add_executable(${PROJECT_NAME})
 target_include_directories(${PROJECT_NAME} PUBLIC ${DEPS_DIR}/stb STATIC)
 target_include_directories(${PROJECT_NAME} PUBLIC ${DEPS_DIR}/glad STATIC)
+target_include_directories(${PROJECT_NAME} PUBLIC ${DEPS_DIR}/cglm STATIC)
 
 target_sources(${PROJECT_NAME}
   PRIVATE

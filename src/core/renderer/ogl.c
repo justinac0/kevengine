@@ -45,19 +45,19 @@ void ogl_buffer_delete(GLuint* buffer) {
     glDeleteBuffers(1, buffer);
 }
 
-mesh_t ogl_quad_generate(float size, vec3_t color) {
+mesh_t ogl_quad_generate(float size, vec3 color) {
     GLfloat vertices[] = {
-        -1, 0, -1,
-        -1, 0,  1,
-         1, 0, -1,
-         1, 0,  1
+        -size, 0, -size,
+        -size, 0,  size,
+         size, 0, -size,
+         size, 0,  size
     };
 
     GLfloat colors[] = {
-        color.r, color.g, color.b,
-        color.r, color.g, color.b,
-        color.r, color.g, color.b,
-        color.r, color.g, color.b
+        color[0], color[1], color[2],
+        color[0], color[1], color[2],
+        color[0], color[1], color[2],
+        color[0], color[1], color[2]
     };
 
     GLuint indices[] = {
@@ -82,7 +82,7 @@ mesh_t ogl_quad_generate(float size, vec3_t color) {
     glBindVertexArray(0);
 
     mesh.iCount = (sizeof(indices) / sizeof(GLuint));
-    mat4_identity(&mesh.tMatrix);
+    glm_mat4_identity(mesh.modelMatrix);
 
     return mesh;
 }
@@ -168,7 +168,7 @@ mesh_t ogl_triangle_generate(float size) {
     GLuint iboID = ogl_buffer_generate_uint(sizeof(indices), indices, GL_ELEMENT_ARRAY_BUFFER, GL_STATIC_DRAW);
 
     mesh.iCount = (sizeof(indices) / sizeof(GLuint));
-    mat4_identity(&mesh.tMatrix);
+    glm_mat4_identity(mesh.modelMatrix);
 
     glBindVertexArray(0);
 
@@ -177,35 +177,35 @@ mesh_t ogl_triangle_generate(float size) {
 
 mesh_t ogl_cube_generate(float size) {
     GLfloat vertices[] = {
-        -1.0f,  1.0f, -1.0f,
-        -1.0f,  1.0f,  1.0f,
-         1.0f,  1.0f,  1.0f,
-         1.0f,  1.0f, -1.0f,
+        -size,  size, -size,
+        -size,  size,  size,
+         size,  size,  size,
+         size,  size, -size,
 
-        -1.0f,  1.0f,  1.0f,
-        -1.0f, -1.0f,  1.0f,
-        -1.0f, -1.0f, -1.0f,
-        -1.0f,  1.0f, -1.0f,
+        -size,  size,  size,
+        -size, -size,  size,
+        -size, -size, -size,
+        -size,  size, -size,
 
-         1.0f,  1.0f,  1.0f,
-         1.0f, -1.0f,  1.0f,
-         1.0f, -1.0f, -1.0f,
-         1.0f,  1.0f, -1.0f,
+         size,  size,  size,
+         size, -size,  size,
+         size, -size, -size,
+         size,  size, -size,
 
-         1.0f,  1.0f,  1.0f,
-         1.0f, -1.0f,  1.0f,
-        -1.0f, -1.0f,  1.0f,
-        -1.0f,  1.0f,  1.0f,
+         size,  size,  size,
+         size, -size,  size,
+        -size, -size,  size,
+        -size,  size,  size,
 
-         1.0f,  1.0f, -1.0f,
-         1.0f, -1.0f, -1.0f,
-        -1.0f, -1.0f, -1.0f,
-        -1.0f,  1.0f, -1.0f,
+         size,  size, -size,
+         size, -size, -size,
+        -size, -size, -size,
+        -size,  size, -size,
 
-        -1.0f, -1.0f, -1.0f,
-        -1.0f, -1.0f,  1.0f,
-         1.0f, -1.0f,  1.0f,
-         1.0f, -1.0f, -1.0f
+        -size, -size, -size,
+        -size, -size,  size,
+         size, -size,  size,
+         size, -size, -size
     };
 
     GLfloat colors[] = {
@@ -270,7 +270,7 @@ mesh_t ogl_cube_generate(float size) {
     GLuint iboID = ogl_buffer_generate_uint(sizeof(indices), indices, GL_ELEMENT_ARRAY_BUFFER, GL_STATIC_DRAW);
 
     mesh.iCount = (sizeof(indices) / sizeof(GLuint));
-    mat4_identity(&mesh.tMatrix);
+    glm_mat4_identity(mesh.modelMatrix);
 
     glBindVertexArray(0);
 

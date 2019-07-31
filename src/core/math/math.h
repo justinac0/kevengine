@@ -125,7 +125,7 @@ static inline void mat4_rotate(mat4_t *dest, float angle) {
 }
 
 static inline void mat4_projection(mat4_t *dest, float fov, float aspect, float znear, float zfar) {
-    const double range = 1.0f / tanf(fov / 2.0f);
+    float range = 1.0f / tanf(fov / 2.0f);
 
     dest->m[0][0] = range / aspect;
     dest->m[0][1] = 0.0f;

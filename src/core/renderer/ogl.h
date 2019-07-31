@@ -10,12 +10,12 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
-#include "../math/math.h"
+#include "../../lib/cglm/include/cglm/cglm.h"
 
 typedef struct mesh_t {
     GLuint          vaoID;
     unsigned int    iCount;
-    mat4_t          tMatrix;
+    mat4            modelMatrix;
 } mesh_t;
 
 void ogl_setup(void);
@@ -26,7 +26,7 @@ GLuint ogl_buffer_generate_float(unsigned int dataSize, GLfloat* data, GLenum ta
 GLuint ogl_buffer_generate_uint(unsigned int dataSize, GLuint* data, GLenum target, GLenum usage);
 void ogl_buffer_delete(GLuint* buffer);
 
-mesh_t ogl_quad_generate(float size, vec3_t color);
+mesh_t ogl_quad_generate(float size, vec3 color);
 mesh_t ogl_triangle_generate(float size);
 mesh_t ogl_cube_generate(float size);
 
