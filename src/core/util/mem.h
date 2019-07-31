@@ -1,3 +1,5 @@
+// String manipulation that is nice please
+
 #ifndef MEM_H
 #define MEM_H
 
@@ -11,16 +13,6 @@ void mem_debug_free(void* ptr, int line, const char* file);
     #define malloc(size)    mem_debug_malloc(size, __LINE__, __FILE__);
     #define free(ptr)       mem_debug_free(ptr, __LINE__, __FILE__);
 #endif // MEM_DEBUG
-
-typedef struct mem_list_t {
-    unsigned int    length;
-    unsigned int    dataTypeSize;
-    void*           data;
-} mem_list_t;
-
-mem_list_t mem_list_alloc(unsigned int dataTypeSize, unsigned int length);
-void mem_list_free(mem_list_t* list);
-void mem_list_set(mem_list_t* list, void* item, unsigned int index);
 
 typedef struct mem_block_t {
     unsigned int size;

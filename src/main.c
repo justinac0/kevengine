@@ -4,25 +4,22 @@
 #include "core/renderer/camera.h"
 #include "core/renderer/entity.h"
 
+#include "../lib/lua-5.3.5/lua.h"
+#include "../lib/lua-5.3.5/lauxlib.h"
+#include "../lib/lua-5.3.5/lualib.h"
+
 #include "../lib/cglm/include/cglm/cglm.h"
 
 #define WINDOW_WIDTH  800
 #define WINDOW_HEIGHT 600
 
 int main(void) {
-    int* a = malloc(sizeof(int) * 5);
-
-    for (int i = 0; i < 5; i++) {
-        a[i] = i + 1;
-    }
-
-    for (int i = 0; i < 5; i++) {
-        printf("%d\n", a[i]);
-    }
-
-    free(a);
-
     renderer_t renderer = renderer_create(WINDOW_WIDTH, WINDOW_HEIGHT);
+
+    lua_State* L = luaL_newstate();
+    luaL_openlibs(L);
+    luaL_dofile(L, "bin/scripts/main.lua");
+    lua_close(L);
 
     camera_t camera = camera_create(
         (vec3){ 0.0f, 0.0f, 3.0f },
@@ -32,7 +29,7 @@ int main(void) {
 
     GLuint shader = shader_load("bin/shaders/vertex.glsl", "bin/shaders/fragment.glsl");
     mesh_t m[2] = {
-        ogl_cube_generate(1),
+        ogl_triangle_generate(1),
         ogl_cube_generate(2)
     };
 
@@ -45,6 +42,8 @@ int main(void) {
     while (!glfwWindowShouldClose(renderer.window)) {
         window_update(renderer.window);
         ogl_clear(0.1f, 0.1f, 0.1f, 1.0f);
+
+        glm_rotate(m[1].modelMatrix, 0.01f, (vec3){0, 0.01f, 0});
 
         camera_update(&camera);
 
