@@ -1,4 +1,5 @@
-#include "core/util/list.h"
+#define MEM_DEBUG
+#include "core/util/mem.h"
 #include "core/renderer/renderer.h"
 #include "core/renderer/camera.h"
 #include "core/renderer/entity.h"
@@ -9,6 +10,18 @@
 #define WINDOW_HEIGHT 600
 
 int main(void) {
+    int* a = malloc(sizeof(int) * 5);
+
+    for (int i = 0; i < 5; i++) {
+        a[i] = i + 1;
+    }
+
+    for (int i = 0; i < 5; i++) {
+        printf("%d\n", a[i]);
+    }
+
+    free(a);
+
     renderer_t renderer = renderer_create(WINDOW_WIDTH, WINDOW_HEIGHT);
 
     camera_t camera = camera_create(
@@ -32,6 +45,8 @@ int main(void) {
     while (!glfwWindowShouldClose(renderer.window)) {
         window_update(renderer.window);
         ogl_clear(0.1f, 0.1f, 0.1f, 1.0f);
+
+        camera_update(&camera);
 
         glUseProgram(shader);
         for (int i = 0; i < 2; i++) {

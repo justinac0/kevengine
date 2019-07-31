@@ -25,7 +25,7 @@ target_include_directories(${PROJECT_NAME} PUBLIC ${DEPS_DIR}/cglm STATIC)
 target_sources(${PROJECT_NAME}
   PRIVATE
     lib/glad/glad/src/glad.c
-    src/core/util/list.c
+    src/core/util/mem.c
     src/core/renderer/ogl.c
     src/core/renderer/window.c
     src/core/renderer/renderer.c
