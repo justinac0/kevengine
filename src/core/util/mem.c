@@ -18,3 +18,22 @@ void mem_debug_free(void* ptr, int line, const char* file) {
 
     printf("::FREE::(%s)->[Line %d]\n", file, line);
 }
+
+void mem_pool_create(mem_pool_t* pool, unsigned int size) {
+    pool->length    = 0;
+    pool->size      = size;
+    pool->data      = malloc(size);
+
+    MEM_CHECK_ALLOC(pool->data);
+
+    printf("Memory pool was created! (pool: %p | size: %d bytes)\n", pool->data, pool->size);
+}
+
+void mem_pool_destroy(mem_pool_t* pool) {
+    pool->length    = 0;
+    pool->size      = 0;
+    free(pool->data);
+    // pool->data = NULL;
+
+    printf("Memory pool destroyed! (pool: %p | size: %d bytes)\n", pool->data, pool->size);    
+}

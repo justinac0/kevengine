@@ -14,12 +14,12 @@
 #define WINDOW_HEIGHT 600
 
 int main(void) {
-    renderer_t renderer = renderer_create(WINDOW_WIDTH, WINDOW_HEIGHT);
+    mem_pool_t pool;
+    mem_pool_create(&pool, 10);
 
-    lua_State* L = luaL_newstate();
-    luaL_openlibs(L);
-    luaL_dofile(L, "bin/scripts/main.lua");
-    lua_close(L);
+    mem_pool_destroy(&pool);
+
+    renderer_t renderer = renderer_create(WINDOW_WIDTH, WINDOW_HEIGHT);
 
     camera_t camera = camera_create(
         (vec3){ 0.0f, 0.0f, 3.0f },
@@ -41,11 +41,11 @@ int main(void) {
 
     while (!glfwWindowShouldClose(renderer.window)) {
         window_update(renderer.window);
-        ogl_clear(0.1f, 0.1f, 0.1f, 1.0f);
 
         glm_rotate(m[1].modelMatrix, 0.01f, (vec3){0, 0.01f, 0});
-
         camera_update(&camera);
+
+        ogl_clear(0.1f, 0.1f, 0.1f, 1.0f);
 
         glUseProgram(shader);
         for (int i = 0; i < 2; i++) {

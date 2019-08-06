@@ -35,12 +35,3 @@ void window_update(GLFWwindow* window) {
     glfwPollEvents();
 }
 
-vec2_t window_get_size(GLFWwindow* window) {
-    unsigned int width, height;
-
-    glfwGetWindowSize(window, &width, &height);
-    
-    vec2_t size = { width, height };
-
-    return size;
-}

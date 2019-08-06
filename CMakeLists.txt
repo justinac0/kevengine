@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.14)
+cmake_minimum_required(VERSION 3.10)
 project(kevin LANGUAGES C VERSION 0.0)
 
 list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/lib/cmake-git/)
@@ -64,6 +64,7 @@ target_sources(${PROJECT_NAME}
     ${LUA_SRC}
     lib/glad/glad/src/glad.c
     src/core/util/mem.c
+    src/core/scene.c
     src/core/renderer/ogl.c
     src/core/renderer/window.c
     src/core/renderer/renderer.c
