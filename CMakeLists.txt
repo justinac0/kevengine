@@ -64,6 +64,7 @@ target_sources(${PROJECT_NAME}
     ${LUA_SRC}
     lib/glad/glad/src/glad.c
     src/core/util/mem.c
+    src/core/util/str.c
     src/core/scene.c
     src/core/renderer/ogl.c
     src/core/renderer/window.c

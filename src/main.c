@@ -13,13 +13,13 @@
 #define WINDOW_WIDTH  800
 #define WINDOW_HEIGHT 600
 
+#include "core/util/str.h"
+
 int main(void) {
-    mem_pool_t pool;
-    mem_pool_create(&pool, 10);
-
-    mem_pool_destroy(&pool);
-
     renderer_t renderer = renderer_create(WINDOW_WIDTH, WINDOW_HEIGHT);
+
+    str_t a = str_new("012345");
+    str_sub_string(a, 0, 1);
 
     camera_t camera = camera_create(
         (vec3){ 0.0f, 0.0f, 3.0f },

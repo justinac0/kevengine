@@ -33,7 +33,6 @@ void mem_pool_destroy(mem_pool_t* pool) {
     pool->length    = 0;
     pool->size      = 0;
     free(pool->data);
-    // pool->data = NULL;
 
     printf("Memory pool destroyed! (pool: %p | size: %d bytes)\n", pool->data, pool->size);    
 }
