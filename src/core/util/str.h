@@ -11,9 +11,8 @@ typedef struct str_t {
     char* data;
 } str_t;
 
-str_t str_new(char* src);
+str_t str_new(char src[]);
 unsigned int str_length(char* src);
-void str_copy(char* dest, char* src);
-void str_sub_string(str_t src, unsigned int start, unsigned int end);
+void str_sub_string(str_t* src, unsigned int start, unsigned int end);
 
 #endif // STR_H

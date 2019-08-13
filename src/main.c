@@ -19,7 +19,10 @@ int main(void) {
     renderer_t renderer = renderer_create(WINDOW_WIDTH, WINDOW_HEIGHT);
 
     str_t a = str_new("012345");
-    str_sub_string(a, 0, 1);
+    str_sub_string(&a, 2, 3);
+
+    printf("%d\n", a.length);
+    printf("%s\n", a.data);
 
     camera_t camera = camera_create(
         (vec3){ 0.0f, 0.0f, 3.0f },
