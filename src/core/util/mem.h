@@ -17,10 +17,17 @@ void mem_debug_free(void* ptr, int line, const char* file);
     #define free(ptr)       mem_debug_free(ptr, __LINE__, __FILE__);
 #endif // MEM_DEBUG
 
+typedef struct mem_block_t {
+    unsigned int    size;
+    void*           data;
+} mem_block_t;
+
+mem_block_t mem_block_new(unsigned int size, void* data);
+
 typedef struct mem_pool_t {
-    unsigned int length;
-    unsigned int size;
-    void** data;
+    unsigned int    length;
+    unsigned int    size;
+    mem_block_t*    data;
 } mem_pool_t;
 
 void mem_pool_create(mem_pool_t* pool, unsigned int size);

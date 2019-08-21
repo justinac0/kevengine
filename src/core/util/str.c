@@ -8,9 +8,9 @@ str_t str_new(char src[]) {
     return str;
 }
 
-void str_del(str_t* str) {
-    str->length = 0;
-    free(str->data);
+void str_del(str_t* src) {
+    src->length = 0;
+    free(src->data);
 }
 
 void str_print(str_t* str) {
@@ -28,25 +28,25 @@ unsigned int str_length(char* src) {
     return length;
 }
 
-void str_sub_string(str_t* src, unsigned int start, unsigned int end) {
-    if (src->length > 0 && end <= src->length && start <= end) {
+void str_sub_string(str_t* dest, unsigned int start, unsigned int end) {
+    if (dest->length > 0 && end <= dest->length && start <= end) {
         unsigned int newLength = (end - start) + 1;
 
-        // (note: justin) - a way to do this with out malloc needs to be figured out.
         char* newString;
-
         if ((newString = (char*)malloc(sizeof(char) * newLength + 1)) != NULL) {
             for (int i = 0; i < newLength; i++) {
-                newString[i] = src->data[start+i];
+                newString[i] = dest->data[start+i];
             }
             newString[newLength] = '\0';
         }
 
-        src->data = &newString[0];
-        src->length  = str_length(src->data);
+        free(dest->data);
+        dest->data = &newString[0];
+        dest->length  = str_length(dest->data);
     }
 }
 
-void str_concat(str_t* dest, str_t* src) {
-
+void str_concat(str_t* dest, char src[]) {
+    int len = 0;
+    str_length(src);
 }

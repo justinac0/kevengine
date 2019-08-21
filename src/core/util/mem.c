@@ -19,6 +19,14 @@ void mem_debug_free(void* ptr, int line, const char* file) {
     printf("::FREE::(%s)->[Line %d]\n", file, line);
 }
 
+mem_block_t mem_block_new(unsigned int size, void* data) {
+    mem_block_t block;
+    block.size = size;
+    block.data = data;
+
+    return block;
+}
+
 void mem_pool_create(mem_pool_t* pool, unsigned int size) {
     pool->length    = 0;
     pool->size      = size;
@@ -34,5 +42,5 @@ void mem_pool_destroy(mem_pool_t* pool) {
     pool->size      = 0;
     free(pool->data);
 
-    printf("Memory pool destroyed! (pool: %p | size: %d bytes)\n", pool->data, pool->size);    
+    printf("Memory pool destroyed! (pool: %p | size: %d bytes)\n", pool->data, pool->size);
 }

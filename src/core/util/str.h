@@ -12,10 +12,10 @@ typedef struct str_t {
 } str_t;
 
 str_t str_new(char src[]);
-void str_del(str_t* str);
+void str_del(str_t* src);
 void str_print(str_t* str);
 unsigned int str_length(char* src);
-void str_sub_string(str_t* src, unsigned int start, unsigned int end);
-void str_concat(str_t* dest, str_t* src);
+void str_sub_string(str_t* dest, unsigned int start, unsigned int end);
+void str_concat(str_t* dest, char src[]);
 
 #endif // STR_H

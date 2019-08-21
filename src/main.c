@@ -18,11 +18,18 @@
 int main(void) {
     renderer_t renderer = renderer_create(WINDOW_WIDTH, WINDOW_HEIGHT);
 
-    str_t a = str_new("012345");
+    str_t a = str_new("CUTEEEEEE");
+
     str_print(&a);
     str_sub_string(&a, 0, 3);
     str_print(&a);
+    str_sub_string(&a, 0, 0);
+    str_print(&a);
     str_del(&a);
+
+    mem_pool_t pool;
+    mem_pool_create(&pool, sizeof(int) * 10);
+    mem_pool_destroy(&pool);
 
     camera_t camera = camera_create(
         (vec3){ 0.0f, 0.0f, 3.0f },
