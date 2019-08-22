@@ -28,7 +28,7 @@ mem_block_t mem_block_new(unsigned int size, void* data) {
 }
 
 void mem_pool_create(mem_pool_t* pool, unsigned int size) {
-    pool->length    = 0;
+    pool->length    = 1;
     pool->size      = size;
     pool->data      = malloc(size);
 
@@ -41,6 +41,13 @@ void mem_pool_destroy(mem_pool_t* pool) {
     pool->length    = 0;
     pool->size      = 0;
     free(pool->data);
+    pool->data = NULL;
 
     printf("Memory pool destroyed! (pool: %p | size: %d bytes)\n", pool->data, pool->size);
+}
+
+void mem_pool_block_add(mem_pool_t* pool, mem_block_t block) {
+    pool->data[pool->length-1].data = block.data;
+    pool->data[pool->length-1].size = block.size;
+    pool->length++;
 }

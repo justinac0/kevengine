@@ -40,7 +40,6 @@ void str_sub_string(str_t* dest, unsigned int start, unsigned int end) {
             newString[newLength] = '\0';
         }
 
-        free(dest->data);
         dest->data = &newString[0];
         dest->length  = str_length(dest->data);
     }
