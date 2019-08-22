@@ -4,9 +4,9 @@
 #include "core/renderer/camera.h"
 #include "core/renderer/entity.h"
 
-#include "../lib/lua-5.3.5/lua.h"
-#include "../lib/lua-5.3.5/lauxlib.h"
-#include "../lib/lua-5.3.5/lualib.h"
+// #include "../lib/lua-5.3.5/lua.h"
+// #include "../lib/lua-5.3.5/lauxlib.h"
+// #include "../lib/lua-5.3.5/lualib.h"
 
 #include "../lib/cglm/include/cglm/cglm.h"
 
@@ -15,34 +15,27 @@
 
 #include "core/util/str.h"
 
-typedef struct vec3_t {
-    float x,y,z;
-} vec3_t;
-
 int main(void) {
     renderer_t renderer = renderer_create(WINDOW_WIDTH, WINDOW_HEIGHT);
 
-    // str_t a = str_new("CUTEEEEEE");
-
-    // str_print(&a);
-    // str_sub_string(&a, 0, 3);
-    // str_print(&a);
-    // str_del(&a);
-
-    vec3_t a = {5.1,12.2,60.0};
-
     // Add to pool works! Need to make remove functions and add some casting macros.... (justin)
     mem_pool_t pool;
-    mem_pool_create(&pool, sizeof(int) * 10);
-    mem_pool_block_add(&pool, mem_block_new(sizeof(int), (int*)60));
-    mem_pool_block_add(&pool, mem_block_new(sizeof(a), &a));
-    printf("value: %d | size: %d\n", pool.data[0].data, pool.data[0].size * 8);
-    printf("value: %f %f %f | size: %d\n",
-    (*(vec3_t*)pool.data[1].data).x,
-    (*(vec3_t*)pool.data[1].data).y,
-    (*(vec3_t*)pool.data[1].data).z,
-    pool.data[1].size * 8);
+    mem_pool_create(&pool, sizeof(int) * 50+1);
+
+    for (int i = 0; i < 50; i++) {
+        mem_pool_block_add(&pool, mem_block_new(sizeof(int), (int*)i));
+    }
+
+    for (int i = 0; i < pool.length; i++) {
+        printf("%d\n", pool.data[i].data);
+    }
+
+    printf("%d\n", 1010);
+
     mem_pool_destroy(&pool);
+
+    printf("%d\n", 2020);
+
 
     camera_t camera = camera_create(
         (vec3){ 0.0f, 0.0f, 3.0f },
