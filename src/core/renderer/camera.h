@@ -14,6 +14,6 @@ typedef struct camera_t {
 } camera_t;
 
 camera_t camera_create(vec3 position, vec3 forward, vec3 up);
-void camera_update(camera_t* camera);
+void camera_drag(camera_t* camera);
 
 #endif // CAMERA_H
