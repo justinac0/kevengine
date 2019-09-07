@@ -4,6 +4,7 @@
 #include <GLFW/glfw3.h>
 
 #include "../../lib/cglm/include/cglm/cglm.h"
+#include "../util/tiny_math.h"
 
 typedef struct camera_t {
     vec3 position;
