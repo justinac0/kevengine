@@ -10,7 +10,7 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
-#include "../../lib/cglm/include/cglm/cglm.h"
+#include "../../deps/cglm/include/cglm/cglm.h"
 
 typedef struct mesh_t {
     GLuint          vaoID;

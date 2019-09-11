@@ -87,55 +87,6 @@ mesh_t ogl_quad_generate(float size, vec3 color) {
     return mesh;
 }
 
-// inline void generate_subdivisions(GLfloat* data, unsigned int widthSubdivisionCount, unsigned int heightSubdivisionCount) {
-//     if (data == NULL) {
-//         exit(0);
-//     }
-
-//     GLfloat vertices[] = {
-//         -1, 0, -1,
-//         -1, 0,  1,
-//          1, 0, -1,
-//          1, 0,  1
-//     };
-
-//     vec3_t vector0 = (vec3_t) {vertices[0], vertices[1], vertices[2]};
-//     vec3_t vector1 = (vec3_t) {vertices[3], vertices[4], vertices[5]};
-//     vec3_t vector2 = (vec3_t) {vertices[6], vertices[7], vertices[8]};
-//     vec3_t vector3 = (vec3_t) {vertices[9], vertices[10], vertices[11]};
-
-//     vec3_t vector0_1 = vec3_sub(vector1, vector0);
-//     vec3_t vector0_2 = vec3_sub(vector2, vector0);
-
-//     for (float vec1 = 0; vec1 < widthSubdivisionCount; vec1++) {
-//         for (float vec2 = 0; vec2 < heightSubdivisionCount; vec2++) {
-//             vec3_t p1 = vec3_add(vector0, vec3_mul_scalar(vector0_1, vec1));
-//             vec3_t p2 = vec3_add(vector0, vec3_mul_scalar(vector0_1, vec2));
-//             vec3_t p3 = vec3_add(vector0, vec3_mul_scalar(vector0_1, vec1+1));
-//             vec3_t p4 = vec3_add(vector0, vec3_mul_scalar(vector0_1, vec2+1));
-//         }
-//     }
-
-//     // [COPY]
-//     // newVerts = data
-// }
-
-inline void gen_verts(GLfloat* data, float size) {
-    GLfloat vertices[] = { 
-        -size, 0.0f, -size,
-        -size, 0.0f,  size,
-         size, 0.0f, -size,
-         size, 0.0f,  size
-    };
-
-    // unsigned int temp[] = {
-    //     0, 1, 2,
-    //     3, 2, 1
-    // };
-
-    
-}
-
 mesh_t ogl_triangle_generate(float size) {
     GLfloat vertices[] = {
         -size, -size, 0.0f,
