@@ -1,67 +1,49 @@
-#define MEM_DEBUG
-#include "core/util/mem.h"
-#include "core/renderer/renderer.h"
-#include "core/renderer/camera.h"
-#include "core/renderer/entity.h"
+#include "renderer.h"
+#include "g_math.h"
+#include "util.h"
 
-#include "../deps/cglm/include/cglm/cglm.h"
-#include "core/util/g_math.h"
-
-const int WINDOW_WIDTH  = 1280;
-const int WINDOW_HEIGHT = 720;
+#define DEBUG_BUILD
+#ifdef DEBUG_BUILD
+    #define VS_FILE_LOCATION "bin/shaders/vertex.glsl"
+    #define FS_FILE_LOCATION "bin/shaders/fragment.glsl"
+#else
+    #define VS_FILE_LOCATION "shaders/vertex.glsl"
+    #define FS_FILE_LOCATION "shaders/fragment.glsl"
+#endif // DEBUG_BUILD
 
 int main(void) {
-    renderer_t renderer = renderer_create(WINDOW_WIDTH, WINDOW_HEIGHT);
-    camera_t camera = camera_create();
-    GLuint shader = shader_load("shaders/vertex.glsl", "shaders/fragment.glsl");
+    r_context_t renderer;
+    r_context_create(&renderer, 800, 600, "kevin");
 
-    entity_t e1 = entity_create(vec3_zero(), vec3_zero(), vec3_fill(1.f), ogl_triangle_generate(1.0f));
+    uint32_t shaderProgramID = r_shader_load(VS_FILE_LOCATION, FS_FILE_LOCATION);
 
-    mat4_t a = {
-        2, 2, 2, 2,
-        2, 2, 2, 2,
-        2, 2, 2, 2,
-        2, 2, 2, 2
-    };
+    GLuint vaoID = r_vertex_buffer_create();
 
-    mat4_t b = {
-        3, 3, 3, 3,
-        2, 2, 2, 2,
-        2, 2, 2, 2,
-        2, 2, 2, 2
-    };
+    r_mesh_t mesh  = r_mesh_triangle_generate();
 
-    mat4_t c = mat4_mul(&a, &b);
-    mat4_print(&c);
+    glBindVertexArray(0);
 
-    mat4 perspective, mvp;
-    glm_perspective(75, window_size_get(renderer.window).x / window_size_get(renderer.window).y, 0.01f, 1024.0f, perspective);
+    mat4_t mvp, perspective, view, model;
 
-    glm_translate(e1.mesh.modelMatrix, (vec3){0, 0, -5 });
-
-    double lastTime = glfwGetTime();
-    double timePerTick = 1.0f / 60.0f;
+    mvp         = mat4_identity();
+    perspective = mat4_identity();
+    model       = mat4_identity();
+    view        = mat4_identity();
 
     while (!glfwWindowShouldClose(renderer.window)) {
-        window_update(renderer.window);
+        r_context_update(renderer.window);
 
-        if (glfwGetTime() >= lastTime + timePerTick) {
-            lastTime = glfwGetTime();
+        mvp = mat4_mul(&perspective, &view);
+        mvp = mat4_mul(&mvp, &model);
 
-            camera_drag(&camera);
+        mvp.m13 += sin(glfwGetTime());
+        glUniformMatrix4fv(glGetUniformLocation(shaderProgramID, "mvp"), 1, GL_FALSE, &mvp.m00);
 
-            for (int i = 0; i < 2; i++) {
-                glm_mat4_mul(perspective, camera.viewMatrix, mvp);
-                glm_mat4_mul(mvp, e1.mesh.modelMatrix, mvp);
-                glUniformMatrix4fv(glGetUniformLocation(shader, "mvp"), 1, GL_FALSE, &mvp[0][0]);
-            }
-        }
-
-        ogl_clear(0.1f, 0.1f, 0.1f, 1.0f);
-        glUseProgram(shader);
-        renderer_draw(e1.mesh.vaoID, e1.mesh.iCount);
+        r_shader_use(shaderProgramID);
+        glBindVertexArray(vaoID);
+        glDrawElements(GL_TRIANGLES, mesh.iCount, GL_UNSIGNED_SHORT, 0);
     }
 
-    renderer_destroy(&renderer);
+    r_context_destroy(&renderer);
     return 0;
 }
