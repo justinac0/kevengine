@@ -1,6 +1,4 @@
-#include "renderer.h"
-#include "g_math.h"
-#include "util.h"
+#define U_MEM_DEBUG
 
 #define DEBUG_BUILD
 #ifdef DEBUG_BUILD
@@ -10,6 +8,10 @@
     #define VS_FILE_LOCATION "shaders/vertex.glsl"
     #define FS_FILE_LOCATION "shaders/fragment.glsl"
 #endif // DEBUG_BUILD
+
+#include "util.h"
+#include "g_math.h"
+#include "renderer.h"
 
 int main(void) {
     r_context_t renderer;
@@ -23,25 +25,12 @@ int main(void) {
 
     glBindVertexArray(0);
 
-    mat4_t mvp, perspective, view, model;
-
-    mvp         = mat4_identity();
-    perspective = mat4_identity();
-    model       = mat4_identity();
-    view        = mat4_identity();
-
     while (!glfwWindowShouldClose(renderer.window)) {
         r_context_update(renderer.window);
 
-        mvp = mat4_mul(&perspective, &view);
-        mvp = mat4_mul(&mvp, &model);
-
-        mvp.m13 += sin(glfwGetTime());
-        glUniformMatrix4fv(glGetUniformLocation(shaderProgramID, "mvp"), 1, GL_FALSE, &mvp.m00);
-
         r_shader_use(shaderProgramID);
         glBindVertexArray(vaoID);
-        glDrawElements(GL_TRIANGLES, mesh.iCount, GL_UNSIGNED_SHORT, 0);
+        glDrawElements(GL_TRIANGLES, mesh.iCount, GL_UNSIGNED_INT, 0);
     }
 
     r_context_destroy(&renderer);

@@ -247,6 +247,12 @@ static inline mat4_t mat4_mul(mat4_t* a, mat4_t* b) {
     return result;
 }
 
+static inline mat4_t mat4_translate(vec3_t position) {
+    mat4_t result;
+
+    return result;
+}
+
 static inline mat4_t mat4_transpose() {
     mat4_t result;
 
