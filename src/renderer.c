@@ -156,7 +156,7 @@ r_mesh_t r_mesh_triangle_generate(void) {
          0,  1, 0
     };
 
-    GLshort indices[3] = {
+    GLuint indices[3] = {
         0, 1, 2
     };
 
@@ -166,6 +166,38 @@ r_mesh_t r_mesh_triangle_generate(void) {
     glEnableVertexAttribArray(0);
 
     GLuint iboID = r_buffer_create_s(sizeof(indices), indices, GL_ELEMENT_ARRAY_BUFFER, GL_STATIC_DRAW);
+
+    mesh.iCount = (sizeof(indices) / sizeof(GLshort));
+
+    return mesh;
+}
+
+r_mesh_t r_mesh_obj(const char* fileLocation) {
+    GLfloat vertices[9] = {
+        -1, -1, 0,
+         1, -1, 0,
+         0,  1, 0
+    };
+
+    GLuint* indices = malloc(sizeof(GLuint) * 3);
+    indices[0] = 0;
+    indices[1] = 1;
+    indices[2] = 2;
+
+    FILE* fileStream;
+    if (fileStream = fopen(fileLocation, "r") == NULL) {
+        fprintf(stderr, "Failed to read .obj file: %s", fileLocation);
+        return;
+    }
+
+    fclose;
+
+    r_mesh_t mesh;
+    mesh.vboID = r_buffer_create_f(sizeof(vertices), vertices, GL_ARRAY_BUFFER, GL_STATIC_DRAW);
+    glVertexAttribPointer(0, 3, GL_FLOAT, 0, 0, 0);
+    glEnableVertexAttribArray(0);
+
+    GLuint iboID = r_buffer_create_s(sizeof(GLuint) * 3, indices, GL_ELEMENT_ARRAY_BUFFER, GL_STATIC_DRAW);
 
     mesh.iCount = (sizeof(indices) / sizeof(GLshort));
 

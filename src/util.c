@@ -45,6 +45,7 @@ void u_free(void* ptr, uint32_t line, char* file) {
     ptr = NULL;
 }
 
+
 u_int_list_t u_int_list_new(uint32_t capacity) {
     u_int_list_t list;
     list.length     = 0;
@@ -62,11 +63,6 @@ void u_int_list_add(u_int_list_t* list, int item) {
 
     list->items[list->length] = item;
     list->length++;
-}
-
-void u_int_list_delete(u_int_list_t* list) {
-    free(list->items);
-    list->items = NULL;
 }
 
 u_float_list_t u_float_list_new(uint32_t capacity) {
@@ -88,9 +84,9 @@ void u_float_list_add(u_float_list_t* list, float item) {
     list->length++;
 }
 
-void u_float_list_delete(u_float_list_t* list) {
-    free(list->items);
-    list->items = NULL;
+void u_list_delete(void* ptr) {
+    free(ptr);
+    ptr = NULL;
 }
 
 char* u_file_read(char* fileLocation) {

@@ -40,6 +40,7 @@ typedef struct {
 } r_mesh_t;
 
 r_mesh_t r_mesh_triangle_generate(void);
+r_mesh_t r_mesh_obj(const char* fileLocation);
 
 // model specific functions.
 typedef struct {
@@ -48,7 +49,7 @@ typedef struct {
     GLuint* faces;
 } r_model_t;
 
-r_model_t r_model_create(const char* fileLocation, GLfloat* vertices, uint32_t vertSize, GLfloat* normals, uint32_t normSize, GLuint* faces, uint32_t faceSize);
+r_model_t r_model_create(const char* fileLocation);
 
 // mesh batching specific functions.
 typedef struct {

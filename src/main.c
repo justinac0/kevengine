@@ -21,7 +21,7 @@ int main(void) {
 
     GLuint vaoID = r_vertex_buffer_create();
 
-    r_mesh_t mesh  = r_mesh_triangle_generate();
+    r_mesh_t mesh  = r_mesh_obj("bin/models/iso.obj");
 
     glBindVertexArray(0);
 

@@ -1,5 +1,6 @@
 CC		= gcc
 CFLAGS 	= -w -std=c99
+LDFLAGS = `pkg-config --static --libs glfw3`
 
 OBJ = $(wildcard src/*.c) \
 	  deps/glad/glad.c
@@ -18,7 +19,6 @@ else
 	UNAME = $(shell uname -s)
 	ifeq ($(UNAME), Linux)
 		TARGET_NAME = $(EXEC_NAME)
-		LDFLAGS = -lglfw -lGL -lGLU -lX11 -lXi -lXrandr -lXxf86vm -lXinerama -lpthread -ldl -lXcursor -lm
 	else ifeq ($(UNAME), Darwin)
 		TARGET_NAME = $(EXEC_NAME).app
 	endif
