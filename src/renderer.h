@@ -11,6 +11,7 @@
 #include <GLFW/glfw3.h>
 
 #include "util.h"
+#include "g_math.h"
 
 typedef struct {
     GLFWwindow* window;
@@ -45,20 +46,12 @@ r_mesh_t r_mesh_obj(const char* fileLocation);
 
 // model specific functions.
 typedef struct {
-    GLfloat* vertices;
-    GLfloat* normals;
-    GLuint* faces;
+    vec3_t position;
+    vec3_t rotation;
+    vec3_t scale;
+    r_mesh_t mesh;
 } r_model_t;
 
 r_model_t r_model_create(const char* fileLocation);
-
-// mesh batching specific functions.
-typedef struct {
-    GLuint  vaoID;
-    GLuint* vboID;
-    GLuint  iCount;
-} r_batch_t;
-
-void r_batch_create(r_batch_t* batch);
 
 #endif // RENDERER_H

@@ -21,7 +21,7 @@ int main(int argc, char* argv[]) {
 
     GLuint vaoID = r_vertex_buffer_create();
 
-    r_mesh_t mesh = r_mesh_obj("bin/models/torus.obj");
+    r_mesh_t mesh = r_mesh_obj("bin/models/monkey.obj");
 
     glBindVertexArray(0);
 
@@ -30,7 +30,7 @@ int main(int argc, char* argv[]) {
 
         r_shader_use(shaderProgramID);
         glBindVertexArray(vaoID);
-        glDrawElements(GL_LINES, mesh.iCount, GL_UNSIGNED_INT, 0);
+        glDrawElements(GL_TRIANGLES, mesh.iCount, GL_UNSIGNED_INT, 0);
     }
 
     r_context_destroy(&renderer);

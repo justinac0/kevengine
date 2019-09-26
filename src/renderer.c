@@ -183,15 +183,15 @@ r_mesh_t r_mesh_obj(const char* fileLocation) {
     float v1,v2,v3;
 
     uint32_t fCount = 0;
-    int f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f11,f12;
+    int f1,f2,f3,f4,f5,f6,f7,f8,f9;
 
     while (fgetc(fileStream) != EOF) {
         if (fscanf(fileStream, "v %f %f %f", &v1, &v2, &v3) == 3) {
             vCount += 3;
         }
 
-        if (fscanf(fileStream, "f %d/%d/%d %d/%d/%d %d/%d/%d %d/%d/%d", &f1, &f2, &f3, &f4, &f5, &f6, &f7, &f8, &f9, &f10, &f11, &f12) == 12) {
-            fCount += 12;
+        if (fscanf(fileStream, "f %d/%d/%d %d/%d/%d %d/%d/%d", &f1, &f2, &f3, &f4, &f5, &f6, &f7, &f8, &f9) == 9) {
+            fCount += 3;
         }
     }
 
@@ -212,21 +212,12 @@ r_mesh_t r_mesh_obj(const char* fileLocation) {
             vP += 3;
         }
 
-        if (fscanf(fileStream, "f %d/%d/%d %d/%d/%d %d/%d/%d %d/%d/%d", &f1, &f2, &f3, &f4, &f5, &f6, &f7, &f8, &f9, &f10, &f11, &f12) == 12) {
+        if (fscanf(fileStream, "f %d/%d/%d %d/%d/%d %d/%d/%d", &f1, &f2, &f3, &f4, &f5, &f6, &f7, &f8, &f9) == 9) {
             inds[fP]    = f1;
-            inds[fP+1]  = f2;
-            inds[fP+2]  = f3;
-            inds[fP+3]  = f4;
-            inds[fP+4]  = f5;
-            inds[fP+5]  = f6;
-            inds[fP+6]  = f7;
-            inds[fP+7]  = f8;
-            inds[fP+8]  = f9;
-            inds[fP+9]  = f10;
-            inds[fP+10] = f11;
-            inds[fP+11] = f12;
+            inds[fP+1]  = f4;
+            inds[fP+2]  = f7;
 
-            fP += 12;
+            fP += 3;
         }
     }
 
@@ -243,6 +234,7 @@ r_mesh_t r_mesh_obj(const char* fileLocation) {
     }
 
     for (int i = 0; i < fCount; i++) {
+        inds[i]--;
         printf("%d\n", inds[i]);
     }
 
@@ -260,60 +252,3 @@ r_mesh_t r_mesh_obj(const char* fileLocation) {
 
     return mesh;
 }
-
-    // //Mitch's function start
-
-
-    // FILE* fileStream;
-    // if ((fileStream = fopen(fileLocation, "r")) == NULL) {
-    //     fprintf(stderr, "Failed to read file: %s\n", fileLocation);
-    //     return;
-    // }
-
-    // GLfloat*    verts;
-    // uint32_t    vertLength;
-
-    // GLuint*     faces;
-    // uint32_t    faceLength;
-
-    // float a1 = 0;
-    // float a2;
-    // float a3;
-    // float a4;
-    // float a5;
-    // float a6;
-    // float a7;
-    // float a8;
-    // float a9;
-    // float a10;
-    // float a11;
-    // float a12;
-
-    // uint32_t vCount = 0;
-    // uint32_t fCount = 0;
-
-    // // First iteration -> get n of 'v' and 'f'
-    // fscanf(fileStream, "# Blender v%f", &a1);
-    // printf("Value: %f\n", a1);
-
-    // float a,b,c;
-    // fscanf(fileStream, "v %f %f %f", &a, &b, &c);
-    // printf("xyz: %f %f %f\n", a, b, c);
-
-    // while (fscanf(fileStream, "v %f %f %f\n", &a1, &a2, &a3) == 3) {
-    //    vCount++;
-    // }
-
-    // while (fscanf(fileStream, "f %d/%d/%d %d/%d/%d %d/%d/%d %d/%d/%d\n", &a1, &a2, &a3, &a4, &a5, &a6, &a7, &a8, &a9, &a10, &a11, &a12) == 12) {
-    //    fCount++;
-    // }
-
-    // while (fscanf(fileStream, "v %f %f %f\n") == 3) {
-
-    // }
-
-    // printf("Vertice Count:\t%d\nFace Count:\t%d\n", vCount, fCount);
-
-    // fclose(fileStream);
-
-    // //Mitch's function end
