@@ -13,7 +13,7 @@
 #include "g_math.h"
 #include "renderer.h"
 
-int main(void) {
+int main(int argc, char* argv[]) {
     r_context_t renderer;
     r_context_create(&renderer, 800, 600, "kevin");
 
@@ -21,7 +21,7 @@ int main(void) {
 
     GLuint vaoID = r_vertex_buffer_create();
 
-    r_mesh_t mesh  = r_mesh_obj("bin/models/iso.obj");
+    r_mesh_t mesh = r_mesh_obj("bin/models/torus.obj");
 
     glBindVertexArray(0);
 
@@ -30,7 +30,7 @@ int main(void) {
 
         r_shader_use(shaderProgramID);
         glBindVertexArray(vaoID);
-        glDrawElements(GL_TRIANGLES, mesh.iCount, GL_UNSIGNED_INT, 0);
+        glDrawElements(GL_LINES, mesh.iCount, GL_UNSIGNED_INT, 0);
     }
 
     r_context_destroy(&renderer);

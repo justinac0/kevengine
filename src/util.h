@@ -21,31 +21,7 @@ void u_free(void* ptr, uint32_t line, char* file);
     #define free(ptr)               u_free(ptr, __LINE__, __FILE__);
 #endif
 
-// static sized lists.
-typedef struct {
-    uint32_t    length;
-    uint32_t    capacity;
-    int*        items;
-} u_int_list_t;
-
-u_int_list_t u_int_list_new(uint32_t capacity);
-void u_int_list_add(u_int_list_t* list, int item);
-
-typedef struct {
-    uint32_t    length;
-    uint32_t    capacity;
-    char*       items;
-} u_float_list_t;
-
-u_float_list_t u_float_list_new(uint32_t capacity);
-void u_float_list_add(u_float_list_t* list, float item);
-
-void u_list_delete(void* ptr);
-
 // file I/O.
-#define U_FILE_READ_FAIL "READ_FAIL"
-#define U_FILE_BUFFER_MEMORY_FAIL "MEMORY_FAIL"
-
 char* u_file_read(char* fileLocation);
 
 #endif // UTIL_H

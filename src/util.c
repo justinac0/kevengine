@@ -45,55 +45,11 @@ void u_free(void* ptr, uint32_t line, char* file) {
     ptr = NULL;
 }
 
-
-u_int_list_t u_int_list_new(uint32_t capacity) {
-    u_int_list_t list;
-    list.length     = 0;
-    list.capacity   = capacity;
-    list.items      = (int*)malloc(sizeof(int) * list.capacity);
-
-    return list;
-}
-
-void u_int_list_add(u_int_list_t* list, int item) {
-    if (list->length >= list->capacity) {
-        printf("Not enough space left in list...\n");
-        return;
-    }
-
-    list->items[list->length] = item;
-    list->length++;
-}
-
-u_float_list_t u_float_list_new(uint32_t capacity) {
-    u_float_list_t list;
-    list.length     = 0;
-    list.capacity   = capacity;
-    list.items      = (float*)malloc(sizeof(float) * list.capacity);
-
-    return list;
-}
-
-void u_float_list_add(u_float_list_t* list, float item) {
-    if (list->length >= list->capacity) {
-        printf("Not enough space left in list...\n");
-        return;
-    }
-
-    list->items[list->length] = item;
-    list->length++;
-}
-
-void u_list_delete(void* ptr) {
-    free(ptr);
-    ptr = NULL;
-}
-
 char* u_file_read(char* fileLocation) {
     FILE* fileStream = NULL;
     if ((fileStream = fopen(fileLocation, "r")) == NULL) {
         printf("Failed to open file at location: %s\n", fileLocation);
-        return U_FILE_READ_FAIL;
+        exit(EXIT_FAILURE);
     }
 
     fseek(fileStream, SEEK_SET, SEEK_END);
@@ -103,7 +59,7 @@ char* u_file_read(char* fileLocation) {
     char* buffer = NULL;
     if ((buffer = (char*)calloc(fileLength + 1, sizeof(char))) == NULL) {
         printf("Cannot allocate memory for file buffer\n");
-        return U_FILE_BUFFER_MEMORY_FAIL;
+        exit(EXIT_FAILURE);
     }
 
     fread(buffer, sizeof(char), fileLength, fileStream);

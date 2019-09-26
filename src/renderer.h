@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <string.h>
+#include <assert.h>
 
 #include "../deps/glad/glad.h"
 #include <GLFW/glfw3.h>
