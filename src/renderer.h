@@ -11,7 +11,7 @@
 #include <GLFW/glfw3.h>
 
 #include "util.h"
-#include "g_math.h"
+#include "linmath.h"
 
 typedef struct {
     GLFWwindow* window;
@@ -39,6 +39,7 @@ void r_shader_use(GLuint shaderProgramID);
 typedef struct {
     GLuint vboID;
     GLuint iCount;
+    mat4x4 modelMatrix;
 } r_mesh_t;
 
 r_mesh_t r_mesh_triangle_generate(void);
@@ -46,10 +47,10 @@ r_mesh_t r_mesh_obj(const char* fileLocation);
 
 // model specific functions.
 typedef struct {
-    vec3_t position;
-    vec3_t rotation;
-    vec3_t scale;
-    r_mesh_t mesh;
+    vec3        position;
+    vec3        rotation;
+    vec3        scale;
+    r_mesh_t    mesh;
 } r_model_t;
 
 r_model_t r_model_create(const char* fileLocation);

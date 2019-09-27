@@ -6,6 +6,8 @@
 #include <stdint.h>
 #include <stdbool.h>
 
+#include "../deps/glad/glad.h"
+
 // memory allocation debugging.
 void* u_malloc(size_t size, uint32_t line, char* file);
 void* u_calloc(size_t itemCount, size_t size, uint32_t line, char* file);
@@ -23,5 +25,16 @@ void u_free(void* ptr, uint32_t line, char* file);
 
 // file I/O.
 char* u_file_read(char* fileLocation);
+
+// model loading.
+typedef struct {
+    GLfloat*    vertices;
+    GLuint*     indices;
+    GLfloat*    normals;
+    uint32_t    indexCount;
+} u_model_obj;
+
+void u_model_obj_load(u_model_obj* dest, const char* fileLocation);
+void u_model_obj_free(u_model_obj* dest);
 
 #endif // UTIL_H

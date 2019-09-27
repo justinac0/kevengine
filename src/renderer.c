@@ -221,21 +221,13 @@ r_mesh_t r_mesh_obj(const char* fileLocation) {
         }
     }
 
-    printf("vLn: %d\n", vCount);
-    printf("fLn: %d\n", fCount);
-
     if (fclose(fileStream) != 0) {
         fprintf(stderr, "File was not closed properly: %s\n", fileLocation);
         exit(EXIT_FAILURE);
     }
 
-    for (int i = 0; i < vCount/3; i++) {
-        printf("%f %f %f\n", verts[i], verts[i+1], verts[i+2]);
-    }
-
     for (int i = 0; i < fCount; i++) {
         inds[i]--;
-        printf("%d\n", inds[i]);
     }
 
     r_mesh_t mesh;
@@ -245,10 +237,11 @@ r_mesh_t r_mesh_obj(const char* fileLocation) {
 
     GLuint iboID = r_buffer_create_i(sizeof(GLuint) * fCount, inds, GL_ELEMENT_ARRAY_BUFFER, GL_STATIC_DRAW);
 
-    mesh.iCount = fCount;
-
     free(verts);
     free(inds);
+
+    mesh.iCount = fCount;
+    mat4x4_identity(mesh.modelMatrix);
 
     return mesh;
 }
