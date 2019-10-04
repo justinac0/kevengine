@@ -11,16 +11,7 @@
 #include <GLFW/glfw3.h>
 
 #include "util.h"
-#include "g_math.h"
-
-typedef struct {
-    GLFWwindow* window;
-} r_context_t;
-
-// renderer specific functions.
-void r_context_create(r_context_t* renderer, uint32_t width, uint32_t height, const char* title);
-void r_context_destroy(r_context_t* renderer);
-void r_context_update(GLFWwindow* pWindow);
+#include "math.h"
 
 // opengl abstracted util functions.
 GLuint r_vertex_buffer_create(void);
@@ -37,22 +28,13 @@ void r_shader_use(GLuint shaderProgramID);
 
 // mesh specific functions.
 typedef struct {
-    GLuint vboID;
+    GLuint vaoID;
     GLuint iCount;
     mat4_t modelMatrix;
 } r_mesh_t;
 
 r_mesh_t r_mesh_triangle_generate(void);
 r_mesh_t r_mesh_obj(const char* fileLocation);
-
-// model specific functions.
-typedef struct {
-    vec3_t      position;
-    vec3_t      rotation;
-    vec3_t      scale;
-    r_mesh_t    mesh;
-} r_model_t;
-
-r_model_t r_model_create(vec3_t position, vec3_t rotation, vec3_t scale, r_mesh_t mesh);
+void r_mesh_draw(r_mesh_t* mesh);
 
 #endif // RENDERER_H

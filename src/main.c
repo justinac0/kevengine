@@ -1,43 +1,47 @@
-#define U_MEM_DEBUG
+#include "game.h"
 
-#define DEBUG_BUILD
-#ifdef DEBUG_BUILD
-    #define VS_FILE_LOCATION "bin/shaders/vertex.glsl"
-    #define FS_FILE_LOCATION "bin/shaders/fragment.glsl"
-#else
-    #define VS_FILE_LOCATION "shaders/vertex.glsl"
-    #define FS_FILE_LOCATION "shaders/fragment.glsl"
-#endif // DEBUG_BUILD
+#include "../deps/glad/glad.h"
+#include <GLFW/glfw3.h>
 
-#include "util.h"
-#include "renderer.h"
+#define FPS 24
 
 int main(int argc, char* argv[]) {
-    r_context_t renderer;
-    r_context_create(&renderer, 800, 600, "kevin");
+    if (!glfwInit()) {}
 
-    uint32_t shaderProgramID = r_shader_load(VS_FILE_LOCATION, FS_FILE_LOCATION);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+    GLFWwindow* window = glfwCreateWindow(800, 600, "kevin", NULL, NULL);
 
-    GLuint vaoID = r_vertex_buffer_create();
+    if (!window) {}
 
-    r_mesh_t mesh = r_mesh_obj("bin/models/cube.obj");
+    glfwMakeContextCurrent(window);
+    gladLoadGLLoader((GLADloadproc) glfwGetProcAddress);
 
-    glBindVertexArray(0);
+    g_create();
 
-    mat4_t mvp = mat4_identity();
+    double lastTime = glfwGetTime();
+    double tickTime = 1.0f / FPS;
 
+    while (!glfwWindowShouldClose(glfwGetCurrentContext())) {
+        glfwSwapBuffers(glfwGetCurrentContext());
+        glfwPollEvents();
 
-    while (!glfwWindowShouldClose(renderer.window)) {
-        r_context_update(renderer.window);
+        if (glfwGetTime() >= lastTime + tickTime) {
+            lastTime = glfwGetTime();
+            g_update();
+        }
 
-        glUniformMatrix4fv(glGetUniformLocation(shaderProgramID, "mvp"), 1, GL_FALSE, &mvp.v[0][0]);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glClearColor(0.0f, 0.2f, 0.3f, 1.0f);
 
-        r_shader_use(shaderProgramID);
-        glBindVertexArray(vaoID);
-
-        glDrawElements(GL_TRIANGLES, mesh.iCount, GL_UNSIGNED_INT, 0);
+        g_render();
     }
 
-    r_context_destroy(&renderer);
+    g_destroy();
+
+    glfwDestroyWindow(window);
+    glfwTerminate();
+
     return 0;
 }

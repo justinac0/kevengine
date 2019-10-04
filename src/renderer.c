@@ -1,51 +1,6 @@
 #define MAX_FILE_LINE_WIDTH 512
 #include "renderer.h"
 
-static inline void i_error_callback(int error, const char* description) {
-    fprintf(stderr, "GLFW Error: %s\n", description);
-}
-
-static inline void i_key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
-    if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
-        glfwSetWindowShouldClose(window, GLFW_TRUE);
-}
-
-static inline void i_framebuffer_size_callback(GLFWwindow* window, int width, int height) {
-    glViewport(0, 0, width, height);
-}
-
-void r_context_create(r_context_t* renderer, uint32_t width, uint32_t height, const char* title) {
-    if (!glfwInit()) {}
-
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    renderer->window = glfwCreateWindow(width, height, title, NULL, NULL);
-
-    if (!renderer->window) {}
-
-    glfwSetErrorCallback(i_error_callback);
-    glfwSetKeyCallback(renderer->window, i_key_callback);
-    glfwSetFramebufferSizeCallback(renderer->window, i_framebuffer_size_callback);
-
-    glfwMakeContextCurrent(renderer->window);
-
-    gladLoadGLLoader((GLADloadproc) glfwGetProcAddress);
-}
-
-void r_context_destroy(r_context_t* renderer) {
-    glfwDestroyWindow(renderer->window);
-    glfwTerminate();
-}
-
-void r_context_update(GLFWwindow* pWindow) {
-    glfwSwapBuffers(pWindow);
-    glfwPollEvents();
-
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
-}
-
 GLuint r_vertex_buffer_create(void) {
     GLuint vaoID;
 
@@ -162,11 +117,15 @@ r_mesh_t r_mesh_triangle_generate(void) {
     };
 
     r_mesh_t mesh;
-    mesh.vboID = r_buffer_create_f(sizeof(vertices), vertices, GL_ARRAY_BUFFER, GL_STATIC_DRAW);
+    mesh.vaoID = r_vertex_buffer_create();
+
+    GLuint vboID = r_buffer_create_f(sizeof(vertices), vertices, GL_ARRAY_BUFFER, GL_STATIC_DRAW);
     glVertexAttribPointer(0, 3, GL_FLOAT, 0, 0, 0);
     glEnableVertexAttribArray(0);
 
     GLuint iboID = r_buffer_create_s(sizeof(indices), indices, GL_ELEMENT_ARRAY_BUFFER, GL_STATIC_DRAW);
+
+    glBindVertexArray(0);
 
     mesh.iCount = (sizeof(indices) / sizeof(GLshort));
 
@@ -308,7 +267,9 @@ r_mesh_t r_mesh_obj(const char* fileLocation) {
     }
 
     r_mesh_t mesh;
-    mesh.vboID = r_buffer_create_f(sizeof(GLfloat) * vCount, vertices, GL_ARRAY_BUFFER, GL_STATIC_DRAW);
+    mesh.vaoID = r_vertex_buffer_create();
+
+    GLuint vboID = r_buffer_create_f(sizeof(GLfloat) * vCount, vertices, GL_ARRAY_BUFFER, GL_STATIC_DRAW);
     glVertexAttribPointer(0, 3, GL_FLOAT, 0, 0, 0);
     glEnableVertexAttribArray(0);
 
@@ -318,8 +279,10 @@ r_mesh_t r_mesh_obj(const char* fileLocation) {
 
     GLuint iboID = r_buffer_create_i(sizeof(GLuint) * fCount, indices, GL_ELEMENT_ARRAY_BUFFER, GL_STATIC_DRAW);
 
+    glBindVertexArray(0);
+
     mesh.iCount = fCount;
-    mesh.modelMatrix = mat4_identity();
+    m_mat4_identity(&mesh.modelMatrix);
 
     free(vertices);
     free(normals);
@@ -331,12 +294,7 @@ r_mesh_t r_mesh_obj(const char* fileLocation) {
     return mesh;
 }
 
-r_model_t r_model_create(vec3_t position, vec3_t rotation, vec3_t scale, r_mesh_t mesh) {
-    r_model_t model;
-    model.position  = position;
-    model.rotation  = rotation;
-    model.scale     = scale;
-    model.mesh      = mesh;
-
-    return model;
+void r_mesh_draw(r_mesh_t* mesh) {
+    glBindVertexArray(mesh->vaoID);
+    glDrawElements(GL_TRIANGLES, mesh->iCount, GL_UNSIGNED_INT, 0);
 }
