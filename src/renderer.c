@@ -126,6 +126,8 @@ r_mesh_t r_mesh_triangle_generate(void) {
     GLuint iboID = r_buffer_create_s(sizeof(indices), indices, GL_ELEMENT_ARRAY_BUFFER, GL_STATIC_DRAW);
 
     glBindVertexArray(0);
+    
+    m_mat4_identity(&mesh.modelMatrix);
 
     mesh.iCount = (sizeof(indices) / sizeof(GLshort));
 

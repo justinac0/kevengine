@@ -3,7 +3,7 @@
 #include "../deps/glad/glad.h"
 #include <GLFW/glfw3.h>
 
-#define FPS 24
+#define FPS 120
 
 int main(int argc, char* argv[]) {
     if (!glfwInit()) {}
