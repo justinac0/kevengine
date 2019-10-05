@@ -1,0 +1,18 @@
+- Last viewed Oct 5 1731 -
+
+Core:
+  ☐ Entity system
+
+Rendering:
+  ☐ Basic Lighting
+  ☐ Batch renderering
+  ☐ Texture rendering
+  ☐ Text rendering
+
+Math:
+  ☐ Re-write
+  ☐ Fix negative only znear in perspective matrix.
+
+Utils:
+
+Done:

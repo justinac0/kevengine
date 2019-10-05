@@ -12,6 +12,7 @@
 
 #include "util.h"
 #include "math.h"
+#include "linmath.h"
 
 // opengl abstracted util functions.
 GLuint r_vertex_buffer_create(void);
@@ -33,7 +34,6 @@ typedef struct {
     mat4_t modelMatrix;
 } r_mesh_t;
 
-r_mesh_t r_mesh_triangle_generate(void);
 r_mesh_t r_mesh_obj(const char* fileLocation);
 void r_mesh_draw(r_mesh_t* mesh);
 

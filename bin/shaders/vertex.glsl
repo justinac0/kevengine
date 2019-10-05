@@ -1,10 +1,21 @@
 #version 330 core
 
-layout (location = 0) in vec3 positions;
-layout (location = 1) in vec3 normals;
+layout (location = 0) in vec3 in_vertex_positions;
+layout (location = 1) in vec3 in_vertex_normals;
 
-uniform mat4 mvp;
+out vec3 surfaceNormal;
+out vec3 toLightVector;
+
+uniform mat4 projection;
+uniform mat4 view;
+uniform mat4 model;
+
+uniform vec3 lightPosition;
 
 void main(void) {
-    gl_Position = mvp * vec4(positions, 1.0);
+    vec4 worldPosition = model * vec4(in_vertex_positions, 1.0f);
+    gl_Position     = projection * view * model * worldPosition;
+
+    surfaceNormal   = (model * vec4(in_vertex_normals, 0.0)).xyz;
+    toLightVector   = lightPosition - worldPosition.xyz;
 }

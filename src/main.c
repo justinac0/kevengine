@@ -8,6 +8,8 @@
 int main(int argc, char* argv[]) {
     if (!glfwInit()) {}
 
+    glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
+
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
@@ -32,9 +34,11 @@ int main(int argc, char* argv[]) {
             g_update();
         }
 
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
         glClearColor(0.0f, 0.2f, 0.3f, 1.0f);
-
+        glEnable(GL_DEPTH_TEST);
+        glDepthFunc(GL_LEQUAL);
+        glCullFace(GL_FRONT_AND_BACK);
         g_render();
     }
 

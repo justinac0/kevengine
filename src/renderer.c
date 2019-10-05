@@ -105,35 +105,6 @@ void r_shader_use(GLuint shaderProgramID) {
     glUseProgram(shaderProgramID);
 }
 
-r_mesh_t r_mesh_triangle_generate(void) {
-    GLfloat vertices[9] = {
-        -1, -1, 0,
-         1, -1, 0,
-         0,  1, 0
-    };
-
-    GLuint indices[3] = {
-        0, 1, 2
-    };
-
-    r_mesh_t mesh;
-    mesh.vaoID = r_vertex_buffer_create();
-
-    GLuint vboID = r_buffer_create_f(sizeof(vertices), vertices, GL_ARRAY_BUFFER, GL_STATIC_DRAW);
-    glVertexAttribPointer(0, 3, GL_FLOAT, 0, 0, 0);
-    glEnableVertexAttribArray(0);
-
-    GLuint iboID = r_buffer_create_s(sizeof(indices), indices, GL_ELEMENT_ARRAY_BUFFER, GL_STATIC_DRAW);
-
-    glBindVertexArray(0);
-    
-    m_mat4_identity(&mesh.modelMatrix);
-
-    mesh.iCount = (sizeof(indices) / sizeof(GLshort));
-
-    return mesh;
-}
-
 r_mesh_t r_mesh_obj(const char* fileLocation) {
     double beginTime    = glfwGetTime();
     double endTime      = 0;
@@ -148,7 +119,7 @@ r_mesh_t r_mesh_obj(const char* fileLocation) {
 
     uint32_t fCount = 0;
     uint32_t fP     = 0;
-    int f1,f2,f3,f4,f5,f6,f7,f8,f9, f10, f11, f12;
+    int f1, f2, f3, f4, f5, f6, f7, f8, f9, f10, f11, f12;
 
     FILE* fileStream = fopen(fileLocation, "r");
     if (fileStream == NULL) {
@@ -273,18 +244,18 @@ r_mesh_t r_mesh_obj(const char* fileLocation) {
 
     GLuint vboID = r_buffer_create_f(sizeof(GLfloat) * vCount, vertices, GL_ARRAY_BUFFER, GL_STATIC_DRAW);
     glVertexAttribPointer(0, 3, GL_FLOAT, 0, 0, 0);
-    glEnableVertexAttribArray(0);
 
     GLuint nboID = r_buffer_create_f(sizeof(GLfloat) * nCount, normals, GL_ARRAY_BUFFER, GL_STATIC_DRAW);
     glVertexAttribPointer(1, 3, GL_FLOAT, 0, 0, 0);
-    glEnableVertexAttribArray(1);
 
     GLuint iboID = r_buffer_create_i(sizeof(GLuint) * fCount, indices, GL_ELEMENT_ARRAY_BUFFER, GL_STATIC_DRAW);
+    glEnableVertexAttribArray(0);
+    glEnableVertexAttribArray(1);
 
     glBindVertexArray(0);
 
     mesh.iCount = fCount;
-    m_mat4_identity(&mesh.modelMatrix);
+    mat4x4_identity(mesh.modelMatrix.v);
 
     free(vertices);
     free(normals);
@@ -298,5 +269,5 @@ r_mesh_t r_mesh_obj(const char* fileLocation) {
 
 void r_mesh_draw(r_mesh_t* mesh) {
     glBindVertexArray(mesh->vaoID);
-    glDrawElements(GL_TRIANGLES, mesh->iCount, GL_UNSIGNED_INT, 0);
+    glDrawElements(GL_TRIANGLES, mesh->iCount, GL_UNSIGNED_INT, NULL);
 }

@@ -58,30 +58,4 @@ typedef union {
     };
 } mat4_t;
 
-vec2_t m_vec2_add(vec2_t a, vec2_t b);
-vec2_t m_vec2_sub(vec2_t a, vec2_t b);
-
-void m_vec3_print(vec3_t a);
-vec3_t m_vec3_normalize(vec3_t a);
-vec3_t m_vec3_cross(vec3_t a, vec3_t b);
-vec3_t m_vec3_sub(vec3_t a, vec3_t b);
-vec3_t m_vec3_add(vec3_t a, vec3_t b);
-vec3_t m_vec3_mul_scalar(vec3_t a, float b);
-void m_mat4_row(vec4_t r, mat4_t m, int i);
-void m_mat4_col(vec4_t r, mat4_t m, int i);
-float m_vec4_mul_inner(vec4_t a, vec4_t b);
-void m_mat4_translate_in_place(mat4_t *dest, float x, float y, float z);
-void m_mat4_print(mat4_t *src);
-void m_mat4_fill(mat4_t *dest, float value);
-void m_mat4_identity(mat4_t *dest);
-void m_mat4_mul(mat4_t *dest, mat4_t a, mat4_t b);
-void m_translate(mat4_t* dest, float x, float y, float z);
-void m_rotate_x(mat4_t* dest, float angle);
-void m_rotate_y(mat4_t* dest, float angle);
-void m_rotate_z(mat4_t* dest, float angle);
-void m_scale(mat4_t* dest, vec3_t xyz);
-void m_perspective(mat4_t *dest, float fov, float aspect, float znear, float zfar);
-void m_orthographic(mat4_t *dest, float left, float right, float top, float bottom, float znear, float zfar);
-void m_look_at(mat4_t *dest, vec3_t eye, vec3_t target, vec3_t up);
-
 #endif // M_MATH_H

@@ -1,43 +1,39 @@
 #include "game.h"
 
-GLuint      shaderProgramID;
-GLuint      vaoID;
+GLuint      shaderProgramID, lightShader;
 r_mesh_t    meshes[2];
-mat4_t      mvp, view, perspective;
+mat4x4      mvp, view, projection;
 
 void g_create(void) {
     shaderProgramID = r_shader_load("bin/shaders/vertex.glsl", "bin/shaders/fragment.glsl");
-    vaoID           = r_vertex_buffer_create();
+    lightShader = r_shader_load("bin/shaders/vs_light.glsl", "bin/shaders/fs_light.glsl");
 
-    meshes[0] = r_mesh_obj("bin/models/cube.obj");
-    meshes[1] = r_mesh_obj("bin/models/teapot.obj");
+    meshes[0] = r_mesh_obj("bin/models/dragon.obj");
+    meshes[1] = r_mesh_obj("bin/models/sphere.obj");
 
-    m_perspective(&perspective, 45, 4/3, -0.01f, 100.0f);
-    m_look_at(&view,
-        (vec3_t){ 0, 0, 3 },
-        (vec3_t){ 0, 0, 0 },
-        (vec3_t){ 0, 1, 0 }
+    mat4x4_perspective(projection, 45, 4 / 3, 0.01f, 100.0f);
+    mat4x4_look_at(view,
+        (vec3){ 0.0f, 0.0f, 15.0f },
+        (vec3){ 0.0f, 0.0f, 0.0f },
+        (vec3){ 0.0f, 1.0f, 0.0f }
     );
 
-    m_mat4_identity(&mvp);
-    m_mat4_mul(&mvp, perspective, view);
+    mat4x4_translate(meshes[0].modelMatrix.v, 0, -2.5, 0);
 }
 
-void g_destroy(void) {
+void g_destroy(void) { }
 
-}
-
-void g_update(void) {
-    m_translate(&meshes[0].modelMatrix, cosf(glfwGetTime()), 0, sinf(glfwGetTime()));
-    m_rotate_z(&meshes[1].modelMatrix, glfwGetTime() * RAD2DEG);
-}
+void g_update(void) { }
 
 void g_render(void) {
-    r_shader_use(shaderProgramID);
+    glUniform3f(glGetUniformLocation(shaderProgramID, "lightPosition"), 10 * sinf(glfwGetTime()), 0, 10);
+
     for (int i = 0; i < 2; i++) {
-        m_mat4_mul(&mvp, perspective, view);
-        m_mat4_mul(&mvp, mvp, meshes[i].modelMatrix);
-        glUniformMatrix4fv(glGetUniformLocation(shaderProgramID, "mvp"), 1, GL_FALSE, &mvp.m00);
+        r_shader_use(shaderProgramID);
+
+        glUniformMatrix4fv(glGetUniformLocation(shaderProgramID, "projection"), 1, GL_FALSE, &projection[0][0]);
+        glUniformMatrix4fv(glGetUniformLocation(shaderProgramID, "view"), 1, GL_FALSE, &view[0][0]);
+        glUniformMatrix4fv(glGetUniformLocation(shaderProgramID, "model"), 1, GL_FALSE, &meshes[i].modelMatrix.v);
         r_mesh_draw(&meshes[i]);
     }
 }
