@@ -58,4 +58,17 @@ typedef union {
     };
 } mat4_t;
 
+// vec2
+void m_vec2_print(vec2_t a);
+vec2_t m_vec2_add(vec2_t a, vec2_t b);
+vec2_t m_vec2_sub(vec2_t a, vec2_t b);
+vec2_t m_vec2_div_scalar(vec2_t a, float scalar);
+vec2_t m_vec2_mul_scalar(vec2_t a, float scalar);
+vec2_t m_vec2_norm(vec2_t a);
+float m_vec2_mag(vec2_t a);
+float m_vec2_dot(vec2_t a, vec2_t b);
+float m_vec2_cross(vec2_t a, vec2_t b);
+
+// vec3
+
 #endif // M_MATH_H
