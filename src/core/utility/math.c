@@ -21,7 +21,7 @@ vec2_t m_vec2_mul_scalar(vec2_t a, float scalar) {
 }
 
 vec2_t m_vec2_norm(vec2_t a) {
-    float length = sqrtf((a.x * a.x) + (a.y * a.y));
+    float length = m_vec2_mag(a);
     return (vec2_t){ a.x / length, a.y / length };
 }
 
@@ -30,7 +30,7 @@ float m_vec2_mag(vec2_t a) {
 }
 
 float m_vec2_dot(vec2_t a, vec2_t b) {
-    return ((a.x * b.x) + (a.y * b.y));
+
 }
 
 float m_vec2_cross(vec2_t a, vec2_t b) {

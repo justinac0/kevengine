@@ -1,111 +1,7 @@
+#include "mesh.h"
+
 #define MAX_FILE_LINE_WIDTH 512
-#include "renderer.h"
-
-GLuint r_vertex_buffer_create(void) {
-    GLuint vaoID;
-
-    glGenVertexArrays(1, &vaoID);
-    glBindVertexArray(vaoID);
-
-    return vaoID;
-}
-
-GLuint r_buffer_create_c(uint32_t size, GLchar* data, GLenum target, GLenum usage) {
-    GLuint buffer;
-
-    glGenBuffers(1, &buffer);
-    glBindBuffer(target, buffer);
-    glBufferData(target, size, data, usage);
-
-    return buffer;
-}
-
-GLuint r_buffer_create_s(uint32_t size, GLshort* data, GLenum target, GLenum usage) {
-    GLuint buffer;
-
-    glGenBuffers(1, &buffer);
-    glBindBuffer(target, buffer);
-    glBufferData(target, size, data, usage);
-
-    return buffer;
-}
-
-GLuint r_buffer_create_i(uint32_t size, GLuint* data, GLenum target, GLenum usage) {
-    GLuint buffer;
-
-    glGenBuffers(1, &buffer);
-    glBindBuffer(target, buffer);
-    glBufferData(target, size, data, usage);
-
-    return buffer;
-}
-
-GLuint r_buffer_create_f(uint32_t size, GLfloat* data, GLenum target, GLenum usage) {
-    GLuint buffer;
-
-    glGenBuffers(1, &buffer);
-    glBindBuffer(target, buffer);
-    glBufferData(target, size, data, usage);
-
-    return buffer;
-}
-
-void r_buffer_delete(GLuint* bufferObject) {
-    glDeleteBuffers(1, bufferObject);
-}
-
-GLuint r_shader_compile(const char* fileLocation, const int shaderType) {
-    GLuint shaderID = glCreateShader(shaderType);
-    uint32_t result, length;
-
-    char* source = u_file_read(fileLocation);
-    length = strlen(source);
-
-    glShaderSource(shaderID, 1, (const char**)&source, &length);
-    glCompileShader(shaderID);
-    free(source);
-
-    glGetShaderiv(shaderID, GL_COMPILE_STATUS, &result);
-    if (result == GL_FALSE) {
-        glGetShaderiv(shaderID, GL_INFO_LOG_LENGTH, &length);
-
-        char* errorLog = (char*)malloc(length);
-
-        glGetShaderInfoLog(shaderID, length, &result, errorLog);
-        glDeleteShader(shaderID);
-
-        fprintf(stderr, "Shader compilation failed: %s\n", errorLog);
-        free(errorLog);
-
-        return 0;
-    }
-
-    return shaderID;
-}
-
-GLuint r_shader_load(const char* vertexFileLocation, const char* fragmentFileLocation) {
-    GLuint vertID = r_shader_compile(vertexFileLocation,   GL_VERTEX_SHADER);
-    GLuint fragID = r_shader_compile(fragmentFileLocation, GL_FRAGMENT_SHADER);
-
-    GLuint shaderProgramID = glCreateProgram();
-    glAttachShader(shaderProgramID, vertID);
-    glAttachShader(shaderProgramID, fragID);
-    glLinkProgram(shaderProgramID);
-
-    glDetachShader(shaderProgramID, vertID);
-    glDetachShader(shaderProgramID, fragID);
-
-    glDeleteShader(vertID);
-    glDeleteShader(fragID);
-
-    return shaderProgramID;
-}
-
-void r_shader_use(GLuint shaderProgramID) {
-    glUseProgram(shaderProgramID);
-}
-
-r_mesh_t r_mesh_obj(const char* fileLocation) {
+mesh_t mesh_wavefront_load(const char* fileLocation) {
     double beginTime    = glfwGetTime();
     double endTime      = 0;
 
@@ -166,9 +62,9 @@ r_mesh_t r_mesh_obj(const char* fileLocation) {
 
     rewind(fileStream);
 
-    GLfloat* vertices   = (GLfloat*)malloc(sizeof(GLfloat) * vCount);
-    GLfloat* normals    = (GLfloat*)malloc(sizeof(GLfloat) * nCount);
-    GLuint* indices     = (GLuint*)malloc(sizeof(GLuint) * fCount);
+    GLfloat* vertices   = (GLfloat*) malloc(sizeof(GLfloat) * vCount);
+    GLfloat* normals    = (GLfloat*) malloc(sizeof(GLfloat) * nCount);
+    GLuint* indices     = (GLuint*) malloc(sizeof(GLuint) * fCount);
 
     while (fgets(lineBuffer, MAX_FILE_LINE_WIDTH, fileStream)) {
         { // get vertex positions
@@ -239,16 +135,16 @@ r_mesh_t r_mesh_obj(const char* fileLocation) {
         indices[i]--;
     }
 
-    r_mesh_t mesh;
-    mesh.vaoID = r_vertex_buffer_create();
+    mesh_t mesh;
+    mesh.vaoID = ogl_vertex_buffer_create();
 
-    GLuint vboID = r_buffer_create_f(sizeof(GLfloat) * vCount, vertices, GL_ARRAY_BUFFER, GL_STATIC_DRAW);
+    GLuint vboID = ogl_buffer_create_f(sizeof(GLfloat) * vCount, vertices, GL_ARRAY_BUFFER, GL_STATIC_DRAW);
     glVertexAttribPointer(0, 3, GL_FLOAT, 0, 0, 0);
 
-    GLuint nboID = r_buffer_create_f(sizeof(GLfloat) * nCount, normals, GL_ARRAY_BUFFER, GL_STATIC_DRAW);
+    GLuint nboID = ogl_buffer_create_f(sizeof(GLfloat) * nCount, normals, GL_ARRAY_BUFFER, GL_STATIC_DRAW);
     glVertexAttribPointer(1, 3, GL_FLOAT, 0, 0, 0);
 
-    GLuint iboID = r_buffer_create_i(sizeof(GLuint) * fCount, indices, GL_ELEMENT_ARRAY_BUFFER, GL_STATIC_DRAW);
+    GLuint iboID = ogl_buffer_create_i(sizeof(GLuint) * fCount, indices, GL_ELEMENT_ARRAY_BUFFER, GL_STATIC_DRAW);
     glEnableVertexAttribArray(0);
     glEnableVertexAttribArray(1);
 
@@ -265,9 +161,4 @@ r_mesh_t r_mesh_obj(const char* fileLocation) {
     printf("loading (%s) in %f seconds.\n", fileLocation, endTime - beginTime);
 
     return mesh;
-}
-
-void r_mesh_draw(r_mesh_t* mesh) {
-    glBindVertexArray(mesh->vaoID);
-    glDrawElements(GL_TRIANGLES, mesh->iCount, GL_UNSIGNED_INT, NULL);
 }

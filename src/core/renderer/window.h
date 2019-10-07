@@ -4,7 +4,7 @@
 #include "../../../deps/glad/glad.h"
 #include <GLFW/glfw3.h>
 
-#include "../../math.h"
+#include "../utility/math.h"
 
 GLFWwindow* window_create(uint32_t width, uint32_t height, const char* title);
 void window_update(GLFWwindow* pWindow);

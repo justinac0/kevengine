@@ -1,14 +1,15 @@
 TODO:
+  ☐ i/o management and wavefront dedicated functions.
   ☐ Re-write math functions.
-  ☐ Find what is causing the wierd .obj artifacts.
-  ☐ Semantic compression with the renderer.
-  ☐ Free moving camera.
-  ☐ Entitys.
   ☐ Texture rendering.
   ☐ Text rendering.
-  ☐ Basic Lighting (Flat shading).
-  ☐ Basic Scene Management.
   ☐ Debugging lines and vectors.
+  ☐ Basic Lighting (Flat shading).
+  ☐ Find what is causing the wierd .obj artifacts.
+  ☐ Free moving camera.
+  ☐ Entitys.
+  ☐ Basic Scene Management.
 
-COMPLETED:
+  COMPLETED:
   ✔ Fix current windowing situation (no callbacks). @done(19-10-07 09:48)
+  ✔ Move ogl abstraction functions to dedicated file. @done(19-10-08 00:24)

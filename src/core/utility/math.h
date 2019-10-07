@@ -48,6 +48,16 @@ typedef union {
     };
 } vec4_t;
 
+typedef struct {
+    vec2_t p1;
+    vec2_t p2;
+} m_line_vec2_t;
+
+typedef struct {
+    vec3_t p1;
+    vec3_t p2;
+} m_line_vec3_t;
+
 typedef union {
     float v[4][4];
     struct {
@@ -70,5 +80,6 @@ float m_vec2_dot(vec2_t a, vec2_t b);
 float m_vec2_cross(vec2_t a, vec2_t b);
 
 // vec3
+
 
 #endif // M_MATH_H

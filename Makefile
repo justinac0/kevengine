@@ -1,6 +1,5 @@
 CC		= gcc
 CFLAGS 	= -w -std=c99
-LDFLAGS = `pkg-config --static --libs glfw3`
 
 OBJ = $(wildcard src/*.c) 					\
 	  $(wildcard src/core/components/*.c) 	\
@@ -14,10 +13,12 @@ EXEC_NAME = kevin
 
 ifeq ($(OS), Windows_NT)
 	DEL_CMD = del
-
+	LDFLAGS = -lopengl32 -lglfw3 -lgdi32
 	TARGET_NAME = $(EXEC_NAME).exe
 else
 	DEL_CMD = rm
+
+	LDFLAGS = `pkg-config --static --libs glfw3`
 
 	UNAME = $(shell uname -s)
 	ifeq ($(UNAME), Linux)
@@ -29,7 +30,7 @@ else
 endif
 
 all: $(OBJ)
-	$(CC) $(CFLAGS) -o  bin/$(TARGET_NAME) $(OBJ) $(LDFLAGS)
+	$(CC) $(CFLAGS) $(OBJ) $(LDFLAGS) $(INCLUDES) -o bin/$(TARGET_NAME)
 
 .PHONY: clean
 clean:
