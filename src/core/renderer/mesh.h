@@ -10,6 +10,7 @@
 #include "../../../deps/glad/glad.h"
 #include <GLFW/glfw3.h>
 
+#include "../utility/util.h"
 #include "../utility/linmath.h"
 #include "../utility/math.h"
 

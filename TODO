@@ -1,15 +1,16 @@
 TODO:
-  ☐ i/o management and wavefront dedicated functions.
   ☐ Re-write math functions.
+  ☐ Render only with window focus.
   ☐ Texture rendering.
   ☐ Text rendering.
-  ☐ Debugging lines and vectors.
-  ☐ Basic Lighting (Flat shading).
   ☐ Find what is causing the wierd .obj artifacts.
-  ☐ Free moving camera.
   ☐ Entitys.
+  ☐ Free moving camera.
+  ☐ Debugging lines and vectors.
   ☐ Basic Scene Management.
-
+  ☐ Basic Lighting (Flat shading).
+  
   COMPLETED:
   ✔ Fix current windowing situation (no callbacks). @done(19-10-07 09:48)
   ✔ Move ogl abstraction functions to dedicated file. @done(19-10-08 00:24)
+  ✔ i/o management and wavefront dedicated functions. @done(19-10-08 11:06)

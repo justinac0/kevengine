@@ -23,7 +23,7 @@ GLFWwindow* window_create(uint32_t width, uint32_t height, const char* title) {
     }
 
     // setup window hints
-    //glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
+    glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
@@ -43,6 +43,8 @@ GLFWwindow* window_create(uint32_t width, uint32_t height, const char* title) {
 
     // load opengl extensions
     gladLoadGLLoader((GLADloadproc) glfwGetProcAddress);
+
+    glfwSwapInterval(1);
 
     return pWindow;
 }
