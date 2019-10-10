@@ -68,18 +68,49 @@ typedef union {
     };
 } mat4_t;
 
-// vec2
-void m_vec2_print(vec2_t a);
+/* VECTOR 2 */
+void m_vec2_print(vec2_t* src);
 vec2_t m_vec2_add(vec2_t a, vec2_t b);
 vec2_t m_vec2_sub(vec2_t a, vec2_t b);
 vec2_t m_vec2_div_scalar(vec2_t a, float scalar);
 vec2_t m_vec2_mul_scalar(vec2_t a, float scalar);
-vec2_t m_vec2_norm(vec2_t a);
 float m_vec2_mag(vec2_t a);
+vec2_t m_vec2_norm(vec2_t a);
 float m_vec2_dot(vec2_t a, vec2_t b);
-float m_vec2_cross(vec2_t a, vec2_t b);
 
-// vec3
+/* VECTOR 3 */
+void m_vec3_print(vec3_t* src);
+vec3_t m_vec3_add(vec3_t a, vec3_t b);
+vec3_t m_vec3_sub(vec3_t a, vec3_t b);
+vec3_t m_vec3_div_scalar(vec3_t a, float scalar);
+vec3_t m_vec3_mul_scalar(vec3_t a, float scalar);
+float m_vec3_mag(vec3_t a);
+vec3_t m_vec3_norm(vec3_t a);
+float m_vec3_dot(vec3_t a, vec3_t b);
+vec3_t m_vec3_cross(vec3_t a, vec3_t b);
 
+/* VECTOR 4 */
+void m_vec4_print(vec4_t* src);
+vec4_t m_vec4_add(vec4_t a, vec4_t b);
+vec4_t m_vec_sub(vec4_t a, vec4_t b);
+vec4_t m_vec4_div_scalar(vec4_t a, float scalar);
+vec4_t m_vec4_mul_scalar(vec4_t a, float scalar);
+
+/* MATRIX 4x4 */ // col major
+void m_mat4_print(mat4_t* src);
+mat4_t m_mat4_identity(void);
+mat4_t m_mat4_add(mat4_t a, mat4_t b);
+mat4_t m_mat4_mul_scalar(mat4_t a, float scalar);
+mat4_t m_mat4_mul(mat4_t a, mat4_t b);
+
+/* MAT4x4 SPECIAL FUNCTIONS */
+mat4_t m_rotate_x(float angle);
+mat4_t m_rotate_y(float angle);
+mat4_t m_rotate_z(float angle);
+mat4_t m_rotate(vec3_t rotation);
+mat4_t m_scale(vec3_t scale);
+mat4_t m_translate(vec3_t position);
+mat4_t m_projection(float fov, float aspect, float near, float far);
+mat4_t m_lookat(vec3_t eye, vec3_t at, vec3_t up);
 
 #endif // M_MATH_H

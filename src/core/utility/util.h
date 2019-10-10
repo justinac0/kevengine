@@ -7,6 +7,7 @@
 #include <stdbool.h>
 
 #include "../../../deps/glad/glad.h"
+#include "math.h"
 
 // memory allocation debugging.
 void* u_malloc(size_t size, uint32_t line, const char* file, const char* func);
@@ -31,12 +32,9 @@ char* u_file_read(char* fileLocation);
 
 // wavefront file structure.
 typedef struct {
-    GLfloat* vertices;
-    uint32_t vCount;
-    GLfloat* normals;
-    uint32_t nCount;
+    vec3_t* vertices;
+    vec3_t* normals;
     GLuint* indices;
-    uint32_t iCount;
 } u_wavefront_t;
 
 u_wavefront_t u_wavefront_load(const char* fileLocation);

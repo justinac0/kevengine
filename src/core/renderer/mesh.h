@@ -21,5 +21,6 @@ typedef struct {
 } mesh_t;
 
 mesh_t mesh_wavefront_load(const char* fileLocation);
+mesh_t mesh_primitive_triangle(void);
 
 #endif // MESH_H

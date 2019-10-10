@@ -13,8 +13,8 @@ uniform mat4 model;
 uniform vec3 lightPosition;
 
 void main(void) {
-    vec4 worldPosition = model * vec4(in_vertex_positions, 1.0f);
-    gl_Position     = projection * view * model * worldPosition;
+    vec4 worldPosition  = model * vec4(in_vertex_positions, 1.0f);
+    gl_Position         = projection * view * model * worldPosition;
 
     surfaceNormal   = (model * vec4(in_vertex_normals, 0.0)).xyz;
     toLightVector   = lightPosition - worldPosition.xyz;

@@ -34,4 +34,4 @@ all: $(OBJ)
 
 .PHONY: clean
 clean:
-	$(DEL_CMD) bin/$(TARGET_NAME)
+	$(DEL_CMD) ./bin/$(TARGET_NAME)

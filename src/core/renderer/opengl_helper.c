@@ -110,7 +110,7 @@ void ogl_shader_use(GLuint programID) {
 }
 
 inline void ogl_shader_uniform_vec3(GLfloat programID, const char* name, vec3_t* vector) {
-        glUniform3f(glGetUniformLocation(programID, name), vector->x, vector->y, vector->z);
+    glUniform3f(glGetUniformLocation(programID, name), vector->x, vector->y, vector->z);
 }
 
 inline void ogl_shader_uniform_mat4(GLfloat programID, const char* name, mat4_t* matrix) {
