@@ -54,6 +54,14 @@ void m_vec3_print(vec3_t* src) {
     printf("vec3(%.2f, %.2f, %.2f)\n", src->x, src->y, src->z);
 }
 
+vec3_t m_vec3_zero(void) {
+    return (vec3_t){ 0.0f, 0.0f, 0.0f };
+}
+
+vec3_t m_vec3_fill(float value) {
+    return (vec3_t){ value, value, value };
+}
+
 vec3_t m_vec3_add(vec3_t a, vec3_t b) {
     return (vec3_t) {
         a.x + b.x,
@@ -108,6 +116,14 @@ vec3_t m_vec3_cross(vec3_t a, vec3_t b) {
         a.y * b.z - a.z * b.y,
         a.z * b.x - a.x * b.z,
         a.x * b.y - a.y * b.x
+    };
+}
+
+vec3_t m_vec3_negate(vec3_t a) {
+    return (vec3_t) {
+        -a.x,
+        -a.y,
+        -a.z
     };
 }
 
@@ -299,7 +315,29 @@ mat4_t m_projection(float fov, float aspect, float near, float far) {
 mat4_t m_lookat(vec3_t eye, vec3_t at, vec3_t up) {
     mat4_t m = m_mat4_identity();
 
-    
+    vec3_t zaxis = m_vec3_norm(m_vec3_sub(eye, at));    
+    vec3_t xaxis = m_vec3_norm(m_vec3_cross(zaxis, up));
+    vec3_t yaxis = m_vec3_cross(xaxis, zaxis);
+
+    m_vec3_negate(zaxis);
+
+    m.v4[0] = (vec4_t) { xaxis.x, xaxis.y, xaxis.z, -m_vec3_dot(xaxis, eye) };
+    m.v4[1] = (vec4_t) { yaxis.x, yaxis.y, yaxis.z, -m_vec3_dot(yaxis, eye) };
+    m.v4[2] = (vec4_t) { zaxis.x, zaxis.y, zaxis.z, -m_vec3_dot(zaxis, eye) };
+    m.v4[3] = (vec4_t) { 0, 0, 0, 1 };
 
     return m;
+}
+
+vec3_t m_normal_from_triangle(triangle_t triangle) {
+    vec3_t surfaceNormal;
+
+    vec3_t U = m_vec3_sub(triangle.points[1], triangle.points[0]);
+    vec3_t V = m_vec3_sub(triangle.points[2], triangle.points[0]);
+
+    surfaceNormal.x = (U.y * V.z) - (U.z * V.y);
+    surfaceNormal.y = (U.z * V.x) - (U.x * V.z);
+    surfaceNormal.z = (U.x * V.y) - (U.y * V.x);
+
+    return surfaceNormal;
 }

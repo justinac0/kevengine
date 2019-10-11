@@ -1,10 +1,13 @@
 #ifndef KEVIN_H
 #define KEVIN_H
 
-// #include "core/renderer/renderer.h"
-#include "core/utility/linmath.h"
+#include "core/utility/util.h"
+#include "core/utility/math.h"
+
 #include "core/renderer/mesh.h"
 #include "core/renderer/opengl_helper.h"
 #include "core/renderer/window.h"
+
+#include "core/components/model.h"
 
 #endif // KEVIN_H

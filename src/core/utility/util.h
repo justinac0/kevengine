@@ -7,6 +7,7 @@
 #include <stdbool.h>
 
 #include "../../../deps/glad/glad.h"
+#include "../renderer/mesh.h"
 #include "math.h"
 
 // memory allocation debugging.
@@ -33,8 +34,11 @@ char* u_file_read(char* fileLocation);
 // wavefront file structure.
 typedef struct {
     vec3_t* vertices;
+    uint32_t vertCount;
     vec3_t* normals;
+    uint32_t normCount;
     GLuint* indices;
+    uint32_t indCount;
 } u_wavefront_t;
 
 u_wavefront_t u_wavefront_load(const char* fileLocation);

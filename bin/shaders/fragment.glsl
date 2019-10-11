@@ -17,5 +17,5 @@ void main(void) {
 
     vec3 debugNormals = (surfaceNormal * -1);
 
-    FragColor = vec4(ambient + diffuse * surfaceNormal, 1.0f);        
+    FragColor = vec4(ambient + diffuse * surfaceNormal, 1.0f);
 }

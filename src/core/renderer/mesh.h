@@ -11,13 +11,11 @@
 #include <GLFW/glfw3.h>
 
 #include "../utility/util.h"
-#include "../utility/linmath.h"
 #include "../utility/math.h"
 
 typedef struct {
     GLuint vaoID;
     GLuint iCount;
-    mat4_t modelMatrix;
 } mesh_t;
 
 mesh_t mesh_wavefront_load(const char* fileLocation);

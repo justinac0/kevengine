@@ -23,8 +23,6 @@ else
 	UNAME = $(shell uname -s)
 	ifeq ($(UNAME), Linux)
 		TARGET_NAME = $(EXEC_NAME)
-	else ifeq ($(UNAME), Darwin)
-		TARGET_NAME = $(EXEC_NAME).app
 	endif
 
 endif
