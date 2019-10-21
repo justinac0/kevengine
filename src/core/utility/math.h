@@ -63,6 +63,13 @@ typedef union {
 } mat4_t;
 
 typedef struct {
+    vec3_t position;
+    vec3_t rotation;
+    vec3_t scale;
+    mat4_t matrix;
+} transform_t;
+
+typedef struct {
     vec3_t points[3];
 } triangle_t;
 
@@ -103,10 +110,11 @@ float m_vec4_mul_inner(vec4_t a, vec4_t b);
 void m_mat4_print(mat4_t* src);
 mat4_t m_mat4_identity(void);
 mat4_t m_mat4_add(mat4_t a, mat4_t b);
+mat4_t m_mat4_sub(mat4_t a, mat4_t b);
 mat4_t m_mat4_mul_scalar(mat4_t a, float scalar);
 mat4_t m_mat4_mul(mat4_t a, mat4_t b);
 vec4_t m_mat4_row(mat4_t a, uint32_t row);
-mat4_t m_mat4_translate_in_place(float x, float y, float z);
+
 
 /* MAT4x4 SPECIAL FUNCTIONS */
 mat4_t m_rotate_x(float angle);
@@ -118,5 +126,9 @@ mat4_t m_translate(vec3_t position);
 mat4_t m_projection(float fov, float aspect, float near, float far);
 mat4_t m_lookat(vec3_t eye, vec3_t at, vec3_t up);
 vec3_t m_normal_from_triangle(triangle_t triangle);
+
+/* TRANSFORMATIONS */
+transform_t m_transform_create(void);
+void m_transform_update(transform_t* transform, float temp);
 
 #endif // M_MATH_H

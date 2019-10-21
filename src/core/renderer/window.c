@@ -15,6 +15,8 @@ static inline void i_framebuffer_size_callback(GLFWwindow* pWindow, int width, i
     glViewport(0, 0, width, height);
 }
 
+static inline void i_mouse_button_callback(GLFWwindow* window, int button, int action, int mods) { }
+
 GLFWwindow* window_create(uint32_t width, uint32_t height, const char* title) {
     // initialize the GLFW library
     if (!glfwInit()) {
@@ -23,7 +25,7 @@ GLFWwindow* window_create(uint32_t width, uint32_t height, const char* title) {
     }
 
     // setup window hints
-    // glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
+    glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
@@ -38,6 +40,7 @@ GLFWwindow* window_create(uint32_t width, uint32_t height, const char* title) {
     glfwSetErrorCallback(i_error_callback);
     glfwSetKeyCallback(pWindow, i_key_callback);
     glfwSetFramebufferSizeCallback(pWindow, i_framebuffer_size_callback);
+    glfwSetMouseButtonCallback(pWindow, i_mouse_button_callback);
 
     glfwMakeContextCurrent(pWindow);
 

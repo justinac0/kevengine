@@ -1,2 +1,3 @@
 # Kevin Engine
-This project serves as an exercise in three dimensional game engine development on a small scale. This engine is written in the C.
+
+will fill in the README on a later date...

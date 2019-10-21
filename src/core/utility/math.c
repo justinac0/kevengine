@@ -206,6 +206,18 @@ mat4_t m_mat4_add(mat4_t a, mat4_t b) {
     return m;
 }
 
+mat4_t m_mat4_sub(mat4_t a, mat4_t b) {
+    mat4_t m;
+
+    for (int col = 0; col < 4; col++) {
+        for (int row = 0; row < 4; row++) {
+            m.v[col][row] = a.v[col][row] - b.v[col][row];
+        }
+    }
+
+    return m;
+}
+
 mat4_t m_mat4_mul_scalar(mat4_t a, float scalar) {
     mat4_t m;
 
@@ -221,9 +233,13 @@ mat4_t m_mat4_mul_scalar(mat4_t a, float scalar) {
 mat4_t m_mat4_mul(mat4_t a, mat4_t b) {
     mat4_t m;
 
-    for (int col = 0; col < 4; col++) {
-        for (int row = 0; row < 4; row++) {
-            m.v[col][row] += a.v[col][row] * b.v[row][col];
+    int k, r, c;
+    for(c=0; c<4; ++c) {
+        for(r=0; r<4; ++r) {
+            m.v[c][r] = 0.f;
+            for(k=0; k<4; ++k) {
+                m.v[c][r] += a.v[k][r] * b.v[c][k];
+            }
         }
     }
 
@@ -234,10 +250,14 @@ mat4_t m_mat4_mul(mat4_t a, mat4_t b) {
 mat4_t m_rotate_x(float angle) {
     mat4_t m = m_mat4_identity();
 
-    m.m11 = cosf(angle);
-    m.m12 = -sinf(angle);
-    m.m21 = sinf(angle);
-    m.m22 = cosf(angle);
+    float s = sinf(angle);
+    float c = cosf(angle);
+
+    m.m11 = c;
+    m.m12 = -s;
+    
+    m.m21 = s;
+    m.m22 = c;
 
     return m;
 }
@@ -247,9 +267,10 @@ mat4_t m_rotate_y(float angle) {
 
     m.m00 = cosf(angle);
     m.m02 = sinf(angle);
+
     m.m20 = -sinf(angle);
     m.m22 = cosf(angle);
-
+    
     return m;
 }
 
@@ -258,6 +279,7 @@ mat4_t m_rotate_z(float angle) {
 
     m.m00 = cosf(angle);
     m.m01 = -sinf(angle);
+
     m.m10 = sinf(angle);
     m.m11 = cosf(angle);
 
@@ -265,10 +287,7 @@ mat4_t m_rotate_z(float angle) {
 }
 
 mat4_t m_rotate(vec3_t rotation) {
-    mat4_t m;
-
-    m = m_mat4_mul(m_rotate_z(rotation.z), m_rotate_y(rotation.y));
-    m = m_mat4_mul(m, m_rotate_x(rotation.x));
+    mat4_t m = m_mat4_identity();
 
     return m;
 }
@@ -293,7 +312,7 @@ mat4_t m_translate(vec3_t position) {
     return m;
 }
 
-mat4_t m_projection(float fov, float aspect, float near, float far) {  
+mat4_t m_projection(float fov, float aspect, float near, float far) {
     mat4_t m = m_mat4_identity();
 
     float range = tanf(fov / 2.0f) * near;
@@ -315,7 +334,7 @@ mat4_t m_projection(float fov, float aspect, float near, float far) {
 mat4_t m_lookat(vec3_t eye, vec3_t at, vec3_t up) {
     mat4_t m = m_mat4_identity();
 
-    vec3_t zaxis = m_vec3_norm(m_vec3_sub(eye, at));    
+    vec3_t zaxis = m_vec3_norm(m_vec3_sub(eye, at));
     vec3_t xaxis = m_vec3_norm(m_vec3_cross(zaxis, up));
     vec3_t yaxis = m_vec3_cross(xaxis, zaxis);
 
@@ -340,4 +359,22 @@ vec3_t m_normal_from_triangle(triangle_t triangle) {
     surfaceNormal.z = (U.x * V.y) - (U.y * V.x);
 
     return surfaceNormal;
+}
+
+/* TRANSFORMATIONS */
+transform_t m_transform_create(void) {
+    return (transform_t) {
+        m_vec3_zero(),
+        m_vec3_zero(),
+        m_vec3_fill(1.f),
+        m_mat4_identity()
+    };
+}
+
+void m_transform_update(transform_t* transform, float temp) {
+    mat4_t t = m_translate(transform->position);
+
+    mat4_t s = m_scale(transform->scale);
+
+    transform->matrix = m_mat4_mul(t, s);
 }

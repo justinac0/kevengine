@@ -8,6 +8,7 @@
 #include "core/renderer/opengl_helper.h"
 #include "core/renderer/window.h"
 
+#include "core/components/camera.h"
 #include "core/components/model.h"
 
 #endif // KEVIN_H

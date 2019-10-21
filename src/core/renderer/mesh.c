@@ -4,8 +4,8 @@ mesh_t mesh_wavefront_load(const char* fileLocation) {
     u_wavefront_t obj = u_wavefront_load(fileLocation);
 
     mesh_t mesh;
-    mesh.vaoID  = ogl_vertex_buffer_create();
-    mesh.iCount = obj.indCount;
+    mesh.vaoID          = ogl_vertex_buffer_create();
+    mesh.iCount         = obj.indCount;
 
     GLuint vboID = ogl_buffer_create_f((sizeof(vec3_t) * obj.vertCount), obj.vertices, GL_ARRAY_BUFFER, GL_STATIC_DRAW);
     glVertexAttribPointer(0, 3, GL_FLOAT, 0, 0, 0);
@@ -40,8 +40,8 @@ mesh_t mesh_primitive_triangle(void) {
     GLuint indices[3] = { 0, 1, 2 };
 
     mesh_t mesh;
-    mesh.vaoID  = ogl_vertex_buffer_create();
-    mesh.iCount = 3;
+    mesh.vaoID          = ogl_vertex_buffer_create();
+    mesh.iCount         = 3;
 
     GLuint vboID = ogl_buffer_create_f(sizeof(vec3_t) * 3, vertices, GL_ARRAY_BUFFER, GL_STATIC_DRAW);
     glVertexAttribPointer(0, 3, GL_FLOAT, 0, 0, 0);
@@ -53,9 +53,7 @@ mesh_t mesh_primitive_triangle(void) {
 
     GLuint iboID = ogl_buffer_create_i(sizeof(GLuint) * 3, indices, GL_ELEMENT_ARRAY_BUFFER, GL_STATIC_DRAW);
 
-
     glBindVertexArray(0);
-
 
     return mesh;
 }
