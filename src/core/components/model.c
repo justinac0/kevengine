@@ -12,5 +12,5 @@ model_t model_create(mesh_t mesh) {
 }
 
 void model_update(model_t* model) {
-    m_transform_update(&model->transform, model->transform.rotation.x);
+    m_transform_update(&model->transform);
 }

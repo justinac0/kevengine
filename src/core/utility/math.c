@@ -1,5 +1,5 @@
 #include "math.h"
-
+i
 /* VECTOR 2 */
 void m_vec2_print(vec2_t* src) {
     printf("vec2(%.2f, %.2f)\n", src->x, src->y);
@@ -315,6 +315,8 @@ mat4_t m_translate(vec3_t position) {
 mat4_t m_projection(float fov, float aspect, float near, float far) {
     mat4_t m = m_mat4_identity();
 
+    fov *= DEG2RAD;
+
     float range = tanf(fov / 2.0f) * near;
     float sx = (2 * near) / (range * aspect + range * aspect);
     float sy = near / range;
@@ -371,10 +373,15 @@ transform_t m_transform_create(void) {
     };
 }
 
-void m_transform_update(transform_t* transform, float temp) {
+void m_transform_update(transform_t* transform) {
     mat4_t t = m_translate(transform->position);
 
     mat4_t s = m_scale(transform->scale);
 
-    transform->matrix = m_mat4_mul(t, s);
+    // rotation matrix
+    // fix dis plz
+    mat4_t r = m_mat4_identity();
+
+    transform->matrix = m_mat4_mul(t, r);
+    transform->matrix = m_mat4_mul(transform->matrix, s);
 }

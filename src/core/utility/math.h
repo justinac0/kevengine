@@ -129,6 +129,6 @@ vec3_t m_normal_from_triangle(triangle_t triangle);
 
 /* TRANSFORMATIONS */
 transform_t m_transform_create(void);
-void m_transform_update(transform_t* transform, float temp);
+void m_transform_update(transform_t* transform);
 
 #endif // M_MATH_H

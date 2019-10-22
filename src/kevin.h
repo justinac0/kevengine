@@ -2,6 +2,7 @@
 #define KEVIN_H
 
 #include "core/utility/util.h"
+#include "core/utility/memory.h"
 #include "core/utility/math.h"
 
 #include "core/renderer/mesh.h"
