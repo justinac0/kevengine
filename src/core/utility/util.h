@@ -26,11 +26,14 @@ void u_free(void* ptr, uint32_t line, const char* file, const char* func);
 #endif
 
 // memory allocation tools
-#define MEMORY_BLOCK_TAG_EMPTY 0
-#define MEMORY_BLOCK_TAG_USED  1
+#define MEMORY_TAG_FREE   0 // empty block
+#define MEMORY_TAG_RENDER 1 // block contains render target
+#define MEMORY_TAG_RAW    2 // raw data
 
 #define MEMORY_CSTCT(type, data) (*(type*)data) // cast memory pool block to correct type if type stored is a struct
 #define MEMORY_CTYPE(type, data) ((type*)data) // case memory pool block to correct type if type stored is non-struct
+
+#define MEMORY_1MB 1000000
 
 typedef struct {
     uint32_t tag;  // tags determine what happens with this block at run-time.
@@ -45,11 +48,11 @@ typedef struct {
     memory_block_t* blocks;   // collection of memory blocks.
 } memory_pool_t;
 
-memory_block_t u_memory_block_create(uint32_t tag, uint32_t size, void* data);
-void u_memory_block_free(memory_block_t* block);
 memory_pool_t u_memory_pool_create(uint32_t capacity);
 void u_memory_pool_destroy(memory_pool_t* mp);
-void u_memory_pool_add(memory_pool_t* mp, uint32_t size, void* data);
+void u_memory_pool_add(memory_pool_t* mp, char tag, uint32_t size, void* data);
+void u_memory_pool_rem(memory_pool_t* mp, uint32_t index);
+void u_memory_pool_defrag(memory_pool_t* mp);
 
 // file I/O.
 #define MAX_FILE_LINE_WIDTH 512

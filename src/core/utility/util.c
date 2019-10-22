@@ -45,26 +45,6 @@ void u_free(void* ptr, uint32_t line, const char* file, const char* func) {
     ptr = NULL;
 }
 
-memory_block_t u_memory_block_create(uint32_t tag, uint32_t size, void* data) {
-    memory_block_t block;
-    block.tag  = tag;
-    block.size = size + (sizeof(memory_block_t) - sizeof(void*));
-    block.data = (void*) malloc(block.size);
-
-    if (block.data == NULL) {
-        fprintf(stderr, "Failed to allocate memory!\n");
-    }
-
-    printf("Created memory block (%p) size: %d bytes\n", block.data, block.size);
-    
-    return block;
-}
-
-void u_memory_block_free(memory_block_t* block) {
-    free(block->data);
-    block->data = NULL;
-}
-
 memory_pool_t u_memory_pool_create(uint32_t capacity) {
     memory_pool_t mp;
     mp.size     = 0;
@@ -77,25 +57,36 @@ memory_pool_t u_memory_pool_create(uint32_t capacity) {
 
 void u_memory_pool_destroy(memory_pool_t* mp) {
     free(mp->blocks);
+
     mp->size     = 0;
     mp->capacity = 0;
     mp->length   = 0;
     mp->blocks   = NULL;
 }
 
-void u_memory_pool_add(memory_pool_t* mp, uint32_t size, void* data) {
+void u_memory_pool_add(memory_pool_t* mp, char tag, uint32_t size, void* data) {
     if (mp->size + size >= mp->capacity) {
         printf("Memory pool is full...\n");
         return;
     }
 
-    mp->blocks[mp->length].tag  = MEMORY_BLOCK_TAG_USED;
-    mp->blocks[mp->length].size = size + (sizeof(memory_block_t) - sizeof(void*));
-    mp->blocks[mp->length].data = data;
+    size_t blockSize = size + (sizeof(memory_block_t) - sizeof(void*));
 
-    mp->size += size + (sizeof(memory_block_t) - sizeof(void*));
+    mp->blocks[mp->length].tag  = tag;
+    mp->blocks[mp->length].size = blockSize;
+    memcpy(&mp->blocks[mp->length].data, &data, blockSize);
+
+    printf("::NEW_BLOCK(addr(%p) | size = %d bytes)\n", &mp->blocks[mp->length], blockSize);
+    
+    mp->size += blockSize;
     mp->length++;
 }
+
+void u_memory_pool_rem(memory_pool_t* mp, uint32_t index) {
+    
+}
+
+// void u_memory_pool_defrag(memory_pool_t* mp) { }
 
 char* u_file_read(char* fileLocation) {
     FILE* fileStream = NULL;
