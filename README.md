@@ -21,26 +21,10 @@ The executable can be found in the ```bin``` directory.
 
 ##### Windows
 Working on it...
-
 ##### OSX
 Not supported...
-
 ### Documentation
 Working on it...
-
 ### Change Log
 Working on release v0.0.1
-
 ### Bugs
-...# Kevin Engine
-
-3D game engine project written in C99.
-
-### Table of contents
-* [Website](https://github.com/justinac0/kevin-engine)
-* [Compiling](#compiling)
-* [Documentation](#documentation)
-
-### Compiling
-
-### Documentation
