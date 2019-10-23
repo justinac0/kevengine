@@ -19,9 +19,9 @@ Clean ```make clean```
 
 The executable can be found in the ```bin``` directory.
 
-##### Windows
+#### Windows
 Working on it...
-##### OSX
+#### OSX
 Not supported...
 ### Documentation
 Working on it...
