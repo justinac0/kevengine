@@ -1,30 +1,20 @@
 # kevin-engine
-
 kevin-engine is a 3D game engine written in C99. This project is a WIP.
 
-### Table of contents
+## Table of contents
 * [Website](https://github.com/justinac0/kevin-engine)
 * [Compiling](#compiling)
 * [Documentation](#documentation)
 * [Change Log](#change-log)
 * [Bugs](#bugs)
 
-### Compiling
-##### Linux
-Install packages ```make, glfw, mesa```
+## Compiling
+...
 
-Build ```make all```
+## Documentation
+...
 
-Clean ```make clean```
+## Change Log
+[] Working on release v0.0.1
 
-The executable can be found in the ```bin``` directory.
-
-#### Windows
-Working on it...
-#### OSX
-Not supported...
-### Documentation
-Working on it...
-### Change Log
-Working on release v0.0.1
-### Bugs
+## Bugs
