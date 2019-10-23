@@ -10,7 +10,7 @@
 #include "../../../deps/glad/glad.h"
 #include <GLFW/glfw3.h>
 
-#include "../utility/util.h"
+#include "../utility/model_loader.h"
 #include "../utility/math.h"
 
 typedef struct {

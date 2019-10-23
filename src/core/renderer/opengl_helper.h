@@ -7,8 +7,8 @@
 
 #include "../../../deps/glad/glad.h"
 
-#include "../utility/util.h"
 #include "../utility/math.h"
+#include "../utility/file_io.h"
 
 /* BUFFERS */
 // create vaoID.

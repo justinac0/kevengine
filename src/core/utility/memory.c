@@ -45,7 +45,7 @@ void u_free(void* ptr, uint32_t line, const char* file, const char* func) {
     ptr = NULL;
 }
 
-memory_pool_t u_memory_pool_create(uint32_t capacity) {
+memory_pool_t memory_pool_create(uint32_t capacity) {
     memory_pool_t mp;
     mp.size     = 0;
     mp.capacity = capacity;
@@ -55,7 +55,7 @@ memory_pool_t u_memory_pool_create(uint32_t capacity) {
     return mp;
 }
 
-void u_memory_pool_destroy(memory_pool_t* mp) {
+void memory_pool_destroy(memory_pool_t* mp) {
     free(mp->blocks);
 
     mp->size     = 0;
@@ -64,7 +64,7 @@ void u_memory_pool_destroy(memory_pool_t* mp) {
     mp->blocks   = NULL;
 }
 
-void u_memory_pool_add(memory_pool_t* mp, char tag, uint32_t size, void* data) {
+void memory_pool_add(memory_pool_t* mp, char tag, uint32_t size, void* data) {
     if (mp->size + size >= mp->capacity) {
         printf("Memory pool is full...\n");
         return;
@@ -82,6 +82,6 @@ void u_memory_pool_add(memory_pool_t* mp, char tag, uint32_t size, void* data) {
     mp->length++;
 }
 
-void u_memory_pool_del(memory_pool_t* mp, uint32_t index) {
-    mp->blocks[index].tag = MEMORY_TAG_FREE;
+void memory_pool_del(memory_pool_t* mp, uint32_t index) {
+    mp->blocks[index].tag = MEMORY_BLOCK_TAG_FREE_NOW;
 }

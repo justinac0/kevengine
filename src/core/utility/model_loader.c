@@ -1,31 +1,7 @@
-#include "util.h"
+#include "model_loader.h"
 
-char* u_file_read(char* fileLocation) {
-    FILE* fileStream = NULL;
-    if ((fileStream = fopen(fileLocation, "r")) == NULL) {
-        printf("Failed to open file at location: %s\n", fileLocation);
-        exit(EXIT_FAILURE);
-    }
-
-    fseek(fileStream, SEEK_SET, SEEK_END);
-    uint32_t fileLength = ftell(fileStream);
-    rewind(fileStream);
-
-    char* buffer = NULL;
-    if ((buffer = (char*)calloc(fileLength + 1, sizeof(char))) == NULL) {
-        printf("Cannot allocate memory for file buffer\n");
-        exit(EXIT_FAILURE);
-    }
-
-    fread(buffer, sizeof(char), fileLength, fileStream);
-
-    fclose(fileStream);
-
-    return buffer;
-}
-
-u_wavefront_t u_wavefront_load(const char* fileLocation) {
-    u_wavefront_t obj;
+ml_wavefront_t ml_wavefront_load(const char* fileLocation) {
+    ml_wavefront_t obj;
     obj.vertices    = NULL;
     obj.vertCount   = 0;
     obj.normals     = NULL;
@@ -65,9 +41,9 @@ u_wavefront_t u_wavefront_load(const char* fileLocation) {
 
     rewind(fileStream);
 
-    obj.vertices    = (vec3_t*) malloc(sizeof(vec3_t) * obj.vertCount);
-    obj.normals    = (vec3_t*) malloc(sizeof(vec3_t) * obj.normCount);
-    obj.indices     = (GLuint*) malloc(sizeof(GLuint) * obj.indCount);
+    obj.vertices = (vec3_t*) malloc(sizeof(vec3_t) * obj.vertCount);
+    obj.normals  = (vec3_t*) malloc(sizeof(vec3_t) * obj.normCount);
+    obj.indices  = (GLuint*) malloc(sizeof(GLuint) * obj.indCount);
 
     while (fgets(lineBuffer, MAX_FILE_LINE_WIDTH, fileStream)) {
         if (sscanf(lineBuffer, "v %f %f %f", &v1, &v2, &v3) == 3) {
@@ -100,7 +76,7 @@ u_wavefront_t u_wavefront_load(const char* fileLocation) {
     return obj;
 }
 
-void u_wavefront_free(u_wavefront_t* obj) {
+void ml_wavefront_free(ml_wavefront_t* obj) {
     free(obj->vertices);
     free(obj->normals);
     free(obj->indices);

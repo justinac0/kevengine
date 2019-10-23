@@ -21,15 +21,19 @@ void u_free(void* ptr, uint32_t line, const char* file, const char* func);
 #endif
 
 // memory allocation tools
-#define MEMORY_TAG_FREE   0 // empty block
-#define MEMORY_TAG_USED   1 // used block
-#define MEMORY_TAG_RENDER 2 // block contains render target
-#define MEMORY_TAG_RAW    3 // raw data
+#define MEMORY_BLOCK_TAG_FREE_LATER 0 // block will be removed on next defrag.
+#define MEMORY_BLOCK_TAG_FREE_NOW   1 // block will be removed straight awag.
+#define MEMORY_BLOCK_TAG_STATIC     2 // block static through entire execution time.
+#define MEMORY_BLOCK_TAG_DYNAMIC    3 // block is temporarily used in execution time.
+
+// these tags should be specific to the renderer, not the memory
+#define MEMORY_BLOCK_TAG_RENDER  4 // block contains render target
+#define MEMORY_BLOCK_TAG_RAW     5 // raw data
 
 #define MEMORY_BLOCK_CAST_STRUCT(type, data) (*(type*)data)
-#define MEMORY_BLOCK_CAST_TYPE(type, data) ((type*)data)
+#define MEMORY_BLOCK_CAST_TYPE(type, data)   ((type*)data)
 
-#define MEMORY_1KB 1000
+#define MEMORY_1MB 1000000
 
 typedef struct {
     uint32_t tag;  // tags determine what happens with this block at run-time.
@@ -44,9 +48,9 @@ typedef struct {
     memory_block_t* blocks;   // collection of memory blocks.
 } memory_pool_t;
 
-memory_pool_t u_memory_pool_create(uint32_t capacity);
-void u_memory_pool_destroy(memory_pool_t* mp);
-void u_memory_pool_add(memory_pool_t* mp, char tag, uint32_t size, void* data);
-void u_memory_pool_del(memory_pool_t* mp, uint32_t index);
+memory_pool_t memory_pool_create(uint32_t capacity);
+void memory_pool_destroy(memory_pool_t* mp);
+void memory_pool_add(memory_pool_t* mp, char tag, uint32_t size, void* data);
+void memory_pool_del(memory_pool_t* mp, uint32_t index);
 
 #endif // MEMORY_H

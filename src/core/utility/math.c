@@ -1,5 +1,5 @@
 #include "math.h"
-i
+
 /* VECTOR 2 */
 void m_vec2_print(vec2_t* src) {
     printf("vec2(%.2f, %.2f)\n", src->x, src->y);

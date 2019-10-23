@@ -11,11 +11,11 @@ int main(int argc, char* argv) {
     shaderProgramID      = ogl_shader_load("bin/shaders/vertex.glsl",   "bin/shaders/fragment.glsl");
     lightShaderProgramID = ogl_shader_load("bin/shaders/vs_light.glsl", "bin/shaders/fs_light.glsl");
 
-    memory_pool_t mp = u_memory_pool_create(MEMORY_1KB);
-
-    u_memory_pool_add(&mp, MEMORY_TAG_RENDER, sizeof(model_t), &(model_t) { m_transform_create(), mesh_wavefront_load("bin/models/dragon.obj") });
-    u_memory_pool_add(&mp, MEMORY_TAG_RENDER, sizeof(model_t), &(model_t) { m_transform_create(), mesh_primitive_triangle() });
-    u_memory_pool_add(&mp, MEMORY_TAG_RENDER, sizeof(model_t), &(model_t) { m_transform_create(), mesh_primitive_triangle() });
+    memory_pool_t mp = memory_pool_create(MEMORY_1MB);
+    
+    memory_pool_add(&mp, MEMORY_BLOCK_TAG_RENDER, sizeof(model_t), &(model_t) { m_transform_create(), mesh_wavefront_load("bin/models/dragon.obj") });
+    memory_pool_add(&mp, MEMORY_BLOCK_TAG_RENDER, sizeof(model_t), &(model_t) { m_transform_create(), mesh_primitive_triangle() });
+    memory_pool_add(&mp, MEMORY_BLOCK_TAG_RENDER, sizeof(model_t), &(model_t) { m_transform_create(), mesh_primitive_triangle() });
 
     MEMORY_BLOCK_CAST_STRUCT(model_t, mp.blocks[0].data).transform.position.z = -25;
 
@@ -38,7 +38,7 @@ int main(int argc, char* argv) {
             lastTime = glfwGetTime();
 
             for (int i = 0; i < mp.length; i++) {
-                if (mp.blocks[i].tag == MEMORY_TAG_RENDER) {
+                if (mp.blocks[i].tag == MEMORY_BLOCK_TAG_RENDER) {
                     model_update(&MEMORY_BLOCK_CAST_STRUCT(model_t, mp.blocks[i].data));
                 }
             }
@@ -56,8 +56,10 @@ int main(int argc, char* argv) {
         glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
         glClearColor(0.2f, 0.2f, 0.3f, 1.0f);
 
+        ogl_shader_uniform_vec3(shaderProgramID, "lightPosition", &MEMORY_BLOCK_CAST_STRUCT(model_t, mp.blocks[1].data).transform.position);        
+        
         for (int i = 0; i < mp.length; i++) {
-            if (mp.blocks[i].tag == MEMORY_TAG_RENDER) {
+            if (mp.blocks[i].tag == MEMORY_BLOCK_TAG_RENDER) {
                 GLuint stateShaderID = 0;
 
                 if (i == 1) {
@@ -68,18 +70,18 @@ int main(int argc, char* argv) {
                     stateShaderID = shaderProgramID;
                 }
 
-                ogl_shader_uniform_vec3(shaderProgramID, "lightPosition", &MEMORY_BLOCK_CAST_STRUCT(model_t, mp.blocks[1].data).transform.position);
                 ogl_shader_uniform_mat4(stateShaderID, "projection", &projection);
                 ogl_shader_uniform_mat4(stateShaderID, "view", &camera.matrix);
                 ogl_shader_uniform_mat4(stateShaderID, "model", &MEMORY_BLOCK_CAST_STRUCT(model_t, mp.blocks[i].data).transform.matrix);
-                ogl_draw(GL_TRIANGLES, MEMORY_BLOCK_CAST_STRUCT(model_t, mp.blocks[i].data).mesh.vaoID, MEMORY_BLOCK_CAST_STRUCT(model_t, mp.blocks[i].data).mesh.iCount);
+                ogl_draw(GL_TRIANGLES, MEMORY_BLOCK_CAST_STRUCT(model_t, mp.blocks[i].data).mesh.vaoID,
+                         MEMORY_BLOCK_CAST_STRUCT(model_t, mp.blocks[i].data).mesh.iCount);
             }
         }
     }
 
     window_destroy(pWindow);
 
-    u_memory_pool_destroy(&mp);
+    memory_pool_destroy(&mp);
     
     return 0;
 }

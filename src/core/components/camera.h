@@ -10,6 +10,10 @@
 #include "../utility/math.h"
 
 typedef struct {
+    float yaw;
+    float pitch;
+    float roll;
+
     mat4_t matrix;
 } camera_t;
 

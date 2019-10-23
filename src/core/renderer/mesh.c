@@ -1,7 +1,7 @@
 #include "mesh.h"
 
 mesh_t mesh_wavefront_load(const char* fileLocation) {
-    u_wavefront_t obj = u_wavefront_load(fileLocation);
+    ml_wavefront_t obj = ml_wavefront_load(fileLocation);
 
     mesh_t mesh;
     mesh.vaoID          = ogl_vertex_buffer_create();
@@ -19,7 +19,7 @@ mesh_t mesh_wavefront_load(const char* fileLocation) {
 
     glBindVertexArray(0);
 
-    u_wavefront_free(&obj);
+    ml_wavefront_free(&obj);
 
     return mesh;
 }

@@ -58,7 +58,7 @@ GLuint ogl_shader_compile(const char* fileLocation, const int shaderType) {
     GLuint shaderID = glCreateShader(shaderType);
     uint32_t result, length;
 
-    const char* source = u_file_read(fileLocation);
+    const char* source = file_read(fileLocation);
     length = strlen(source);
 
     glShaderSource(shaderID, 1, &source, &length);
