@@ -66,7 +66,7 @@ void memory_pool_destroy(memory_pool_t* mp) {
 
 void memory_pool_add(memory_pool_t* mp, char tag, uint32_t size, void* data) {
     if (mp->size + size >= mp->capacity) {
-        printf("Memory pool is full...\n");
+        // printf("Memory pool is full...\n");
         return;
     }
 
@@ -76,7 +76,7 @@ void memory_pool_add(memory_pool_t* mp, char tag, uint32_t size, void* data) {
     mp->blocks[mp->length].size = blockSize;
     memcpy(&mp->blocks[mp->length].data, &data, blockSize);
 
-    printf("::NEW_BLOCK(addr(%p) | size = %d bytes)\n", &mp->blocks[mp->length], blockSize);
+    // printf("::NEW_BLOCK(addr(%p) | size = %d bytes)\n", &mp->blocks[mp->length], blockSize);
     
     mp->size += blockSize;
     mp->length++;

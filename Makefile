@@ -1,13 +1,13 @@
 CC		= gcc
 CFLAGS 	= -w -std=c99
 
-OBJ = $(wildcard src/*.c) 					\
+OBJ = $(wildcard src/*.c)			\
 	  $(wildcard src/core/components/*.c) 	\
 	  $(wildcard src/core/renderer/*.c) 	\
-	  $(wildcard src/core/utility/*.c) 		\
+	  $(wildcard src/core/utility/*.c) 	\
 	  deps/glad/glad.c
 
-INCLUDES = -Ideps/glfw/include
+INCLUDES = -Ideps/glfw-3.3/include
 
 EXEC_NAME = kevin
 
@@ -33,3 +33,4 @@ all: $(OBJ)
 .PHONY: clean
 clean:
 	$(DEL_CMD) ./bin/$(TARGET_NAME)
+
