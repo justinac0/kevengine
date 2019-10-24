@@ -1,23 +1,24 @@
-# kevin-engine
+># kevin-engine
 **kevin-engine** is a 3D game engine written in C99. This project is a WIP.
 **kevin-engine** is released under the Unlicense (http://unlicense.org/).
 Read LICENSE.md to see what this implies.
+___
 
 ##### Third party libraries used
 * [glfw 3.3](#https://www.glfw.org/)
 * [glad](#https://github.com/Dav1dde/glad)
 
-## Table of contents
-* ~~[Website](#)~~
-* [Compiling](#compiling)
+>## Table of contents
+* ~~Website~~
+* [Build Source](#build)
 * [Documentation](#documentation)
 * [Change Log](#change-log)
 * [Bugs](#bugs)
 
-## Building from the Source
+>## Build Source
 The following sub-sections cover how to setup the build system and how to compile **kevin-engine** source.
 
-### Windows
+#### Windows
 ##### Setting up the enviroment
 This project uses GLFW. You will need to download the binaries from this following link.
 Download 64 bit binaries if your computer supports it.
@@ -47,7 +48,7 @@ The executable can be found in the bin folder of kevin-engine ```bin/kevin.exe``
 For removing generated files run ```mingw32-make clean```
 
 ### Linux
-##### Setting up the enviroment
+#### Setting up the enviroment
 You will need to install a couple of packages:
 ```make```, ```libgl1-mesa-dev``` and ```gcc```
 
@@ -56,11 +57,11 @@ For compilation run ```make all```
 The executable can be found in the bin folder of kevin-engine ```bin/kevin```
 For removing generated files run ```make clean```
 
-## Documentation
+>## Documentation
 
-## Change Log
+>## Change Log
 A change log will be released after every release.
 -- Currently working on **kevin-engine** release v0.0.1
 
-## Bugs
+>## Bugs
 ...
