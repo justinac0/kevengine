@@ -1,3 +1,4 @@
+#define MEM_DEBUG
 #include "kevin.h"
 
 #define FPS 240
@@ -12,12 +13,9 @@ int main(int argc, char* argv) {
     lightShaderProgramID = ogl_shader_load("bin/shaders/vs_light.glsl", "bin/shaders/fs_light.glsl");
 
     memory_pool_t mp = memory_pool_create(MEMORY_1MB);
-    
+
     memory_pool_add(&mp, MEMORY_BLOCK_TAG_RENDER, sizeof(model_t), &(model_t) { m_transform_create(), mesh_wavefront_load("bin/models/dragon.obj") });
     memory_pool_add(&mp, MEMORY_BLOCK_TAG_RENDER, sizeof(model_t), &(model_t) { m_transform_create(), mesh_primitive_triangle() });
-    memory_pool_add(&mp, MEMORY_BLOCK_TAG_RENDER, sizeof(model_t), &(model_t) { m_transform_create(), mesh_primitive_triangle() });
-
-    MEMORY_BLOCK_CAST_STRUCT(model_t, mp.blocks[0].data).transform.position.z = -25;
 
     projection = m_projection(50, 4/3, 0.01f, 250.0f);
 
@@ -29,6 +27,10 @@ int main(int argc, char* argv) {
 
     double lastTime = glfwGetTime();
     
+    MEMORY_BLOCK_CAST_STRUCT(model_t, mp.blocks[0].data).transform.scale = m_vec3_fill(.5f);
+
+
+
     while (!glfwWindowShouldClose(pWindow)) {
         window_update(pWindow);
 
@@ -45,12 +47,11 @@ int main(int argc, char* argv) {
 
             camera_drag_look(&camera);
 
-            MEMORY_BLOCK_CAST_STRUCT(model_t, mp.blocks[1].data).transform.position.y = 15 * sinf(glfwGetTime());
-            MEMORY_BLOCK_CAST_STRUCT(model_t, mp.blocks[1].data).transform.position.z = 15 * cosf(glfwGetTime()) - 25;
+            MEMORY_BLOCK_CAST_STRUCT(model_t, mp.blocks[0].data).transform.position.z = 4 * sinf(glfwGetTime());
+            MEMORY_BLOCK_CAST_STRUCT(model_t, mp.blocks[0].data).transform.rotation.y += 5.f;
 
-            MEMORY_BLOCK_CAST_STRUCT(model_t, mp.blocks[2].data).transform.position.x = sinf(glfwGetTime()) * 5;
-            MEMORY_BLOCK_CAST_STRUCT(model_t, mp.blocks[2].data).transform.position.y = cosf(glfwGetTime()) * 5;
-            MEMORY_BLOCK_CAST_STRUCT(model_t, mp.blocks[2].data).transform.position.z = -9;
+            MEMORY_BLOCK_CAST_STRUCT(model_t, mp.blocks[1].data).transform.position.y = 15 * sinf(glfwGetTime());
+            MEMORY_BLOCK_CAST_STRUCT(model_t, mp.blocks[1].data).transform.position.z = 15 * cosf(glfwGetTime());
         }
 
         glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);

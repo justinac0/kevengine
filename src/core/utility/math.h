@@ -114,6 +114,7 @@ mat4_t m_mat4_sub(mat4_t a, mat4_t b);
 mat4_t m_mat4_mul_scalar(mat4_t a, float scalar);
 mat4_t m_mat4_mul(mat4_t a, mat4_t b);
 vec4_t m_mat4_row(mat4_t a, uint32_t row);
+mat4_t m_mat4_pow(mat4_t a, float power);
 
 
 /* MAT4x4 SPECIAL FUNCTIONS */

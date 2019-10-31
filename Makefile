@@ -1,10 +1,10 @@
 CC		= gcc
 CFLAGS 	= -w -std=c99
 
-OBJ = $(wildcard src/*.c)			\
-	  $(wildcard src/core/components/*.c) 	\
-	  $(wildcard src/core/renderer/*.c) 	\
-	  $(wildcard src/core/utility/*.c) 	\
+OBJ = $(wildcard src/*.c)			      \
+	  $(wildcard src/core/components/*.c) \
+	  $(wildcard src/core/renderer/*.c)   \
+	  $(wildcard src/core/utility/*.c) 	  \
 	  deps/glad/glad.c
 
 INCLUDES = -Ideps/glfw-3.3/include

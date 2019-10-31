@@ -246,17 +246,29 @@ mat4_t m_mat4_mul(mat4_t a, mat4_t b) {
     return m;
 }
 
+mat4_t m_mat4_pow(mat4_t a, float power) {
+    mat4_t m;
+
+    for(int col = 0; col < 4; col++) {
+        for(int row = 0; row < 4; row++) {
+            m.v[col][row] = powf(a.v[col][row], power);
+        }
+    }
+
+    return m;
+
+}
+
 /* MAT4x4 SPECIAL FUNCTIONS */
 mat4_t m_rotate_x(float angle) {
     mat4_t m = m_mat4_identity();
 
-    float s = sinf(angle);
-    float c = cosf(angle);
+    float s = sinf(angle * DEG2RAD);
+    float c = cosf(angle * DEG2RAD);
 
     m.m11 = c;
-    m.m12 = -s;
-    
-    m.m21 = s;
+    m.m12 = s;
+    m.m21 = -s;
     m.m22 = c;
 
     return m;
@@ -265,29 +277,27 @@ mat4_t m_rotate_x(float angle) {
 mat4_t m_rotate_y(float angle) {
     mat4_t m = m_mat4_identity();
 
-    m.m00 = cosf(angle);
-    m.m02 = sinf(angle);
-
-    m.m20 = -sinf(angle);
-    m.m22 = cosf(angle);
+    float s = sinf(angle * DEG2RAD);
+    float c = cosf(angle * DEG2RAD);
     
+    m.m00 = c;
+    m.m02 = -s;
+    m.m20 = s;
+    m.m22 = c;
+
     return m;
 }
 
 mat4_t m_rotate_z(float angle) {
     mat4_t m = m_mat4_identity();
 
-    m.m00 = cosf(angle);
-    m.m01 = -sinf(angle);
+    float s = sinf(angle * DEG2RAD);
+    float c = cosf(angle * DEG2RAD);
 
-    m.m10 = sinf(angle);
-    m.m11 = cosf(angle);
-
-    return m;
-}
-
-mat4_t m_rotate(vec3_t rotation) {
-    mat4_t m = m_mat4_identity();
+    m.m00 = c;
+    m.m01 = -s;
+    m.m10 = s;
+    m.m11 = c;
 
     return m;
 }
@@ -379,9 +389,12 @@ void m_transform_update(transform_t* transform) {
     mat4_t s = m_scale(transform->scale);
 
     // rotation matrix
-    // fix dis plz
-    mat4_t r = m_mat4_identity();
+    mat4_t rx = m_rotate_x(transform->rotation.x);
+    mat4_t ry = m_rotate_y(transform->rotation.y);
+    mat4_t rz = m_rotate_z(transform->rotation.z);
 
-    transform->matrix = m_mat4_mul(t, r);
-    transform->matrix = m_mat4_mul(transform->matrix, s);
+    mat4_t r = m_mat4_mul(m_mat4_mul(rx, ry), rz);
+
+    transform->matrix = m_mat4_mul(s, t);
+    transform->matrix = m_mat4_mul(transform->matrix, r);
 }

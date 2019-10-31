@@ -5,21 +5,6 @@
 #include <stdlib.h>
 #include <stdint.h>
 
-// memory allocation debugging.
-void* u_malloc(size_t size, uint32_t line, const char* file, const char* func);
-void* u_calloc(size_t itemCount, size_t size, uint32_t line, const char* file, const char* func);
-void* u_realloc(void* ptr, size_t size, uint32_t line, const char* file, const char* func);
-void u_free(void* ptr, uint32_t line, const char* file, const char* func);
-
-#ifdef U_MEM_DEBUG
-    #warning Memory debugging enabled...
-
-    #define malloc(size)            u_malloc(size, __LINE__, __FILE__, __FUNC__);
-    #define calloc(itemCount, size) u_calloc(itemCount, size, __LINE__, __FILE__, __FUNC__);
-    #define realloc(ptr, size)      u_realloc(ptr, size, __LINE__, __FILE__, __FUNC__);
-    #define free(ptr)               u_free(ptr, __LINE__, __FILE__, __FUNC__);
-#endif
-
 // memory allocation tools
 #define MEMORY_BLOCK_TAG_FREE_LATER 0 // block will be removed on next defrag.
 #define MEMORY_BLOCK_TAG_FREE_NOW   1 // block will be removed straight awag.

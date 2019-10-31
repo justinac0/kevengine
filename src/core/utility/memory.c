@@ -1,50 +1,5 @@
 #include "memory.h"
 
-void* u_malloc(size_t size, uint32_t line, const char* file, const char* func) {
-    void* memory = malloc(size);
-    
-    if (memory == NULL) {
-        fprintf(stderr, "[FAILED] -- MALLOC::(%p)(Line: %d, File: %s, Function: %s)", line, file, func);
-        exit(EXIT_FAILURE);
-    }
-
-    printf("[SUCCESS] -- MALLOC::(%p)(Line: %d, File: %s, Function: %s)\n", memory, line, file, func);
-
-    return memory;
-}
-
-void* u_calloc(size_t itemCount, size_t size, uint32_t line, const char* file, const char* func) {
-    void* memory = calloc(itemCount, size);
-    
-    if (memory == NULL) {
-        fprintf(stderr, "[FAILED] -- CALLOC::(%p)(Line: %d, File: %s, Function: %s)", line, file, func);
-        exit(EXIT_FAILURE);
-    }
-
-    printf("[SUCCESS] -- CALLOC::(%p)(Line: %d, File: %s, Function: %s)\n", memory, line, file, func);
-
-    return memory;
-}
-
-void* u_realloc(void* ptr, size_t size, uint32_t line, const char* file, const char* func) {
-    void* memory = realloc(ptr, size);
-
-    if (memory == NULL) {
-        fprintf(stderr, "[FAILED] -- REALLOC::(%p)(Line: %d, File: %s, Function: %s)", line, file, func);
-        exit(EXIT_FAILURE);
-    }
-
-    printf("[SUCCESS] -- REALLOC::(%p)(Line: %d, File: %s, Function: %s)\n", memory, line, file, func);
-
-    return memory;
-}
-
-void u_free(void* ptr, uint32_t line, const char* file, const char* func) {
-    free(ptr);
-    printf("[SUCCESS] -- FREE::(%p)(Line: %d, File: %s, Function: %s)\n", ptr, line, file, func);
-    ptr = NULL;
-}
-
 memory_pool_t memory_pool_create(uint32_t capacity) {
     memory_pool_t mp;
     mp.size     = 0;
