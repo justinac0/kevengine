@@ -50,10 +50,9 @@
   The executable can be found in the bin folder of kevin-engine <code>bin/kevin.exe</code>
   For removing generated files run <code>mingw32-make clean</code>
 </pre>
-      </div>
+  </div>
 
-  <div>
-      <h2>Linux Setup</h2>
+<h2>Linux Setup</h2>
 
 <pre>
   You will need to install a couple of packages:
