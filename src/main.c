@@ -1,7 +1,7 @@
 #define MEM_DEBUG
 #include "kevin.h"
 
-#define FPS 240
+#define FPS 120
 
 int main(int argc, char* argv) {
     GLFWwindow* pWindow = window_create(800, 600, "kevin");
@@ -12,10 +12,10 @@ int main(int argc, char* argv) {
     shaderProgramID      = ogl_shader_load("bin/shaders/vertex.glsl",   "bin/shaders/fragment.glsl");
     lightShaderProgramID = ogl_shader_load("bin/shaders/vs_light.glsl", "bin/shaders/fs_light.glsl");
 
-    memory_pool_t mp = memory_pool_create(MEMORY_1MB);
+    memory_pool_t mp = memory_pool_create(MEMORY_1MB * 8);
 
-    memory_pool_add(&mp, MEMORY_BLOCK_TAG_RENDER, sizeof(model_t), &(model_t) { m_transform_create(), mesh_wavefront_load("bin/models/dragon.obj") });
-    memory_pool_add(&mp, MEMORY_BLOCK_TAG_RENDER, sizeof(model_t), &(model_t) { m_transform_create(), mesh_primitive_triangle() });
+    memory_pool_add(&mp, MEMORY_BLOCK_TAG_RENDER, sizeof(model_t), &(model_t) { m_transform_create(), mesh_primitive_cube() });
+    memory_pool_add(&mp, MEMORY_BLOCK_TAG_RENDER, sizeof(model_t), &(model_t) { m_transform_create(), mesh_wavefront_load("bin/models/sphere.obj") });
 
     projection = m_projection(50, 4/3, 0.01f, 250.0f);
 
@@ -26,10 +26,6 @@ int main(int argc, char* argv) {
     );
 
     double lastTime = glfwGetTime();
-    
-    MEMORY_BLOCK_CAST_STRUCT(model_t, mp.blocks[0].data).transform.scale = m_vec3_fill(.5f);
-
-
 
     while (!glfwWindowShouldClose(pWindow)) {
         window_update(pWindow);
@@ -47,9 +43,7 @@ int main(int argc, char* argv) {
 
             camera_drag_look(&camera);
 
-            MEMORY_BLOCK_CAST_STRUCT(model_t, mp.blocks[0].data).transform.position.z = 4 * sinf(glfwGetTime());
-            MEMORY_BLOCK_CAST_STRUCT(model_t, mp.blocks[0].data).transform.rotation.y += 5.f;
-
+            MEMORY_BLOCK_CAST_STRUCT(model_t, mp.blocks[0].data).transform.rotation.y = 15 * glfwGetTime();
             MEMORY_BLOCK_CAST_STRUCT(model_t, mp.blocks[1].data).transform.position.y = 15 * sinf(glfwGetTime());
             MEMORY_BLOCK_CAST_STRUCT(model_t, mp.blocks[1].data).transform.position.z = 15 * cosf(glfwGetTime());
         }
@@ -65,7 +59,7 @@ int main(int argc, char* argv) {
 
                 if (i == 1) {
                     ogl_shader_use(lightShaderProgramID);
-                    stateShaderID = lightShaderProgramID;
+                    // stateShaderID = lightShaderProgramID;
                 } else {
                     ogl_shader_use(shaderProgramID);
                     stateShaderID = shaderProgramID;
@@ -75,7 +69,7 @@ int main(int argc, char* argv) {
                 ogl_shader_uniform_mat4(stateShaderID, "view", &camera.matrix);
                 ogl_shader_uniform_mat4(stateShaderID, "model", &MEMORY_BLOCK_CAST_STRUCT(model_t, mp.blocks[i].data).transform.matrix);
                 ogl_draw(GL_TRIANGLES, MEMORY_BLOCK_CAST_STRUCT(model_t, mp.blocks[i].data).mesh.vaoID,
-                         MEMORY_BLOCK_CAST_STRUCT(model_t, mp.blocks[i].data).mesh.iCount);
+                MEMORY_BLOCK_CAST_STRUCT(model_t, mp.blocks[i].data).mesh.iCount);
             }
         }
     }
@@ -83,6 +77,6 @@ int main(int argc, char* argv) {
     window_destroy(pWindow);
 
     memory_pool_destroy(&mp);
-    
+
     return 0;
 }

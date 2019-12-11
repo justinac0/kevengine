@@ -57,3 +57,58 @@ mesh_t mesh_primitive_triangle(void) {
 
     return mesh;
 }
+
+mesh_t mesh_primitive_cube(void) {
+    vec3_t vertices[8] = {
+        (vec3_t) { 1,  1, -1},
+        (vec3_t) { 1, -1, -1}, 
+        (vec3_t) { 1,  1,  1},
+        (vec3_t) { 1, -1,  1}, 
+        (vec3_t) {-1,  1, -1}, 
+        (vec3_t) {-1, -1, -1},
+        (vec3_t) {-1,  1,  1},
+        (vec3_t) {-1, -1,  1}
+    };
+
+    vec3_t normals[6] = {
+        (vec3_t){ 0, 1, 0 },
+        (vec3_t){ 0, 1, 0 },
+        (vec3_t){ 0, 1, 0 },
+        (vec3_t){ 0, 1, 0 },
+        (vec3_t){ 0, 1, 0 },
+        (vec3_t){ 0, 1, 0 }
+    };
+
+    GLuint indices[36] = {
+        4, 2, 0,
+        2, 7, 3,
+        6, 5, 7,
+        1, 7, 5,
+        0, 3, 1,
+        4, 1, 5,
+        4, 6, 2,
+        2, 6, 7,
+        6, 4, 5,
+        1, 3, 7,
+        0, 2, 3,
+        4, 0, 1
+    };
+
+    mesh_t mesh;
+    mesh.vaoID  = ogl_vertex_buffer_create();
+    mesh.iCount = 36;
+
+    GLuint vboID = ogl_buffer_create_f(sizeof(vec3_t) * 8, vertices, GL_ARRAY_BUFFER, GL_STATIC_DRAW);
+    glVertexAttribPointer(0, 3, GL_FLOAT, 0, 0, 0);
+    glEnableVertexAttribArray(0);
+
+    GLuint nboID = ogl_buffer_create_f(sizeof(vec3_t) * 6, normals, GL_ARRAY_BUFFER, GL_STATIC_DRAW);
+    glVertexAttribPointer(1, 3, GL_FLOAT, 0, 0, 0);
+    glEnableVertexAttribArray(1);
+
+    GLuint iboID = ogl_buffer_create_i(sizeof(GLuint) * 36, indices, GL_ELEMENT_ARRAY_BUFFER, GL_STATIC_DRAW);
+
+    glBindVertexArray(0);
+
+    return mesh;
+}
