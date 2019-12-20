@@ -15,6 +15,8 @@ Window::Window(uint32_t width, uint32_t height, const char* title) {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 
+    glfwWindowHint(GLFW_SAMPLES, 4);
+
     this->handle = glfwCreateWindow(width, height, title, NULL, NULL);
     if (!this->handle) {}
 
@@ -25,6 +27,13 @@ Window::Window(uint32_t width, uint32_t height, const char* title) {
     if (!gladLoadGLLoader((GLADloadproc) glfwGetProcAddress)) {}
 
     glViewport(0, 0, width, height);
+
+    glEnable(GL_DEPTH_TEST);
+    glDepthFunc(GL_LESS);
+    glEnable(GL_MULTISAMPLE);
+
+    glEnable(GL_CULL_FACE);
+    glCullFace(GL_BACK);
 }
 
 Window::~Window() {

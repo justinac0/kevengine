@@ -1,6 +1,8 @@
 #ifndef CAMERA_H
 #define CAMERA_H
 
+#include <iostream>
+
 #include <GLFW/glfw3.h>
 
 #include <glm/glm.hpp>
@@ -10,7 +12,7 @@
 class Camera {
 private:
     float mouseSensitivity;
-    float speed;
+    float moveSpeed;
 
     glm::vec3 position;
     glm::vec3 forward;
@@ -24,13 +26,14 @@ private:
     glm::mat4 view;
 
 public:
-    Camera();
+    Camera(float mouseSensitivity, float moveSpeed);
     ~Camera();
 
     void freeMove();
 
-    glm::mat4 getViewMatrix();
-    glm::mat4 getPerspectiveMatrix();
+    glm::mat4 getViewMatrix(void);
+    glm::mat4 getPerspectiveMatrix(void);
+    glm::vec3 getPosition(void);
 };
 
 #endif // CAMERA_H

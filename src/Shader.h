@@ -8,7 +8,6 @@
 #include <vector>
 
 #include <glad/glad.h>
-
 #include <glm/glm.hpp>
 
 class Shader {
@@ -19,11 +18,12 @@ private:
 
 public:
     Shader(const char* vertexShaderPath, const char* fragmentShaderPath);
-    ~Shader();
+    ~Shader(void);
 
-    void use();
+    void use(void);
     void sendUniformMat4(const GLchar* name, glm::mat4 src);
-    GLuint getProgramID();
+    void sendUniformVec3(const GLchar* name, glm::vec3 src);
+    GLuint getProgramID(void);
 };
 
 #endif // SHADER_H

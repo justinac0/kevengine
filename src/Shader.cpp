@@ -60,11 +60,11 @@ Shader::Shader(const char* vertexShaderPath, const char* fragmentShaderPath) {
     free(fragmentSource);
 }
 
-Shader::~Shader() {
+Shader::~Shader(void) {
     glDeleteProgram(this->programID);
 }
 
-void Shader::use() {
+void Shader::use(void) {
     glUseProgram(this->programID);
 }
 
@@ -72,6 +72,10 @@ void Shader::sendUniformMat4(const GLchar* name, glm::mat4 src) {
     glUniformMatrix4fv(glGetUniformLocation(this->programID, name), 1, GL_FALSE, &src[0][0]);
 }
 
-GLuint Shader::getProgramID() {
+void Shader::sendUniformVec3(const GLchar* name, glm::vec3 src) {
+    glUniform3f(glGetUniformLocation(this->programID, name), src.x, src.y, src.z);
+}
+
+GLuint Shader::getProgramID(void) {
     return this->programID;
 }
