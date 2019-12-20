@@ -1,15 +1,12 @@
-CC		= gcc
-CFLAGS 	= -w -std=c99
+CC		= g++
+CFLAGS 	= -W -Wextra
 
-OBJ = $(wildcard src/*.c)			      \
-	  $(wildcard src/core/components/*.c) \
-	  $(wildcard src/core/renderer/*.c)   \
-	  $(wildcard src/core/utility/*.c) 	  \
-	  deps/glad/glad.c
+SRC = $(wildcard src/*.cpp)			\
+	  $(wildcard deps/glad/src/*.c)
 
-INCLUDES = -Ideps/glfw-3.3/include
+INCLUDES = -Ideps/glad/include -Ideps/glfw-3.3/include -Ideps/glm/
 
-EXEC_NAME = kevin
+EXEC_NAME = kevengine
 
 ifeq ($(OS), Windows_NT)
 	DEL_CMD = del
@@ -27,10 +24,9 @@ else
 
 endif
 
-all: $(OBJ)
-	$(CC) $(CFLAGS) $(OBJ) $(LDFLAGS) $(INCLUDES) -o bin/$(TARGET_NAME)
+all: $(SRC)
+	$(CC) $(CFLAGS) $(SRC) $(LDFLAGS) $(INCLUDES) -o bin/$(TARGET_NAME)
 
 .PHONY: clean
 clean:
 	$(DEL_CMD) ./bin/$(TARGET_NAME)
-
