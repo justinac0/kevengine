@@ -3,6 +3,7 @@
 Model::Model(const char* path) {
     std::vector<glm::vec3> vertices;
     std::vector<glm::vec3> normals;
+    std::vector<glm::vec2> textureCoords;
     std::vector<GLuint> indices;
 
     FILE* fileStream = nullptr;
@@ -14,12 +15,17 @@ Model::Model(const char* path) {
 
     GLfloat v0, v1, v2;
     GLfloat n0, n1, n2;
+    GLfloat t0, t1;
     GLuint  f0, f1, f2, f3, f4, f5, f6, f7, f8;
 
     char lineBuffer[512];
     while (fgets(lineBuffer, 512, fileStream)) {
         if (sscanf(lineBuffer, "v %f %f %f", &v0, &v1, &v2) == 3) {
             vertices.push_back(glm::vec3(v0, v1, v2));
+        }
+
+        if (sscanf(lineBuffer, "vt %f %f", &t0, &t1) == 2) {
+            textureCoords.push_back(glm::vec2(t0, t1));
         }
 
         if (sscanf(lineBuffer, "f %d//%d %d//%d %d//%d", &f0, &f1, &f2, &f3, &f4, &f5) == 6) {
@@ -78,7 +84,7 @@ Model::Model(const char* path) {
         normals[i] = glm::normalize(normals[i]);
     }
 
-    this->mesh = new Mesh(vertices, normals, indices);
+    this->mesh = new Mesh(vertices, normals, textureCoords, indices);
 
     this->matrix = glm::mat4(1.0f);
 }

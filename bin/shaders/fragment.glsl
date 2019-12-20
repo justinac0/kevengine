@@ -4,6 +4,9 @@ out vec4 FragColor;
 
 in vec3 surfaceNormal;
 in vec3 toLightVector;
+in vec2 texCoord;
+
+uniform sampler2D ourTexture;
 
 void main(void) {
     vec3 ambient = vec3(0.0f, 0.2f, 0.3f) * 0.1f;

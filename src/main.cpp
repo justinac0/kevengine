@@ -9,11 +9,8 @@ int main(void) {
     Window window   = Window(800, 600, "kevengine");
     Shader shader   = Shader("./bin/shaders/vertex.glsl", "./bin/shaders/fragment.glsl");
     Camera camera   = Camera(0.05f, 0.05f);
-    Model model     = Model("./bin/models/torus.obj");
+    Model model     = Model("./bin/models/sword.obj");
 
-    // model.setScale(0.2f, 0.2f, 0.2f);
-
-    float i = 0;
     while (!glfwWindowShouldClose(window.getHandle())) {
         glfwPollEvents();
         glfwSwapBuffers(window.getHandle());
