@@ -6,7 +6,7 @@ char* readFile(const char* path) {
     fseek(fileStream, 0, SEEK_END);
     uint32_t length = ftell(fileStream);
     rewind(fileStream);
-    char* buffer = (char*) malloc(length);
+    char* buffer = (char*) malloc(length + 1);
     fread(buffer, 1, length, fileStream);
     fclose(fileStream);
 
@@ -14,7 +14,6 @@ char* readFile(const char* path) {
 }
 
 Shader::Shader(const char* vertexShaderPath, const char* fragmentShaderPath) {
-    // vertex shader
     char* vertexSource = readFile(vertexShaderPath);
     this->vertexShaderID = glCreateShader(GL_VERTEX_SHADER);
     glShaderSource(this->vertexShaderID, 1, &vertexSource, NULL);
@@ -28,7 +27,6 @@ Shader::Shader(const char* vertexShaderPath, const char* fragmentShaderPath) {
         std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
     }
 
-    // fragment shader
     char* fragmentSource = readFile(fragmentShaderPath);
     this->fragmentShaderID = glCreateShader(GL_FRAGMENT_SHADER);
     glShaderSource(this->fragmentShaderID, 1, &fragmentSource, NULL);
@@ -41,7 +39,6 @@ Shader::Shader(const char* vertexShaderPath, const char* fragmentShaderPath) {
         std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << std::endl;
     }
 
-    // shader program
     this->programID = glCreateProgram();
     glAttachShader(this->programID, this->vertexShaderID);
     glAttachShader(this->programID, this->fragmentShaderID);

@@ -20,7 +20,10 @@ Camera::~Camera() {
     
 }
 
-void Camera::freeMove() {
+double newX, newY;
+double oldX, oldY;
+
+void Camera::dragMouse() {
     // https://www.opengl-tutorial.org/beginners-tutorials/tutorial-6-keyboard-and-mouse/
     if (glfwGetKey(glfwGetCurrentContext(), GLFW_KEY_W) == GLFW_PRESS) {
         this->position += this->forward * this->moveSpeed;
@@ -38,40 +41,6 @@ void Camera::freeMove() {
         this->position -= glm::normalize(glm::cross(this->forward, this->up)) * this->moveSpeed;
     }
 
-    // Up/Down.
-    if (glfwGetKey(glfwGetCurrentContext(), GLFW_KEY_SPACE) == GLFW_PRESS) {
-        this->position.y += this->moveSpeed;
-    }
-
-    if (glfwGetKey(glfwGetCurrentContext(), GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) {
-        this->position.y -= this->moveSpeed;
-    }
-
-    float lastX = 400.0f;
-    float lastY = 300.0f;
-
-    double xpos, ypos;
-    glfwGetCursorPos(glfwGetCurrentContext(), &xpos, &ypos);
-    glfwSetCursorPos(glfwGetCurrentContext(), lastX, lastY);
-
-    float xOffs = xpos - lastX;
-    float yOffs = lastY - ypos;
-    lastX       = xpos;
-    lastY       = ypos;
-
-    xOffs *= this->mouseSensitivity;
-    yOffs *= this->mouseSensitivity;
-
-    this->yaw   += xOffs;
-    this->pitch += yOffs;
-
-    if (this->pitch > 89.9f) {
-        this->pitch = 89.9f;
-    }
-    if (this->pitch < -89.9f) {
-        this->pitch = -89.9f;
-    }
-
     this->forward = glm::normalize(glm::vec3(
         cosf(glm::radians(this->yaw)) * cos(glm::radians(this->pitch)),
         sinf(glm::radians(this->pitch)),
@@ -79,6 +48,30 @@ void Camera::freeMove() {
     ));
 
     this->view = glm::lookAt(this->position, this->position + this->forward, this->up);
+
+    glfwGetCursorPos(glfwGetCurrentContext(), &newX, &newY);
+
+    if (glfwGetMouseButton(glfwGetCurrentContext(), GLFW_MOUSE_BUTTON_1) != GLFW_PRESS) {
+        glfwGetCursorPos(glfwGetCurrentContext(), &oldX, &oldY);
+        return;
+    }
+
+    float xOffs = oldX - newX;
+    float yOffs = newY - oldY;
+
+    xOffs *= this->mouseSensitivity * 0.01f;
+    yOffs *= this->mouseSensitivity * 0.01f;
+
+    this->yaw   += xOffs;
+    this->pitch += yOffs;
+
+    if (this->pitch > 89.9f) {
+        this->pitch = 89.9f;
+    }
+
+    if (this->pitch < -89.9f) {
+        this->pitch = -89.9f;
+    }
 }
 
 glm::mat4 Camera::getViewMatrix(void) {

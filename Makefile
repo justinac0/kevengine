@@ -5,7 +5,6 @@ SRC = $(wildcard src/*.cpp)			\
 	  $(wildcard deps/glad/src/*.c)
 
 INCLUDES = -Ideps/glad/include -Ideps/glfw-3.3/include -Ideps/glm/ -Ideps/stb
-
 EXEC_NAME = kevengine
 
 ifeq ($(OS), Windows_NT)

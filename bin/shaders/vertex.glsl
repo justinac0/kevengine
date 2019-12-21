@@ -17,5 +17,5 @@ void main(void) {
     gl_Position         = perspective * view * model * worldPosition;
 
     surfaceNormal   = (model * vec4(in_vertex_normals, 0.0)).xyz;
-    toLightVector   = lightPosition - worldPosition.xyz;
+    toLightVector   = lightPosition;
 }

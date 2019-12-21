@@ -34,6 +34,20 @@ namespace BufferUtil {
         glDeleteBuffers(1, bufferID);
     }
 
+
+    GLuint createTextureID(GLenum target) {
+        GLuint textureID;
+
+        glGenTextures(1, &textureID);
+        glBindTexture(target, textureID);
+
+        return textureID;
+    }
+ 
+    void destroyTextureID(GLuint* textureID) {
+        glDeleteTextures(1, textureID);
+    }
+
     void setAttribPointer(GLuint index, GLint size, GLenum type, GLboolean normalized, GLsizei stride, const void *pointer) {
         glVertexAttribPointer(index, size, type, normalized, stride, pointer);
     }
