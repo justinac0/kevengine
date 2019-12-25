@@ -23,7 +23,7 @@ Camera::~Camera() {
 double newX, newY;
 double oldX, oldY;
 
-void Camera::dragMouse() {
+void Camera::update() {
     // https://www.opengl-tutorial.org/beginners-tutorials/tutorial-6-keyboard-and-mouse/
     if (glfwGetKey(glfwGetCurrentContext(), GLFW_KEY_W) == GLFW_PRESS) {
         this->position += this->forward * this->moveSpeed;
@@ -40,6 +40,15 @@ void Camera::dragMouse() {
     if (glfwGetKey(glfwGetCurrentContext(), GLFW_KEY_A) == GLFW_PRESS) {
         this->position -= glm::normalize(glm::cross(this->forward, this->up)) * this->moveSpeed;
     }
+
+    if (glfwGetKey(glfwGetCurrentContext(), GLFW_KEY_SPACE) == GLFW_PRESS) {
+        this->position.y += this->moveSpeed;
+    }
+
+    if (glfwGetKey(glfwGetCurrentContext(), GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) {
+        this->position.y -= this->moveSpeed;
+    }
+
 
     this->forward = glm::normalize(glm::vec3(
         cosf(glm::radians(this->yaw)) * cos(glm::radians(this->pitch)),
@@ -62,8 +71,8 @@ void Camera::dragMouse() {
     xOffs *= this->mouseSensitivity * 0.01f;
     yOffs *= this->mouseSensitivity * 0.01f;
 
-    this->yaw   += xOffs;
-    this->pitch += yOffs;
+    this->yaw   -= xOffs;
+    this->pitch -= yOffs;
 
     if (this->pitch > 89.9f) {
         this->pitch = 89.9f;

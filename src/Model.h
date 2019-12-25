@@ -24,7 +24,6 @@ public:
     Model(const char* path);
     ~Model();
 
-    void update();
     void render();
     void move(float x, float y, float z);
     void rotate(float x, float y, float z, float angle);

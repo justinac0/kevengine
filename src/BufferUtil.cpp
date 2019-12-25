@@ -17,7 +17,6 @@ namespace BufferUtil {
 
     void destroyVaoID(GLuint* vaoID) {
         glDeleteVertexArrays(1, vaoID);
-        bindVaoID(0);
     }
 
     GLuint createBufferID(GLenum target, GLsizeiptr size, const void* data, GLenum usage) {
@@ -33,7 +32,6 @@ namespace BufferUtil {
     void destroyBufferID(GLuint* bufferID) {
         glDeleteBuffers(1, bufferID);
     }
-
 
     GLuint createTextureID(GLenum target) {
         GLuint textureID;

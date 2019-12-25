@@ -28,6 +28,11 @@ Model::Model(const char* path) {
             textureCoords.push_back(glm::vec2(t0, t1));
         }
 
+        if (sscanf(lineBuffer, "f %d/%d %d/%d", &f0, &f1, &f2, &f3) == 4) {
+            indices.push_back(f0-1);
+            indices.push_back(f2-1);
+        }
+
         if (sscanf(lineBuffer, "f %d//%d %d//%d %d//%d", &f0, &f1, &f2, &f3, &f4, &f5) == 6) {
             indices.push_back(f0-1);
             indices.push_back(f2-1);
@@ -91,10 +96,6 @@ Model::Model(const char* path) {
 
 Model::~Model() {
     this->mesh->~Mesh();
-}
-
-void Model::update() {
-
 }
 
 void Model::render() {
