@@ -4,7 +4,7 @@ Camera::Camera(float mouseSensitivity, float moveSpeed) {
     this->mouseSensitivity  = mouseSensitivity;
     this->moveSpeed             = moveSpeed;
 
-    this->position  = glm::vec3(0, 0, 3);
+    this->position  = glm::vec3(0, 0, 0);
     this->forward   = glm::vec3(0, 0, 0);
     this->up        = glm::vec3(0, 1, 0);
 
@@ -23,7 +23,7 @@ Camera::~Camera() {
 double newX, newY;
 double oldX, oldY;
 
-void Camera::update() {
+void Camera::dragMouse() {
     // https://www.opengl-tutorial.org/beginners-tutorials/tutorial-6-keyboard-and-mouse/
     if (glfwGetKey(glfwGetCurrentContext(), GLFW_KEY_W) == GLFW_PRESS) {
         this->position += this->forward * this->moveSpeed;
@@ -40,15 +40,6 @@ void Camera::update() {
     if (glfwGetKey(glfwGetCurrentContext(), GLFW_KEY_A) == GLFW_PRESS) {
         this->position -= glm::normalize(glm::cross(this->forward, this->up)) * this->moveSpeed;
     }
-
-    if (glfwGetKey(glfwGetCurrentContext(), GLFW_KEY_SPACE) == GLFW_PRESS) {
-        this->position.y += this->moveSpeed;
-    }
-
-    if (glfwGetKey(glfwGetCurrentContext(), GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) {
-        this->position.y -= this->moveSpeed;
-    }
-
 
     this->forward = glm::normalize(glm::vec3(
         cosf(glm::radians(this->yaw)) * cos(glm::radians(this->pitch)),

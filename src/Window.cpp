@@ -25,6 +25,7 @@ static inline void glfw_framebuffer_callback(GLFWwindow* window, int width, int 
 
 Window::Window(uint32_t width, uint32_t height, const char* title) {
     glfwSetErrorCallback(glfw_error_callback);
+
     if (!glfwInit()) {}
 
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);

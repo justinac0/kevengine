@@ -2,9 +2,11 @@
 
 layout (location = 0) in vec3 in_vertex_positions;
 layout (location = 1) in vec3 in_vertex_normals;
+layout (location = 2) in vec2 in_texcoords;
 
 out vec3 surfaceNormal;
 out vec3 toLightVector;
+out vec2 textureCoords;
 
 uniform mat4 perspective;
 uniform mat4 view;
@@ -18,4 +20,6 @@ void main(void) {
 
     surfaceNormal   = (model * vec4(in_vertex_normals, 0.0)).xyz;
     toLightVector   = lightPosition;
+
+    textureCoords = in_texcoords;
 }

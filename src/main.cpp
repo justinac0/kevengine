@@ -4,35 +4,18 @@
 #include "Mesh.h"
 #include "Camera.h"
 #include "Model.h"
+#include "Texture.h"
+
+#define STB_IMAGE_IMPLEMENTATION
+#include <stb_image.h>
 
 int main(void) {
-    Window window   = Window(800, 600, "kevengine");
+    Window window   = Window(1080, 720, "kevengine");
     Shader shader   = Shader("./bin/shaders/vertex.glsl", "./bin/shaders/fragment.glsl");
-    Camera camera   = Camera(1.0f, 0.2f);
+    Camera camera   = Camera(1.0f, 0.5f);
 
-    Model modelsWorking[5] = {
-        Model("./bin/models/sword.obj"),
-        Model("./bin/models/sword.obj"),
-        Model("./bin/models/sword.obj"),
-        Model("./bin/models/sword.obj"),
-        Model("./bin/models/sword.obj")
-    };
-
-    for (int i = 0; i < 5; i++) {
-        modelsWorking[i].move(i, 0, 0);
-    }
-
-    std::vector<Model> modelsBroken = {
-        Model("./bin/models/suzanne.obj"),
-        Model("./bin/models/suzanne.obj"),
-        Model("./bin/models/suzanne.obj"),
-        Model("./bin/models/suzanne.obj"),
-        Model("./bin/models/suzanne.obj")
-    };
-
-    for (int i = 0; i < 5; i++) {
-        modelsBroken[i].move(i, 0, 0); // modelsBroken.at(index) is the same thing
-    }
+    Model skull     = Model("./bin/models/craneo/craneo.OBJ");
+    Texture thing   = Texture("./bin/models/craneo/textures/difuso_flip_oscuro_5.jpg");
 
     while (!glfwWindowShouldClose(window.getHandle())) {
         glfwPollEvents();
@@ -41,26 +24,17 @@ int main(void) {
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        camera.update();
+        camera.dragMouse();
 
-        for (int i = 0; i < 5; i++) {
-            // WORKING WITH modelsWorking array
-            // shader.use();
-            // shader.sendUniformMat4("perspective", camera.getPerspectiveMatrix());
-            // shader.sendUniformMat4("view", camera.getViewMatrix());
-            // shader.sendUniformVec3("lightPosition", camera.getPosition());
-            // shader.sendUniformMat4("model", modelsWorking[i].getMatrix());
-            // modelsWorking[i].render();
-        
-            // WORKING WITH modelsWorking array
-            shader.use();
-            shader.sendUniformMat4("perspective", camera.getPerspectiveMatrix());
-            shader.sendUniformMat4("view", camera.getViewMatrix());
-            shader.sendUniformVec3("lightPosition", camera.getPosition());
-            shader.sendUniformMat4("model", modelsBroken[i].getMatrix());
-            modelsBroken[i].render();
-        }
+        shader.sendUniformMat4("perspective", camera.getPerspectiveMatrix());
+        shader.sendUniformMat4("view", camera.getViewMatrix());
+        shader.sendUniformVec3("lightPosition", camera.getPosition());
 
+        thing.use();
+        shader.use();
+
+        shader.sendUniformMat4("model", skull.getMatrix());
+        skull.render();
     }
 
     return 0;

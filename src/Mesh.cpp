@@ -32,13 +32,13 @@ void Mesh::cleanup(void) {
     BufferUtil::destroyBufferID(&this->tboID);
     BufferUtil::destroyBufferID(&this->vboID);
     BufferUtil::destroyVaoID(&this->vaoID);
-    BufferUtil::bindVaoID(0);
+    BufferUtil::bindVaoID(0);  
 }
 
 void Mesh::draw(void) {
     BufferUtil::bindVaoID(this->vaoID);
     glDrawElements(GL_TRIANGLES, this->indexCount, GL_UNSIGNED_INT, 0);
-    // BufferUtil::bindVaoID(0);
+    BufferUtil::bindVaoID(0);
 }
 
 
