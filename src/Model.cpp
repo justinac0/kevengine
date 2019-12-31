@@ -1,96 +1,65 @@
 #include "Model.h"
 
-Model::Model(const char* path) {
+#define TINYOBJLOADER_IMPLEMENTATION
+#include <tiny_obj_loader.h>
+
+
+Model::Model(const char* modelPath, const char* textureParentPath) {
+    tinyobj::attrib_t attrib;
+    std::vector<tinyobj::shape_t> shapes;
+    std::vector<tinyobj::material_t> materials;
+
+    std::string warn;
+    std::string err;
+
+    bool ret = tinyobj::LoadObj(&attrib, &shapes, &materials, &warn, &err, modelPath, textureParentPath, 1, 0);
+
     std::vector<glm::vec3> vertices;
     std::vector<glm::vec3> normals;
-    std::vector<glm::vec2> textureCoords;
+    std::vector<glm::vec2> texcoords;
     std::vector<GLuint> indices;
 
-    FILE* fileStream = nullptr;
-
-    if ((fileStream = fopen(path, "r")) == nullptr) {
-        std::cout << stderr << "Can't open file stream: " << std::endl;
-        return;
+    if (!warn.empty()) {
+        std::cout << warn << std::endl;
     }
 
-    GLfloat v0, v1, v2;
-    GLfloat n0, n1, n2;
-    GLfloat t0, t1;
-    GLuint  f0, f1, f2, f3, f4, f5, f6, f7, f8;
+    if (!err.empty()) {
+        std::cerr << err << std::endl;
+    }
 
-    char lineBuffer[512];
-    while (fgets(lineBuffer, 512, fileStream)) {
-        if (sscanf(lineBuffer, "v %f %f %f", &v0, &v1, &v2) == 3) {
-            vertices.push_back(glm::vec3(v0, v1, v2));
-        }
+    if (!ret) {
+        exit(1);
+    }
 
-        if (sscanf(lineBuffer, "vt %f %f", &t0, &t1) == 2) {
-            textureCoords.push_back(glm::vec2(t0, -t1));
-        }
+    materials.push_back(tinyobj::material_t());
 
-        if (sscanf(lineBuffer, "f %d//%d %d//%d %d//%d", &f0, &f1, &f2, &f3, &f4, &f5) == 6) {
-            indices.push_back(f0-1);
-            indices.push_back(f2-1);
-            indices.push_back(f4-1);
-        }
+    for (size_t s = 0; s < shapes.size(); s++) {
+        size_t index_offset = 0;
+        for (size_t f = 0; f < shapes[s].mesh.num_face_vertices.size(); f++) {
+            int fv = shapes[s].mesh.num_face_vertices[f];
 
-        if (sscanf(lineBuffer, "f %d/%d %d/%d %d/%d", &f0, &f1, &f2, &f3, &f4, &f5) == 6) {
-            indices.push_back(f0-1);
-            indices.push_back(f2-1);
-            indices.push_back(f4-1);
-        }
+            for (size_t v = 0; v < (long unsigned int)fv; v++) {
+                tinyobj::index_t idx = shapes[s].mesh.indices[index_offset + v];
 
-        if (sscanf(lineBuffer, "f %d/%d/%d %d/%d/%d %d/%d/%d", &f0, &f1, &f2, &f3, &f4, &f5, &f6, &f7, &f8) == 9) {
-            indices.push_back(f0-1);
-            indices.push_back(f3-1);
-            indices.push_back(f6-1);
+                vertices.push_back(glm::vec3(attrib.vertices[3*idx.vertex_index+0], attrib.vertices[3*idx.vertex_index+1], attrib.vertices[3*idx.vertex_index+2]));
+                normals.push_back(glm::vec3(attrib.normals[3*idx.normal_index+0], attrib.normals[3*idx.normal_index+1], attrib.normals[3*idx.normal_index+2]));
+                texcoords.push_back(glm::vec2(attrib.texcoords[2*idx.texcoord_index+0], attrib.texcoords[2*idx.texcoord_index+1]));
+                // indices.push_back(idx.vertex_index);
+
+                // Optional: vertex colors
+                // tinyobj::real_t red = attrib.colors[3*idx.vertex_index+0];
+                // tinyobj::real_t green = attrib.colors[3*idx.vertex_index+1];
+                // tinyobj::real_t blue = attrib.colors[3*idx.vertex_index+2];
+            }
+
+            index_offset += fv;
+
+            // per-face material
+            shapes[s].mesh.material_ids[f];
         }
     }
 
-    fclose(fileStream);
-
-    normals.resize(indices.size());
-
-    // Begin Function CalculateSurfaceNormal (Input Polygon) Returns Vector
-
-    // Set Vertex Normal to (0, 0, 0)
-
-    // Begin Cycle for Index in [0, Polygon.vertexNumber)
-
-    //     Set Vertex Current to Polygon.verts[Index]
-    //     Set Vertex Next    to Polygon.verts[(Index plus 1) mod Polygon.vertexNumber]
-
-    //     Set Normal.x to Sum of Normal.x and (multiply (Current.y minus Next.y) by (Current.z plus Next.z))
-    //     Set Normal.y to Sum of Normal.y and (multiply (Current.z minus Next.z) by (Current.x plus Next.x))
-    //     Set Normal.z to Sum of Normal.z and (multiply (Current.x minus Next.x) by (Current.y plus Next.y))
-
-    // End Cycle
-
-    // Returning Normalize(Normal)
-
-    // End Function
-
-    // calculate normals: https://github.com/BennyQBD/ModernOpenGLTutorial
-    for(unsigned int i = 0; i < indices.size(); i += 3) {
-        int i0 = indices[i];
-        int i1 = indices[i + 1];
-        int i2 = indices[i + 2];
-
-        glm::vec3 v1 = vertices[i1] - vertices[i0];
-        glm::vec3 v2 = vertices[i2] - vertices[i0];
-        
-        glm::vec3 normal = glm::normalize(glm::cross(v1, v2));
-            
-        normals[i0] += normal;
-        normals[i1] += normal;
-        normals[i2] += normal;
-    }
-
-    for(unsigned int i = 0; i < vertices.size(); i++) {
-        normals[i] = glm::normalize(normals[i]);
-    }
-
-    this->mesh = new Mesh(vertices, normals, textureCoords, indices);
+    this->mesh = new Mesh(vertices, normals, texcoords, indices);
 
     this->matrix = glm::mat4(1.0f);
 }

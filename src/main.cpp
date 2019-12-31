@@ -14,9 +14,9 @@ int main(void) {
     Shader shader   = Shader("./bin/shaders/vertex.glsl", "./bin/shaders/fragment.glsl");
     Camera camera   = Camera(1.0f, 0.5f);
 
-    Model skull     = Model("./bin/models/craneo/craneo.OBJ");
-    Texture thing   = Texture("./bin/models/craneo/textures/difuso_flip_oscuro_5.jpg");
-
+    Model model     = Model("./bin/models/keyboard/keyboard.obj", "./bin/models/keyboard/");
+    Texture thing   = Texture("./bin/models/keyboard/gray_concrete.png");
+ 
     while (!glfwWindowShouldClose(window.getHandle())) {
         glfwPollEvents();
         glfwSwapBuffers(window.getHandle());
@@ -33,8 +33,8 @@ int main(void) {
         thing.use();
         shader.use();
 
-        shader.sendUniformMat4("model", skull.getMatrix());
-        skull.render();
+        shader.sendUniformMat4("model", model.getMatrix());
+        model.render();
     }
 
     return 0;

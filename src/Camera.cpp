@@ -41,6 +41,14 @@ void Camera::dragMouse() {
         this->position -= glm::normalize(glm::cross(this->forward, this->up)) * this->moveSpeed;
     }
 
+    if (glfwGetKey(glfwGetCurrentContext(), GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) {
+        this->position.y -= this->moveSpeed;
+    }
+
+    if (glfwGetKey(glfwGetCurrentContext(), GLFW_KEY_SPACE) == GLFW_PRESS) {
+        this->position.y += this->moveSpeed;
+    }
+
     this->forward = glm::normalize(glm::vec3(
         cosf(glm::radians(this->yaw)) * cos(glm::radians(this->pitch)),
         sinf(glm::radians(this->pitch)),

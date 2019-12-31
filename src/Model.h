@@ -21,7 +21,7 @@ private:
     Mesh* mesh;
 
 public:
-    Model(const char* path);
+    Model(const char* modelPath, const char* textureParentPath);
     ~Model();
 
     void update();
