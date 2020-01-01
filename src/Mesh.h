@@ -14,9 +14,9 @@
 class Mesh {
 private:
     GLuint vaoID;
-    GLuint vboID;
-    GLuint nboID;
-    GLuint tboID;
+    GLuint vboID; // vertex buffer
+    GLuint nboID; // normals buffer
+    GLuint cboID; // color buffer
 
     uint32_t vertCount;
 
@@ -25,7 +25,7 @@ private:
     uint32_t indexCount;
 
 public:
-    Mesh(std::vector<glm::vec3> vertices, std::vector<glm::vec3> normals, std::vector<glm::vec2> texcoords, std::vector<GLuint> indices);
+    Mesh(std::vector<float> primitiveData, std::vector<glm::vec3> normals, std::vector<GLuint> indices);
     ~Mesh(void);
 
     void cleanup(void);

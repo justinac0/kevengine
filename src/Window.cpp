@@ -51,9 +51,6 @@ Window::Window(uint32_t width, uint32_t height, const char* title) {
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS);
     glEnable(GL_MULTISAMPLE);
-
-    glEnable(GL_CULL_FACE);
-    glCullFace(GL_BACK);
 }
 
 Window::~Window() {

@@ -1,21 +1,30 @@
 #include "Shader.h"
 
 char* readFile(const char* path) {
-    FILE* fileStream = fopen(path, "r");
-    if (!fileStream) {}
-    fseek(fileStream, 0, SEEK_END);
+    FILE* fileStream = NULL;
+    if ((fileStream = fopen(path, "r")) == NULL) {
+        printf("Failed to open file at location: %s\n", path);
+        exit(EXIT_FAILURE);
+    }
 
-    uint32_t length = ftell(fileStream);
+    fseek(fileStream, 0, SEEK_END);
+    uint32_t fileLength = ftell(fileStream);
     rewind(fileStream);
-    char* buffer = (char*) malloc(length);
-    fread(buffer, sizeof(char), length, fileStream);
+
+    char* buffer = NULL;
+    if ((buffer = (char*)calloc(fileLength + 1, sizeof(char))) == NULL) {
+        printf("Cannot allocate memory for file buffer\n");
+        exit(EXIT_FAILURE);
+    }
+
+    fread(buffer, sizeof(char), fileLength, fileStream);
 
     fclose(fileStream);
 
-    return buffer; 
+    return buffer;
 }
 Shader::Shader(const char* vertexShaderPath, const char* fragmentShaderPath) {
-    const char* vertexSource = readFile(vertexShaderPath);
+    char* vertexSource = readFile(vertexShaderPath);
     GLuint vertexID = glCreateShader(GL_VERTEX_SHADER);
     glShaderSource(vertexID, 1, &vertexSource, NULL);
     glCompileShader(vertexID);
@@ -38,7 +47,7 @@ Shader::Shader(const char* vertexShaderPath, const char* fragmentShaderPath) {
 
     std::cout << std::endl;
 
-    const char* fragmentSource = readFile(fragmentShaderPath);
+    char* fragmentSource = readFile(fragmentShaderPath);
     GLuint fragmentID = glCreateShader(GL_FRAGMENT_SHADER);
     glShaderSource(fragmentID, 1, &fragmentSource, NULL);
     glCompileShader(fragmentID);

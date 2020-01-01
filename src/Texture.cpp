@@ -1,5 +1,8 @@
 #include "Texture.h"
 
+#define STB_IMAGE_IMPLEMENTATION
+#include <stb_image.h>
+
 Texture::Texture(const char* path) {
     glGenTextures(1, &this->textureID);
     glBindTexture(GL_TEXTURE_2D, this->textureID);

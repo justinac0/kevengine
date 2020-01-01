@@ -29,7 +29,7 @@ public:
     Camera(float mouseSensitivity, float moveSpeed);
     ~Camera();
 
-    void dragMouse();
+    void update();
 
     glm::mat4 getViewMatrix(void);
     glm::mat4 getPerspectiveMatrix(void);

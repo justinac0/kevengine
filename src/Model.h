@@ -21,7 +21,7 @@ private:
     Mesh* mesh;
 
 public:
-    Model(const char* modelPath, const char* textureParentPath);
+    Model(const char* modelPath);
     ~Model();
 
     void update();
@@ -31,6 +31,7 @@ public:
     void setScale(float x, float y, float z);
 
     glm::mat4 getMatrix();
+    glm::vec3 getPosition();
 };
 
 #endif // MODEL_H
