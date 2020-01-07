@@ -12,26 +12,16 @@
 
 class Engine {
 private:
+	std::thread* rendererThread;
 
 public:
-	/////////////////// temporary vars -- will be automatitacally gathered from a scene file
-
-	Shader shader;
-	Shader skyBoxShader;
-	Shader sunShader;
-	Camera camera;
-	Model model;
-	Model skybox;
-	Model sun;
-
-	///////////////////
-
 	Window window;
 
 	Engine();
 	~Engine();
 
 	void start();
+	static void update(Engine* engine);
 	void stop();
 };
 

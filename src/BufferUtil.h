@@ -3,7 +3,6 @@
 
 #include <glad/glad.h>
 
-
 namespace BufferUtil {
     void bindVaoID(GLuint vaoID);
     GLuint createVaoID(void);

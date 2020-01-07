@@ -30,7 +30,6 @@ Window::~Window(void) {
     glfwTerminate();
 }
 
-
 void Window::create(uint32_t width, uint32_t height, const char* title) {
     // initialize GLFW
     glfwSetErrorCallback(glfw_error_callback);
@@ -56,16 +55,6 @@ void Window::create(uint32_t width, uint32_t height, const char* title) {
     glfwSetMouseButtonCallback(this->handle, glfw_mouse_button_callback);
     glfwSetCursorEnterCallback(this->handle, glfw_cursor_enter_callback);
     glfwSetFramebufferSizeCallback(this->handle, glfw_framebuffer_callback);
-
-    if (!gladLoadGLLoader((GLADloadproc) glfwGetProcAddress)) {
-        std::cout << "OPENGL EXT ERROR" << std::endl;
-    }
-
-    glViewport(0, 0, width, height);
-
-    glEnable(GL_DEPTH_TEST);
-    glDepthFunc(GL_LESS);
-    glEnable(GL_MULTISAMPLE);
 }
 
 GLFWwindow* Window::getHandle() {
