@@ -23,10 +23,21 @@ static inline void glfw_framebuffer_callback(GLFWwindow* window, int width, int 
 
 /*********************************************************************/
 
-Window::Window(uint32_t width, uint32_t height, const char* title) {
+Window::Window(void) {}
+
+Window::~Window(void) {
+    glfwDestroyWindow(this->handle);
+    glfwTerminate();
+}
+
+
+void Window::create(uint32_t width, uint32_t height, const char* title) {
+    // initialize GLFW
     glfwSetErrorCallback(glfw_error_callback);
 
-    if (!glfwInit()) {}
+    if (!glfwInit()) {
+        std::cout << "GLFW ERROR" << std::endl;
+    }
 
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -35,7 +46,9 @@ Window::Window(uint32_t width, uint32_t height, const char* title) {
     glfwWindowHint(GLFW_SAMPLES, 4);
 
     this->handle = glfwCreateWindow(width, height, title, NULL, NULL);
-    if (!this->handle) {}
+    if (!this->handle) {
+        std::cout << "GLFW WINDOW ERROR" << std::endl;
+    }
 
     glfwMakeContextCurrent(this->handle);
 
@@ -44,18 +57,15 @@ Window::Window(uint32_t width, uint32_t height, const char* title) {
     glfwSetCursorEnterCallback(this->handle, glfw_cursor_enter_callback);
     glfwSetFramebufferSizeCallback(this->handle, glfw_framebuffer_callback);
 
-    if (!gladLoadGLLoader((GLADloadproc) glfwGetProcAddress)) {}
+    if (!gladLoadGLLoader((GLADloadproc) glfwGetProcAddress)) {
+        std::cout << "OPENGL EXT ERROR" << std::endl;
+    }
 
     glViewport(0, 0, width, height);
 
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS);
     glEnable(GL_MULTISAMPLE);
-}
-
-Window::~Window() {
-    glfwDestroyWindow(this->handle);
-    glfwTerminate();
 }
 
 GLFWwindow* Window::getHandle() {

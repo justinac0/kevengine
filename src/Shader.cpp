@@ -23,7 +23,18 @@ char* readFile(const char* path) {
 
     return buffer;
 }
-Shader::Shader(const char* vertexShaderPath, const char* fragmentShaderPath) {
+
+///////////////////////////////////////////////////////////////////
+
+Shader::Shader(void) {
+
+}
+
+Shader::~Shader(void) {
+    glDeleteProgram(this->programID);
+}
+
+void Shader::load(const char* vertexShaderPath, const char* fragmentShaderPath) {
     char* vertexSource = readFile(vertexShaderPath);
     GLuint vertexID = glCreateShader(GL_VERTEX_SHADER);
     glShaderSource(vertexID, 1, &vertexSource, NULL);
@@ -76,10 +87,6 @@ Shader::Shader(const char* vertexShaderPath, const char* fragmentShaderPath) {
 
     glDeleteShader(vertexID);
     glDeleteShader(fragmentID);
-}
-
-Shader::~Shader(void) {
-    glDeleteProgram(this->programID);
 }
 
 void Shader::use(void) {

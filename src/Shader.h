@@ -17,9 +17,10 @@ private:
     GLuint programID;
 
 public:
-    Shader(const char* vertexShaderPath, const char* fragmentShaderPath);
+    Shader(void);
     ~Shader(void);
 
+    void load(const char* vertexShaderPath, const char* fragmentShaderPath);
     void use(void);
     void sendUniformMat4(const GLchar* name, glm::mat4 src);
     void sendUniformVec3(const GLchar* name, glm::vec3 src);

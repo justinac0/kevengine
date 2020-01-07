@@ -11,8 +11,10 @@ class Window {
         GLFWwindow* handle;
 
     public:
-        Window(uint32_t width, uint32_t height, const char* title);
-        ~Window();
+        Window(void);
+        ~Window(void);
+
+        void create(uint32_t width, uint32_t height, const char* title);
 
         GLFWwindow* getHandle();
 };

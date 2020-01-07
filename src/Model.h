@@ -21,9 +21,10 @@ private:
     Mesh* mesh;
 
 public:
-    Model(const char* modelPath);
-    ~Model();
+    Model(void);
+    ~Model(void);
 
+    void load(const char* path);
     void update();
     void render();
     void move(float x, float y, float z);

@@ -1,6 +1,14 @@
 #include "Camera.h"
 
-Camera::Camera(float mouseSensitivity, float moveSpeed) {
+Camera::Camera() {
+
+}
+
+Camera::~Camera() {
+    
+}
+
+void Camera::init(float mouseSensitivity, float moveSpeed) {
     this->mouseSensitivity  = mouseSensitivity;
     this->moveSpeed             = moveSpeed;
 
@@ -16,36 +24,32 @@ Camera::Camera(float mouseSensitivity, float moveSpeed) {
     this->view          = glm::mat4(1.0f);
 }
 
-Camera::~Camera() {
-    
-}
-
 double newX, newY;
 double oldX, oldY;
 
-void Camera::update() {
+void Camera::update(GLFWwindow* window) {
     // https://www.opengl-tutorial.org/beginners-tutorials/tutorial-6-keyboard-and-mouse/
-    if (glfwGetKey(glfwGetCurrentContext(), GLFW_KEY_W) == GLFW_PRESS) {
+    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
         this->position += this->forward * this->moveSpeed;
     }
 
-    if (glfwGetKey(glfwGetCurrentContext(), GLFW_KEY_S) == GLFW_PRESS) {
+    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
         this->position -= this->forward * this->moveSpeed;
     }
 
-    if (glfwGetKey(glfwGetCurrentContext(), GLFW_KEY_D) == GLFW_PRESS) {
+    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
         this->position += glm::normalize(glm::cross(this->forward, this->up)) * this->moveSpeed;
     }
 
-    if (glfwGetKey(glfwGetCurrentContext(), GLFW_KEY_A) == GLFW_PRESS) {
+    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
         this->position -= glm::normalize(glm::cross(this->forward, this->up)) * this->moveSpeed;
     }
 
-    if (glfwGetKey(glfwGetCurrentContext(), GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) {
+    if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) {
         this->position.y -= this->moveSpeed;
     }
 
-    if (glfwGetKey(glfwGetCurrentContext(), GLFW_KEY_SPACE) == GLFW_PRESS) {
+    if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS) {
         this->position.y += this->moveSpeed;
     }
 
@@ -57,10 +61,10 @@ void Camera::update() {
 
     this->view = glm::lookAt(this->position, this->position + this->forward, this->up);
 
-    glfwGetCursorPos(glfwGetCurrentContext(), &newX, &newY);
+    glfwGetCursorPos(window, &newX, &newY);
 
-    if (glfwGetMouseButton(glfwGetCurrentContext(), GLFW_MOUSE_BUTTON_1) != GLFW_PRESS) {
-        glfwGetCursorPos(glfwGetCurrentContext(), &oldX, &oldY);
+    if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_1) != GLFW_PRESS) {
+        glfwGetCursorPos(window, &oldX, &oldY);
         return;
     }
 

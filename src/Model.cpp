@@ -3,7 +3,15 @@
 #define TINYOBJLOADER_IMPLEMENTATION
 #include <tiny_obj_loader.h>
 
-Model::Model(const char* modelPath) {
+Model::Model(void) {
+
+}
+
+Model::~Model() {
+    this->mesh->~Mesh();
+}
+
+void Model::load(const char* path) {
     tinyobj::attrib_t attrib;
     std::vector<tinyobj::shape_t> shapes;
     std::vector<tinyobj::material_t> materials;
@@ -11,7 +19,7 @@ Model::Model(const char* modelPath) {
     std::string warn;
     std::string err;
 
-    bool ret = tinyobj::LoadObj(&attrib, &shapes, &materials, &warn, &err, modelPath, NULL, 1, 0);
+    bool ret = tinyobj::LoadObj(&attrib, &shapes, &materials, &warn, &err, path, NULL, 1, 0);
 
     std::vector<tinyobj::real_t> primitiveData;
     std::vector<glm::vec3> normals;
@@ -84,10 +92,6 @@ Model::Model(const char* modelPath) {
     this->mesh = new Mesh(primitiveData, normals, indices);
 
     this->matrix = glm::mat4(1.0f);
-}
-
-Model::~Model() {
-    this->mesh->~Mesh();
 }
 
 void Model::update() {

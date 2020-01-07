@@ -26,10 +26,11 @@ private:
     glm::mat4 view;
 
 public:
-    Camera(float mouseSensitivity, float moveSpeed);
+    Camera();
     ~Camera();
 
-    void update();
+    void init(float mouseSensitivity, float moveSpeed);
+    void update(GLFWwindow* window);
 
     glm::mat4 getViewMatrix(void);
     glm::mat4 getPerspectiveMatrix(void);
