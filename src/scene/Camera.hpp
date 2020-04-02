@@ -1,5 +1,5 @@
-#ifndef CAMERA_H
-#define CAMERA_H
+#ifndef CAMERA_HPP_
+#define CAMERA_HPP_
 
 #include <iostream>
 
@@ -20,8 +20,8 @@ private:
 
     float yaw;
     float pitch;
-
     float fov;
+
     glm::mat4 perspective;
     glm::mat4 view;
 
@@ -29,12 +29,14 @@ public:
     Camera();
     ~Camera();
 
+    // include default position and rotations would be nice
     void init(float mouseSensitivity, float moveSpeed);
     void update(GLFWwindow* window);
 
+    glm::vec3 getPosition(void);
+
     glm::mat4 getViewMatrix(void);
     glm::mat4 getPerspectiveMatrix(void);
-    glm::vec3 getPosition(void);
 };
 
-#endif // CAMERA_H
+#endif // CAMERA_HPP_

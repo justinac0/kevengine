@@ -1,5 +1,5 @@
-#ifndef SHADER_H
-#define SHADER_H
+#ifndef SHADER_HPP_
+#define SHADER_HPP_
 
 #include <iostream>
 #include <string>
@@ -27,4 +27,4 @@ public:
     GLuint getProgramID(void);
 };
 
-#endif // SHADER_H
+#endif // SHADER_HPP_

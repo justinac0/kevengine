@@ -1,17 +1,25 @@
-#include "Model.h"
+#include "Model.hpp"
 
 #define TINYOBJLOADER_IMPLEMENTATION
 #include <tiny_obj_loader.h>
 
-Model::Model(void) {
-
+Model::Model() {
 }
 
-Model::~Model() {
-    this->mesh->~Mesh();
-}
+// Model::Model(const char* path, glm::vec3 position, glm::vec3 scale) {
+//     this->position  = position;
+//     this->scale     = scale;
+
+//     this->matrix = glm::mat4(1.0f);
+//     this->move(position.x, position.y, position.z);
+//     this->setScale(scale.x, scale.y, scale.z);
+
+//     this->load(path);
+// }
 
 void Model::load(const char* path) {
+    // it would be nice to move the loading to a load manager
+    // or something for when we import more than just wavefront
     tinyobj::attrib_t attrib;
     std::vector<tinyobj::shape_t> shapes;
     std::vector<tinyobj::material_t> materials;
@@ -94,8 +102,8 @@ void Model::load(const char* path) {
     this->matrix = glm::mat4(1.0f);
 }
 
-void Model::update() {
-
+Model::~Model() {
+    this->mesh->~Mesh();
 }
 
 void Model::render() {
@@ -105,11 +113,6 @@ void Model::render() {
 void Model::move(float x, float y, float z) {
     this->position += glm::vec3(x, y, z);
     this->matrix = glm::translate(this->matrix, glm::vec3(x, y, z));
-}
-
-void Model::rotate(float x, float y, float z, float angle) {
-    this->rotation += glm::vec3(x, y, z);
-    this->matrix = glm::rotate(this->matrix, angle, this->rotation);
 }
 
 void Model::setScale(float x, float y, float z) {

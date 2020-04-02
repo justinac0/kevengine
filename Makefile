@@ -2,7 +2,8 @@ CC=g++
 CFLAGS=-Wall -Wextra
 LDFLAGS=-lglfw3 -lgdi32
 
-SRC = $(wildcard src/*.cpp)	\
+SRC = $(wildcard src/*.cpp)			\
+	  $(wildcard src/**/*.cpp)		\
 	  $(wildcard deps/glad/src/*.c)
 
 INCLUDES = -Ideps/glad/include -Ideps/glfw-3.3/include -Ideps/glm/ -Ideps/stb -Ideps/
@@ -33,3 +34,4 @@ run:
 .PHONY: clean
 clean:
 	$(DEL_CMD) ./bin/$(TARGET_NAME)
+	$(DEL_CMD) $(src.o)

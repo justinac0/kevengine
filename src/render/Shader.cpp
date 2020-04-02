@@ -1,4 +1,4 @@
-#include "Shader.h"
+#include "Shader.hpp"
 
 char* readFile(const char* path) {
     FILE* fileStream = NULL;

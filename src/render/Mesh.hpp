@@ -1,15 +1,12 @@
-#ifndef MESH_H
-#define MESH_H
+#ifndef MESH_HPP_
+#define MESH_HPP_
 
 #include <iostream>
 #include <vector>
 
 #include <glm/glm.hpp>
 
-#include "BufferUtil.h"
-
-// #define TINYOBJLOADER_IMPLEMENTATION
-#include <tiny_obj_loader.h>
+#include "BufferUtil.hpp"
 
 class Mesh {
 private:
@@ -35,4 +32,4 @@ public:
     GLuint getVaoID(void);
 };
 
-#endif // MESH_H
+#endif // MESH_HPP_

@@ -1,10 +1,9 @@
-#include "Engine.h"
+#include "Engine.hpp"
 
-int main(int argc, char const** argv) {
+int main(void) {
     Engine kevin = Engine();
 
-    kevin.start();
-    kevin.stop();
+    kevin.update();
 
     return 0;
 }

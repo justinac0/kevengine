@@ -1,5 +1,5 @@
-#ifndef BUFFER_UTIL_H
-#define BUFFER_UTIL_H
+#ifndef BUFFER_UTIL_HPP_
+#define BUFFER_UTIL_HPP_
 
 #include <glad/glad.h>
 
@@ -18,4 +18,4 @@ namespace BufferUtil {
     void enableVertexAtrribArray(GLuint index);
 };
 
-#endif // BUFFER_UTIL_H
+#endif // BUFFER_UTIL_HPP_

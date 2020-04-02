@@ -1,4 +1,4 @@
-#include "Mesh.h"
+#include "Mesh.hpp"
 
 Mesh::Mesh(std::vector<float> primitiveData, std::vector<glm::vec3> normals, std::vector<GLuint> indices) { 
     this->vaoID = BufferUtil::createVaoID();

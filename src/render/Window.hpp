@@ -1,5 +1,5 @@
-#ifndef WINDOW_H
-#define WINDOW_H
+#ifndef WINDOW_HPP_
+#define WINDOW_HPP_
 
 #include <iostream>
 
@@ -18,4 +18,4 @@ class Window {
         GLFWwindow* getHandle();
 };
 
-#endif // WINDOW_H
+#endif // WINDOW_HPP_

@@ -1,5 +1,5 @@
-#ifndef TEXTURE_H
-#define TEXTURE_H
+#ifndef TEXTURE_HPP_
+#define TEXTURE_HPP_
 
 #include <iostream>
 #include <string>
@@ -17,4 +17,4 @@ public:
     void use();
 };
 
-#endif // TEXTURE_H
+#endif // TEXTURE_HPP_

@@ -1,4 +1,4 @@
-#include "Camera.h"
+#include "Camera.hpp"
 
 Camera::Camera() {
 
@@ -86,14 +86,14 @@ void Camera::update(GLFWwindow* window) {
     }
 }
 
+glm::vec3 Camera::getPosition(void) {
+    return this->position;
+}
+
 glm::mat4 Camera::getViewMatrix(void) {
     return this->view;
 }
 
 glm::mat4 Camera::getPerspectiveMatrix(void) {
     return this->perspective;
-}
-
-glm::vec3 Camera::getPosition(void) {
-    return this->position;
 }
