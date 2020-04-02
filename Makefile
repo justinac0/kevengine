@@ -1,7 +1,8 @@
-CC		= g++
-CFLAGS 	= -W -Wextra
+CC=g++
+CFLAGS=-Wall -Wextra
+LDFLAGS=-lglfw3 -lgdi32
 
-SRC = $(wildcard src/*.cpp)			\
+SRC = $(wildcard src/*.cpp)	\
 	  $(wildcard deps/glad/src/*.c)
 
 INCLUDES = -Ideps/glad/include -Ideps/glfw-3.3/include -Ideps/glm/ -Ideps/stb -Ideps/
@@ -25,6 +26,9 @@ endif
 
 all: $(SRC)
 	$(CC) $(CFLAGS) $(SRC) $(LDFLAGS) $(INCLUDES) -o bin/$(TARGET_NAME)
+
+run:
+	./bin/$(EXEC_NAME)
 
 .PHONY: clean
 clean:

@@ -1,11 +1,9 @@
 #include "Engine.h"
 
 Shader shader;
-Shader skyBoxShader;
 Shader sunShader;
 Camera camera;
 Model model;
-Model skybox;
 Model sun;
 
 Engine::Engine() {
@@ -32,12 +30,11 @@ void Engine::update(Engine* engine) {
 	glDepthFunc(GL_LESS);
 	glEnable(GL_MULTISAMPLE);
 
-	model.load("./bin/models/terrain.obj");
-	skybox.load("./bin/models/sphere.obj");
+	model.load("./bin/models/cube.obj");
+	model.setScale(10, 10, 10);
 	sun.load("./bin/models/sphere.obj");
 
     shader.load("./bin/shaders/vertex.glsl", "./bin/shaders/fragment.glsl");
-    skyBoxShader.load("./bin/shaders/sb_vertex.glsl", "./bin/shaders/sb_fragment.glsl");
     sunShader.load("./bin/shaders/sun_vertex.glsl", "./bin/shaders/sun_fragment.glsl");
 
     sun.move(400, 6500, -400);
@@ -53,19 +50,6 @@ void Engine::update(Engine* engine) {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		camera.update(engine->window.getHandle());
-		
-		// draw gradient skybox
-		glDisable(GL_CULL_FACE);
-		glDisable(GL_DEPTH_TEST);
-
-		skyBoxShader.use();
-		skyBoxShader.sendUniformMat4("perspective", camera.getPerspectiveMatrix());
-		skyBoxShader.sendUniformMat4("view", glm::mat4(glm::mat3(camera.getViewMatrix())));
-		skybox.render();
-
-		glEnable(GL_CULL_FACE);
-		glCullFace(GL_BACK);
-		glEnable(GL_DEPTH_TEST);
 
 		// draw sun
 		sunShader.use();
