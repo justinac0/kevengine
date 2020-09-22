@@ -1,0 +1,11 @@
+MAIN_TODO:
+    ☐ Blender indices thingo get that done..
+    ☐ Attach Shaders to Models so mitch doesn't have to see the ungliii yukkk
+    ☐ Start work on Scene and scene objects
+
+REFACTORING:
+    ☐ Move all private fields to the top of class decleration....
+
+Done:
+    ✔ Rid the world of glm @done(20-09-22 16:51)
+    ✔ Class that manages transforms (postion, scale, rotation, matrix) @done(20-09-22 23:28)

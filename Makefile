@@ -1,12 +1,12 @@
 CC=g++
-CFLAGS=-Wall -Wextra
+CFLAGS=-Wall -Wextra -O3
 LDFLAGS=-lglfw3 -lgdi32
 
-SRC = $(wildcard src/*.cpp)			\
-	  $(wildcard src/**/*.cpp)		\
-	  $(wildcard deps/glad/src/*.c)
+SRC = $(wildcard core/*.cpp)		\
+	  $(wildcard core/**/*.cpp)		\
+	  $(wildcard thirdparty/glad/src/*.c)
 
-INCLUDES = -Ideps/glad/include -Ideps/glfw-3.3/include -Ideps/glm/ -Ideps/stb -Ideps/
+INCLUDES = -Ithirdparty/glad/include -Ithirdparty/glfw-3.3/include -Ithirdparty/glm/ -Ideps/stb -Ithirdparty/ -Ithirdparty/eigen-3.3.7
 EXEC_NAME = kevengine
 
 ifeq ($(OS), Windows_NT)
@@ -26,12 +26,9 @@ else
 endif
 
 all: $(SRC)
-	$(CC) $(CFLAGS) $(SRC) $(LDFLAGS) $(INCLUDES) -o bin/$(TARGET_NAME)
-
-run:
-	./bin/$(EXEC_NAME)
+	$(CC) $(CFLAGS) $(SRC) $(LDFLAGS) $(INCLUDES) -o build/$(TARGET_NAME)
 
 .PHONY: clean
 clean:
-	$(DEL_CMD) ./bin/$(TARGET_NAME)
+	$(DEL_CMD) ./build/$(TARGET_NAME)
 	$(DEL_CMD) $(src.o)
