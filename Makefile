@@ -28,6 +28,9 @@ endif
 all: $(SRC)
 	$(CC) $(CFLAGS) $(SRC) $(LDFLAGS) $(INCLUDES) -o build/$(TARGET_NAME)
 
+run:
+	./build/${EXEC_NAME}
+
 .PHONY: clean
 clean:
 	$(DEL_CMD) ./build/$(TARGET_NAME)
