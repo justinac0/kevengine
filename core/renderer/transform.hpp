@@ -34,8 +34,8 @@ namespace kevin {
             void SetRotation(Eigen::Vector3f newRotation);
             Eigen::Vector3f GetRotation();
 
-            void UpdateMatrix(); // NOTE(mitch)
-                                 //   Is it possible to partially update our final matrix?
+            void UpdateMatrix();
+
             Eigen::Matrix4f GetMatrix();
         };
 

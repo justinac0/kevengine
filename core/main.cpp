@@ -61,7 +61,7 @@ void SceneRender(std::vector<renderer::Model>* pScene, renderer::ShaderProgram s
 
         glUniformMatrix4fv(glGetUniformLocation(shaderProgram.GetID(), "m_projection"), 1, GL_FALSE, &camera.GetProjectionMatrix()(0));
         glUniformMatrix4fv(glGetUniformLocation(shaderProgram.GetID(), "m_view"), 1, GL_FALSE, &camera.GetViewMatrix()(0));
-        glUniformMatrix4fv(glGetUniformLocation(shaderProgram.GetID(), "m_transform"), 1, GL_FALSE, &model(0));
+        glUniformMatrix4fv(glGetUniformLocation(shaderProgram.GetID(), "m_transform"), 1, GL_FALSE, &(*pScene)[i].trasform.GetMatrix()(0));
 
         (*pScene)[i].DrawElements();
     }
@@ -121,14 +121,18 @@ std::vector<renderer::Model> loadModelFromFile(const char* filePath) {
     int intBuf[3];
     char charBuf[256];
 
-    enum Region { NONE = -1, VERTICES, NORMALS, COLOURS, INDICES };
+    enum Region { NONE = -1, VERTICES, NORMALS, COLOURS, INDICES, POSITION, SCALE, ROTATION };
     Region curr = NONE;
 
     std::vector<float> vertices = {};
     std::vector<float> normals  = {};
     std::vector<float> colours  = {};
     std::vector<int>   indices  = {};
-    
+
+    std::vector<float> position = {};
+    std::vector<float> scale    = {};
+    std::vector<float> rotation = {};
+
     std::cout << "Loading model from file: " << filePath << std::endl;
 
     std::string buffer;
@@ -141,11 +145,18 @@ std::vector<renderer::Model> loadModelFromFile(const char* filePath) {
 
             if (buffer[0] == ';') {
                 if (sscanf(buffer.c_str(), "; model %255s", charBuf) == 1) {
-                    models.push_back(renderer::Model(vertices, normals, indices));
+                    models.push_back(renderer::Model(vertices, normals, indices, renderer::Transform({ position.at(0), position.at(1), position.at(2) },
+                                                                                                     { scale.at(0), scale.at(1), scale.at(2) },
+                                                                                                     { rotation.at(0), rotation.at(1), rotation.at(2) })));
                     vertices.clear();
                     normals.clear();
                     colours.clear();
                     indices.clear();
+
+                    position.clear();
+                    scale.clear();
+                    rotation.clear();
+
                     curr = NONE;
                     std::cout << "Loaded Model: " << charBuf << std::endl;
                 } else if (sscanf(buffer.c_str(), "; %255s", charBuf) == 1) {
@@ -158,6 +169,12 @@ std::vector<renderer::Model> loadModelFromFile(const char* filePath) {
                         curr = COLOURS;
                     else if (strcmp(charBuf, "indices") == 0)
                         curr = INDICES;
+                    else if (strcmp(charBuf, "position") == 0)
+                        curr = POSITION;
+                    else if (strcmp(charBuf, "scale") == 0)
+                        curr = SCALE;
+                    else if (strcmp(charBuf, "rotation") == 0)
+                        curr = ROTATION;
                     else
                         std::cerr << "I want to die right now." << std::endl;
                 } else {
@@ -185,6 +202,23 @@ std::vector<renderer::Model> loadModelFromFile(const char* filePath) {
                             // std::cout << "Index:\t" << intBuf[0] << ", " << intBuf[1] << ", " << intBuf[2] << std::endl;
                         }
                         break;
+                    case POSITION:
+                        if (loadVec3Float(buffer, floatBuf, &position)) {
+                            // std::cout << "Index:\t" << intBuf[0] << ", " << intBuf[1] << ", " << intBuf[2] << std::endl;
+                        }
+                        break;
+
+                    case SCALE:
+                        if (loadVec3Float(buffer, floatBuf, &scale)) {
+                            // std::cout << "Index:\t" << intBuf[0] << ", " << intBuf[1] << ", " << intBuf[2] << std::endl;
+                        }
+                        break;
+
+                    case ROTATION:
+                        if (loadVec3Float(buffer, floatBuf, &rotation)) {
+                            // std::cout << "Index:\t" << intBuf[0] << ", " << intBuf[1] << ", " << intBuf[2] << std::endl;
+                        }
+                        break;
                     default: //err
                         break;
                 }
@@ -207,7 +241,7 @@ int main() {
     renderer::Shader fragmentShader = renderer::Shader("build/fragment.glsl", GL_FRAGMENT_SHADER);
     renderer::ShaderProgram shaderProgram = renderer::ShaderProgram(vertexShader, fragmentShader);
 
-    world::Camera camera(1.0f, 0.25f);
+    world::Camera camera(1.0f, 0.05f);
     // world::SceneObject triangle(renderer::Transform({ 0, 0, -10 }, { 1, 1, 1 }, { 0, 0, 0 }), renderer::Model(vertices, colours, indices));
 
     std::vector<renderer::Model> scene = loadModelFromFile("./build/file.znk");

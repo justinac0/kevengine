@@ -3,6 +3,7 @@
 
 #include <Eigen/Core>
 #include "mesh.hpp"
+#include "transform.hpp"
 
 namespace kevin {
 
@@ -10,15 +11,12 @@ namespace kevin {
 
         class Model : public Mesh {
         public:
+            Transform trasform;
+        public:
             Model();
-            Model(std::vector<float> vertices, std::vector<float> colours, std::vector<int> indices); // inherits Mesh base
+            Model(std::vector<float> vertices, std::vector<float> colours, std::vector<int> indices, Transform transform); // inherits Mesh base
             ~Model();
 
-            void SetModelMatrix(Eigen::Matrix4f matrix);
-            Eigen::Matrix4f GetModelMatrix();
-
-        private:
-            Eigen::Matrix4f m_ModelMatrix;
         };
 
     }

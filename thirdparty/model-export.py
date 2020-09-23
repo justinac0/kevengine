@@ -2,10 +2,6 @@ import bpy
 import math
 import os
 
-vertices = []
-indices  = []
-normals  = []
-
 class Vector3:
     def __init__(self, x=0, y=0, z=0):
         self.x = x
@@ -53,7 +49,7 @@ class Vector3:
     def normalize(self):
         return self.scalar_div(self.length())
 
-def CalculateNormals():
+def CalculateNormals(normals, vertices, indices):
     newNormals = []
     for v in vertices:
         newNormals.append(Vector3(0,0,0))
@@ -83,6 +79,10 @@ def ParseScene():
     for obj in scene_objects:
         # can only export meshes at this stage
         if obj.type == 'MESH':
+            vertices = []
+            indices  = []
+            normals  = []
+
             for v in obj.data.vertices:
                 vertices.append(Vector3(v.co[0], v.co[1], v.co[2]))
             for polygon in obj.data.polygons:
@@ -96,7 +96,8 @@ def ParseScene():
             for v in vertices:
                 output.write(str(v))
 
-            CalculateNormals()
+            CalculateNormals(normals, vertices, indices)
+
             # normals
             output.write('\n; normals\n')
             for n in normals:
@@ -112,7 +113,7 @@ def ParseScene():
             model_matrix = obj.matrix_world;
 
             model_position = Vector3(model_matrix[0][3], model_matrix[1][3], model_matrix[2][3])
-            model_scale = Vector3(obj.scale[0], obj.scale[1], obj.scale[2])
+            model_scale = Vector3(obj.scale[2], obj.scale[1], obj.scale[0])
             model_rotation = Vector3(obj.rotation_euler[0], obj.rotation_euler[1], obj.rotation_euler[2])
 
             print(model_matrix)

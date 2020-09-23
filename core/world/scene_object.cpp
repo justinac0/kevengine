@@ -19,7 +19,6 @@ void SceneObject::Update() {
     this->m_Transform.SetScale(this->Scale);
 
     this->m_Transform.UpdateMatrix();
-    this->m_Transform.GetMatrix();
 }
 
 void SceneObject::Render() {
