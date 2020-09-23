@@ -1,4 +1,5 @@
 import bpy
+import random
 import math
 import os
 
@@ -82,9 +83,14 @@ def ParseScene():
             vertices = []
             indices  = []
             normals  = []
+            colours  = []
 
             for v in obj.data.vertices:
                 vertices.append(Vector3(v.co[0], v.co[1], v.co[2]))
+
+            for i in range(len(vertices)):
+                colours.append(Vector3(random.uniform(0.0, 1.0), random.uniform(0.0, 1.0), random.uniform(0.0, 1.0)))
+
             for polygon in obj.data.polygons:
                 verts_in_face = polygon.vertices[:]
                 # normals.append(Vector3(polygon.normal[0], polygon.normal[1], polygon.normal[2]))
@@ -103,6 +109,11 @@ def ParseScene():
             for n in normals:
                 output.write(str(n))
 
+            # colours
+            output.write('\n\n; colours\n')
+            for c in colours:
+                output.write(str(c))
+
             # indices
             output.write('\n; indices')
             for i in range(len(indices)):
@@ -113,7 +124,7 @@ def ParseScene():
             model_matrix = obj.matrix_world;
 
             model_position = Vector3(model_matrix[0][3], model_matrix[1][3], model_matrix[2][3])
-            model_scale = Vector3(obj.scale[2], obj.scale[1], obj.scale[0])
+            model_scale = Vector3(obj.scale[0], obj.scale[1], obj.scale[2])
             model_rotation = Vector3(obj.rotation_euler[0], obj.rotation_euler[1], obj.rotation_euler[2])
 
             print(model_matrix)
