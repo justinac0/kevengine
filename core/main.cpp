@@ -246,6 +246,8 @@ int main() {
 
     std::vector<renderer::Model> scene = loadModelFromFile("./build/file.znk");
 
+    bool keyPressed = false;
+
     while (!renderer.GetWindowShouldClose()) {
         renderer.UpdateWindow();
 
@@ -259,6 +261,15 @@ int main() {
 
         // triangle.Update();
         // triangle.Render();
+
+        if (glfwGetKey(renderer.GetWindowHandle(), GLFW_KEY_R) == GLFW_PRESS && keyPressed == false) {
+            keyPressed = true;
+            scene.erase(scene.end());
+        }
+
+        if (glfwGetKey(renderer.GetWindowHandle(), GLFW_KEY_R) == GLFW_RELEASE && keyPressed == true) {
+            keyPressed = false;
+        }
 
         // glUniformMatrix4fv(glGetUniformLocation(shaderProgram.GetID(), "m_projection"), 1, GL_FALSE, &camera.GetProjectionMatrix()(0));
         // glUniformMatrix4fv(glGetUniformLocation(shaderProgram.GetID(), "m_view"), 1, GL_FALSE, &camera.GetViewMatrix()(0));

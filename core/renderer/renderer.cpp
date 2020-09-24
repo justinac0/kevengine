@@ -20,6 +20,7 @@ Renderer::Renderer(uint32_t width, uint32_t height) {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
+    glfwWindowHint(GLFW_SAMPLES, 8);
     glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
 
     this->m_Window = glfwCreateWindow(width, height, "kevengine", 0, 0);
@@ -36,7 +37,8 @@ Renderer::Renderer(uint32_t width, uint32_t height) {
     glViewport(0, 0, width, height);
 
     glEnable(GL_DEPTH_TEST);
-    glCullFace(GL_FRONT);
+    glDepthFunc(GL_LESS);
+    glEnable(GL_MULTISAMPLE);
 }
 
 Renderer::~Renderer() {

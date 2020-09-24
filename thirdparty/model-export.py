@@ -86,7 +86,7 @@ def ParseScene():
             colours  = []
 
             for v in obj.data.vertices:
-                vertices.append(Vector3(v.co[0], v.co[1], v.co[2]))
+                vertices.append(Vector3(v.co[0], v.co[2], -v.co[1]))
 
             for i in range(len(vertices)):
                 colours.append(Vector3(random.uniform(0.0, 1.0), random.uniform(0.0, 1.0), random.uniform(0.0, 1.0)))
