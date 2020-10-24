@@ -11,12 +11,9 @@ namespace kevin {
 
         class Model : public Mesh {
         public:
-            Transform trasform;
-        public:
             Model();
-            Model(std::vector<float> vertices, std::vector<float> colours, std::vector<int> indices, Transform transform); // inherits Mesh base
+            Model(std::vector<float> vertices, std::vector<float> normals, std::vector<float> colours, std::vector<int> indices); // inherits Mesh base
             ~Model();
-
         };
 
     }

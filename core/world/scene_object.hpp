@@ -11,23 +11,22 @@ namespace kevin {
 
         class SceneObject {
         public:
-            Eigen::Vector3f Position;
-            Eigen::Vector3f Scale;
-            Eigen::Vector3f Rotation;
-
-        public:
             SceneObject(renderer::Transform transform, renderer::Model model);
             ~SceneObject();
 
-            void Update();
-            void Render();
+            void Move(float x, float y, float z);
+            void Rotate(float x, float y, float z);
+            void Scale(float x, float y, float z);
 
-            Eigen::Matrix4f GetTransformMatrix();
-            renderer::Model& GetModel();
+            void UpdateModel();
+            void RenderModel();
+
+            renderer::Model GetModel();
+            renderer::Transform GetTransform();
 
         private:
-            renderer::Transform m_Transform;
             renderer::Model m_Model;
+            renderer::Transform m_Transform;
         };
 
     };

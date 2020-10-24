@@ -13,7 +13,7 @@ namespace util {
 
         rewind(fileStream);
 
-        char* buffer = (char*) malloc(sizeof(char) * length);
+        char* buffer = (char*) malloc(sizeof(char) * length + 1);
 
         if (!buffer) {
             return nullptr;

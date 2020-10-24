@@ -2,8 +2,8 @@ CC=g++
 CFLAGS=-Wall -Wextra -O3
 LDFLAGS=-lglfw3 -lgdi32
 
-SRC = $(wildcard core/*.cpp)		\
-	  $(wildcard core/**/*.cpp)		\
+SRC = $(wildcard core/*.cpp)	\
+	  $(wildcard core/**/*.cpp) \
 	  $(wildcard thirdparty/glad/src/*.c)
 
 INCLUDES = -Ithirdparty/glad/include -Ithirdparty/glfw-3.3/include -Ithirdparty/glm/ -Ideps/stb -Ithirdparty/ -Ithirdparty/eigen-3.3.7

@@ -14,7 +14,7 @@ namespace kevin {
         class Mesh {
         public:
             Mesh();
-            Mesh(std::vector<float> vertices, std::vector<float> colours, std::vector<int> indices);
+            Mesh(std::vector<float> vertices, std::vector<float> normals, std::vector<float> colours, std::vector<int> indices);
             ~Mesh();
 
             void DrawElements(); // indexed renderering

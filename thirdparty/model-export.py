@@ -123,9 +123,9 @@ def ParseScene():
 
             model_matrix = obj.matrix_world;
 
-            model_position = Vector3(model_matrix[0][3], model_matrix[1][3], model_matrix[2][3])
+            model_position = Vector3(model_matrix[0][3], model_matrix[2][3], -model_matrix[1][3])
             model_scale = Vector3(obj.scale[0], obj.scale[1], obj.scale[2])
-            model_rotation = Vector3(obj.rotation_euler[0], obj.rotation_euler[1], obj.rotation_euler[2])
+            model_rotation = Vector3(obj.rotation_euler[0], obj.rotation_euler[2], -obj.rotation_euler[1])
 
             print(model_matrix)
 

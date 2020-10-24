@@ -49,7 +49,7 @@ Mesh::Mesh() {
     // default
 }
 
-Mesh::Mesh(std::vector<float> vertices, std::vector<float> colours, std::vector<int> indices) {
+Mesh::Mesh(std::vector<float> vertices, std::vector<float> normals, std::vector<float> colours, std::vector<int> indices) {
     this->m_vertCount = vertices.size();
     this->m_idxCount = indices.size();
     this->m_vaoID = opengl_buffer::VertexArrayCreate();
@@ -60,9 +60,13 @@ Mesh::Mesh(std::vector<float> vertices, std::vector<float> colours, std::vector<
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
     glEnableVertexAttribArray(0);
 
-    opengl_buffer::FloatBufferCreate(GL_ARRAY_BUFFER, GL_STATIC_DRAW, colours.data(), colours.size() * sizeof(float));
+    opengl_buffer::FloatBufferCreate(GL_ARRAY_BUFFER, GL_STATIC_DRAW, normals.data(), normals.size() * sizeof(float));
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
     glEnableVertexAttribArray(1);
+
+    opengl_buffer::FloatBufferCreate(GL_ARRAY_BUFFER, GL_STATIC_DRAW, colours.data(), colours.size() * sizeof(float));
+    glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
+    glEnableVertexAttribArray(2);
 
     opengl_buffer::IntBufferCreate(GL_ELEMENT_ARRAY_BUFFER, GL_STATIC_DRAW, indices.data(), this->m_idxCount);
 

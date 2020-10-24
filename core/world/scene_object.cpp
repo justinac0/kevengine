@@ -12,23 +12,33 @@ SceneObject::~SceneObject() {
 
 }
 
-void SceneObject::Update() {
-    // NOTE(mitch) i am tired
-    this->m_Transform.SetPosition(this->Position);
-    this->m_Transform.SetRotation(this->Rotation);
-    this->m_Transform.SetScale(this->Scale);
+void SceneObject::Move(float x, float y, float z) {
+    this->m_Transform.position = { x, y, z };
+    this->UpdateModel();
+}
 
+void SceneObject::Rotate(float x, float y, float z) {
+    this->m_Transform.rotation = { x, y, z };
+    this->UpdateModel();
+}
+
+void SceneObject::Scale(float x, float y, float z) {
+    this->m_Transform.scale = { x, y, z };
+    this->UpdateModel();
+}
+
+void SceneObject::UpdateModel() {
     this->m_Transform.UpdateMatrix();
 }
 
-void SceneObject::Render() {
+void SceneObject::RenderModel() {
     this->m_Model.DrawElements();
 }
 
-Eigen::Matrix4f SceneObject::GetTransformMatrix() {
-    return this->m_Transform.GetMatrix();
+renderer::Model SceneObject::GetModel() {
+    return this->m_Model;
 }
 
-renderer::Model& SceneObject::GetModel() {
-    return this->m_Model;
+renderer::Transform SceneObject::GetTransform() {
+    return this->m_Transform;
 }
